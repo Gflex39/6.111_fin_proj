@@ -21,39 +21,33 @@ module cos_sin_lookup
     );
 
 
-    logic [15:0] angle_first_quad;
     always_comb begin
         if(angle<90) begin
             cos_sign = 1;
             sin_sign = 1;
-            angle_first_quad = angle;
         end else if (angle<180) begin
             cos_sign = 0;
             sin_sign = 1;
-            angle_first_quad = angle - 90;
         end else if(angle<270) begin
             cos_sign = 0;
             sin_sign = 1;
-            angle_first_quad = angle - 180;
         end else if(angle<360) begin
             cos_sign = 1;
             sin_sign = 0;
-            angle_first_quad = angle - 270;
         end else begin // for edge cases like angle=360
             cos_sign = 1;
             sin_sign = 1;
-            angle_first_quad = angle - 360;
         end
 
     end
 
     xilinx_single_port_ram_read_first #(
         .RAM_WIDTH(16),                       // Specify RAM data width
-        .RAM_DEPTH(90),                     // Specify RAM depth (number of entries)
+        .RAM_DEPTH(361),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(cos_lookup.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) cos_lookup (
-        .addra(angle_first_quad[6:0]),     // Address bus, width determined from RAM_DEPTH
+        .addra(angle[8:0]),     // Address bus, width determined from RAM_DEPTH
         .dina(16'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
@@ -65,11 +59,11 @@ module cos_sin_lookup
 
     xilinx_single_port_ram_read_first #(
         .RAM_WIDTH(16),                       // Specify RAM data width
-        .RAM_DEPTH(90),                     // Specify RAM depth (number of entries)
+        .RAM_DEPTH(361),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(sin_lookup.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) sin_lookup (
-        .addra(angle_first_quad[6:0]),     // Address bus, width determined from RAM_DEPTH
+        .addra(angle[8:0]),     // Address bus, width determined from RAM_DEPTH
         .dina(16'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable

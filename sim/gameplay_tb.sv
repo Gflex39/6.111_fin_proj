@@ -13,6 +13,7 @@ module gameplay_tb();
   logic new_game;
   logic charging_hit;
   logic camera_pan_right;
+  logic new_frame;
   logic [15:0] bp_x;
   logic [15:0] bp_y;
   logic [15:0] ball_speed;
@@ -20,6 +21,13 @@ module gameplay_tb();
   logic [15:0] cam_angle;
   logic out_ready;
   logic [2:0] state;
+  
+  always begin
+    #10
+    new_frame = 0;
+    #16666667
+    new_frame = 1;
+  end
 
   always begin
         #5;  //every 5 ns switch...so period of clock is 10 ns...100 MHz clock
@@ -34,7 +42,7 @@ module gameplay_tb();
     .charging_hit(charging_hit),
     .camera_pan_left(1'b0), 
     .camera_pan_right(camera_pan_right), 
-    .new_frame(1'b0),
+    .new_frame(new_frame),
     .ball_position_x(bp_x),
     .ball_position_y(bp_y),
     .ball_speed(ball_speed),
@@ -58,9 +66,9 @@ module gameplay_tb();
 
         camera_pan_right = 1;
         charging_hit = 1;
-        #10000000
+        #20000000
         charging_hit = 0;
-        #30000000    
+        #50000000    
 
         $display("Finishing Sim"); //print nice message
         $finish;

@@ -8,11 +8,9 @@
 `endif  /* ! SYNTHESIS */
 
 module gameplay 
-    #(  parameter WIDTH=128, 
-        parameter HEIGHT=128,
-        parameter GROUND_DECEL=2, // in pixels/frame^2, fixed point
-        parameter STARTING_BALL_X=10,
-        parameter STARTING_BALL_Y=10,
+    #(  
+        parameter STARTING_BALL_X = 10,
+        parameter STARTING_BALL_Y = 10,
         /*
             .mem file should be formatted as follows.
             each line is 0-3
@@ -37,10 +35,13 @@ module gameplay
         output logic [15:0] cam_angle, // different from ball_direction; user can move cam while ball is moving and at rest;
 
         output logic out_ready, // 1 when all outs are ready
-        output logic [2:0] state_out 
+        output logic [2:0] state_out
     );
 
-    parameter MAX_INIT_SPEED = 16'b0000_0010_0000_0000; // 2 in fixed point
+    parameter WIDTH = 128;
+    parameter HEIGHT = 128;
+    parameter GROUND_DECEL = 2; // in pixels/frame^2, fixed point
+    parameter MAX_INIT_SPEED = 16'b0000_0010_0000_0000; // 2 in fixed point; pixels per frame
     parameter MAX_ANGLE = 16'b0000_0001_0110_1000; // 360
     parameter SPEED_COUNTER_THRESH = 390625; // 2 secs to fully charge bar
     parameter ANGLE_COUNTER_THRESH = 1111111; // 90 deg per sec
@@ -114,11 +115,17 @@ module gameplay
         .sin_sign(sin_sign)
     );
 
+    logic [31:0] delta_x;
+    logic [31:0] delta_y;
+    assign delta_x = ball_speed * cos_abs;
+    assign delta_y = ball_speed * sin_abs;
+
     always_ff @(posedge clk_in) begin
         if(new_game) begin
             state <= RESTING;
             speed_incr <= 1;
             ball_speed <= 0;
+            ball_direction <= 0;
             cam_angle <= 0;
             speed_counter <= 0;
             angle_counter_left <= 0;
@@ -193,14 +200,18 @@ module gameplay
                 BALL_MOVING: begin
                     if(new_frame) begin
                         // update position & speed
-                        
-                        // we can ignore the 2-cycle latency of reading from BROM since we only use the output at 60fps
-                        if(cos_sign) ball_position_x <= ball_position_x + ((ball_speed>>4) * (cos_abs>>4));
-                        else ball_position_x <= ball_position_x - ((ball_speed>>4) * (cos_abs>>4));
+                        if(ball_speed==0) state <= RESTING;
+                        else begin
+                            if(ball_speed <= GROUND_DECEL) ball_speed <= 0;
+                            else ball_speed <= ball_speed - GROUND_DECEL;
+                            
+                            // we can ignore the 2-cycle latency of reading sin/cos from BROM since we only use the output at 60fps
+                            if(cos_sign) ball_position_x <= ball_position_x + (delta_x>>8);
+                            else ball_position_x <= ball_position_x - (delta_x>>8);
 
-                        if(sin_sign) ball_position_y <= ball_position_y + ((ball_speed>>4) * (sin_abs>>4));
-                        else ball_position_y <= ball_position_y - ((ball_speed>>4) * (sin_abs>>4));
-
+                            if(sin_sign) ball_position_y <= ball_position_y + (delta_y>>8);
+                            else ball_position_y <= ball_position_y - (delta_y>>8);
+                        end
                     end
                 end
                 ON_WALL_COLLISION: begin
