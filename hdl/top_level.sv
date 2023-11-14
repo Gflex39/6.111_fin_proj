@@ -3,21 +3,60 @@
 
 module top_level(
   input wire clk_100mhz, //
+  input wire ble_uart_tx,
+  input wire ble_uart_rts,
   input wire [15:0] sw, //all 16 input slide switches
   input wire [3:0] btn, //all four momentary button switches
   output logic [2:0] hdmi_tx_p, //hdmi output signals (blue, green, red)
   output logic [2:0] hdmi_tx_n, //hdmi output signals (negatives)
-  output logic hdmi_clk_p, hdmi_clk_n //differential hdmi clock
+  output logic hdmi_clk_p, hdmi_clk_n, //differential hdmi clock
+  output logic [3:0] ss0_an,//anode control for upper four digits of seven-seg display
+  output logic [3:0] ss1_an,//anode control for lower four digits of seven-seg display
+  output logic [6:0] ss0_c, //cathode controls for the segments of upper four digits
+  output logic [6:0] ss1_c,//cathod controls for the segments of lower four digits
+  output logic ble_uart_cts,
+  output logic ble_uart_rx
   );
 
 
+
+
+
+
   /* have btnd control system reset */
-  logic sys_rst;
-  assign sys_rst = btn[0];
+
 
   //Clocking Variables:
   logic clk_pixel, clk_5x; //clock lines
   logic locked; //locked signal (we'll leave unused but still hook it up)
+
+
+
+  logic sys_rst;
+  assign sys_rst = btn[0];
+  assign ble_uart_cts=1;
+  logic [7:0] data;
+  logic [6:0] ss_c;
+
+
+
+  seven_segment_controller mssc(.clk_in(clk_pixel),
+                                  .rst_in(sys_rst),
+                                  .val_in(data),
+                                  .cat_out(ss_c),
+                                  .an_out({ss0_an, ss1_an}));
+
+  uart_rx #(.BAUD_COUNT(645)) test(.tx(ble_uart_tx),.rst(sys_rst),.clk(clk_pixel),.data_out(data));
+
+
+    // all low (on). to turn off digits, set high
+    assign ss0_c = ss_c; //control upper four digit's cathodes!
+    assign ss1_c = ss_c; //same as above but for lower four digits!
+  
+  
+
+
+
 
   //clock manager...creates 74.25 Hz and 5 times 74.25 MHz for pixel and TMDS
   hdmi_clk_wiz_720p mhdmicw (.clk_pixel(clk_pixel),.clk_tmds(clk_5x),
@@ -147,4 +186,8 @@ module top_level(
 endmodule // top_level
 
 
-`default_nettype wire
+
+`timescale 1ns / 1ps
+`default_nettype none // prevents system from inferring an undeclared logic (good practice)
+ 
+

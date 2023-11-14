@@ -1,36 +1,36 @@
 # mclk is from the 100 MHz oscillator on Urbana Boad
 
-#set_property -dict {PACKAGE_PIN N15 IOSTANDARD LVCMOS33} [get_ports {mclk}]
-#create_clock -add -name gclk -period 10.000 -waveform {0 4} [get_ports {mclk}]
+set_property -dict {PACKAGE_PIN N15 IOSTANDARD LVCMOS33} [get_ports {clk_100mhz}]
+create_clock -add -name gclk -period 10.000 -waveform {0 4} [get_ports {clk_100mhz}]
 
 # Set Bank 0 voltage
 set_property CFGBVS VCCO [current_design]
 set_property CONFIG_VOLTAGE 3.3 [current_design]
 
 # USER GREEN LEDS
-set_property -dict {PACKAGE_PIN C13  IOSTANDARD LVCMOS33} [ get_ports {led[0]} ]
-set_property -dict {PACKAGE_PIN C14  IOSTANDARD LVCMOS33} [ get_ports {led[1]} ]
-set_property -dict {PACKAGE_PIN D14  IOSTANDARD LVCMOS33} [ get_ports {led[2]} ]
-set_property -dict {PACKAGE_PIN D15  IOSTANDARD LVCMOS33} [ get_ports {led[3]} ]
-set_property -dict {PACKAGE_PIN D16  IOSTANDARD LVCMOS33} [ get_ports {led[4]} ]
-set_property -dict {PACKAGE_PIN F18  IOSTANDARD LVCMOS33} [ get_ports {led[5]} ]
-set_property -dict {PACKAGE_PIN E17  IOSTANDARD LVCMOS33} [ get_ports {led[6]} ]
-set_property -dict {PACKAGE_PIN D17  IOSTANDARD LVCMOS33} [ get_ports {led[7]} ]
-set_property -dict {PACKAGE_PIN C17  IOSTANDARD LVCMOS33} [ get_ports {led[8]} ]
-set_property -dict {PACKAGE_PIN B18  IOSTANDARD LVCMOS33} [ get_ports {led[9]} ]
-set_property -dict {PACKAGE_PIN A17  IOSTANDARD LVCMOS33} [ get_ports {led[10]} ]
-set_property -dict {PACKAGE_PIN B17  IOSTANDARD LVCMOS33} [ get_ports {led[11]} ]
-set_property -dict {PACKAGE_PIN C18  IOSTANDARD LVCMOS33} [ get_ports {led[12]} ]
-set_property -dict {PACKAGE_PIN D18  IOSTANDARD LVCMOS33} [ get_ports {led[13]} ]
-set_property -dict {PACKAGE_PIN E18  IOSTANDARD LVCMOS33} [ get_ports {led[14]} ]
-set_property -dict {PACKAGE_PIN G17  IOSTANDARD LVCMOS33} [ get_ports {led[15]} ]
+# set_property -dict {PACKAGE_PIN C13  IOSTANDARD LVCMOS33} [ get_ports {led[0]} ]
+# set_property -dict {PACKAGE_PIN C14  IOSTANDARD LVCMOS33} [ get_ports {led[1]} ]
+# set_property -dict {PACKAGE_PIN D14  IOSTANDARD LVCMOS33} [ get_ports {led[2]} ]
+# set_property -dict {PACKAGE_PIN D15  IOSTANDARD LVCMOS33} [ get_ports {led[3]} ]
+# set_property -dict {PACKAGE_PIN D16  IOSTANDARD LVCMOS33} [ get_ports {led[4]} ]
+# set_property -dict {PACKAGE_PIN F18  IOSTANDARD LVCMOS33} [ get_ports {led[5]} ]
+# set_property -dict {PACKAGE_PIN E17  IOSTANDARD LVCMOS33} [ get_ports {led[6]} ]
+# set_property -dict {PACKAGE_PIN D17  IOSTANDARD LVCMOS33} [ get_ports {led[7]} ]
+# set_property -dict {PACKAGE_PIN C17  IOSTANDARD LVCMOS33} [ get_ports {led[8]} ]
+# set_property -dict {PACKAGE_PIN B18  IOSTANDARD LVCMOS33} [ get_ports {led[9]} ]
+# set_property -dict {PACKAGE_PIN A17  IOSTANDARD LVCMOS33} [ get_ports {led[10]} ]
+# set_property -dict {PACKAGE_PIN B17  IOSTANDARD LVCMOS33} [ get_ports {led[11]} ]
+# set_property -dict {PACKAGE_PIN C18  IOSTANDARD LVCMOS33} [ get_ports {led[12]} ]
+# set_property -dict {PACKAGE_PIN D18  IOSTANDARD LVCMOS33} [ get_ports {led[13]} ]
+# set_property -dict {PACKAGE_PIN E18  IOSTANDARD LVCMOS33} [ get_ports {led[14]} ]
+# set_property -dict {PACKAGE_PIN G17  IOSTANDARD LVCMOS33} [ get_ports {led[15]} ]
 
-set_property -dict {PACKAGE_PIN A11 IOSTANDARD LVCMOS33} [get_ports {rgb0[0]}];
-set_property -dict {PACKAGE_PIN C10 IOSTANDARD LVCMOS33} [get_ports {rgb0[1]}];
-set_property -dict {PACKAGE_PIN B11 IOSTANDARD LVCMOS33} [get_ports {rgb0[2]}];
-set_property -dict {PACKAGE_PIN C9 IOSTANDARD LVCMOS33} [get_ports {rgb1[0]}];
-set_property -dict {PACKAGE_PIN A9 IOSTANDARD LVCMOS33} [get_ports {rgb1[1]}];
-set_property -dict {PACKAGE_PIN A10 IOSTANDARD LVCMOS33} [get_ports {rgb1[2]}];
+# set_property -dict {PACKAGE_PIN A11 IOSTANDARD LVCMOS33} [get_ports {rgb0[0]}];
+# set_property -dict {PACKAGE_PIN C10 IOSTANDARD LVCMOS33} [get_ports {rgb0[1]}];
+# set_property -dict {PACKAGE_PIN B11 IOSTANDARD LVCMOS33} [get_ports {rgb0[2]}];
+# set_property -dict {PACKAGE_PIN C9 IOSTANDARD LVCMOS33} [get_ports {rgb1[0]}];
+# set_property -dict {PACKAGE_PIN A9 IOSTANDARD LVCMOS33} [get_ports {rgb1[1]}];
+# set_property -dict {PACKAGE_PIN A10 IOSTANDARD LVCMOS33} [get_ports {rgb1[2]}];
 
 ## USER PUSH BUTTON
 set_property -dict {PACKAGE_PIN J2  IOSTANDARD LVCMOS33} [ get_ports "btn[0]" ]
@@ -85,7 +85,19 @@ set_property -dict {PACKAGE_PIN F4  IOSTANDARD LVCMOS33} [ get_ports "ss1_c[4]"]
 set_property -dict {PACKAGE_PIN H3  IOSTANDARD LVCMOS33} [ get_ports "ss1_c[5]"]
 set_property -dict {PACKAGE_PIN E5  IOSTANDARD LVCMOS33} [ get_ports "ss1_c[6]"]
 #set_property -dict {PACKAGE_PIN J4  IOSTANDARD LVCMOS33} [ get_ports "ss1_c[7]"]
+set_property -dict {PACKAGE_PIN G15 IOSTANDARD LVCMOS33} [get_ports {ble_uart_tx}]
+set_property -dict {PACKAGE_PIN E13 IOSTANDARD LVCMOS33} [get_ports {ble_uart_rx}]
+set_property -dict {PACKAGE_PIN H15 IOSTANDARD LVCMOS33} [get_ports {ble_uart_rts}]
+set_property -dict {PACKAGE_PIN F13 IOSTANDARD LVCMOS33} [get_ports {ble_uart_cts}]
 
+set_property -dict { PACKAGE_PIN V17   IOSTANDARD TMDS_33  } [get_ports {hdmi_clk_n}]
+set_property -dict { PACKAGE_PIN U16   IOSTANDARD TMDS_33  } [get_ports {hdmi_clk_p}]
+set_property -dict { PACKAGE_PIN U18   IOSTANDARD TMDS_33  } [get_ports {hdmi_tx_n[0]}]
+set_property -dict { PACKAGE_PIN R17   IOSTANDARD TMDS_33  } [get_ports {hdmi_tx_n[1]}]
+set_property -dict { PACKAGE_PIN T14   IOSTANDARD TMDS_33  } [get_ports {hdmi_tx_n[2]}]
+set_property -dict { PACKAGE_PIN U17   IOSTANDARD TMDS_33  } [get_ports {hdmi_tx_p[0]}]
+set_property -dict { PACKAGE_PIN R16   IOSTANDARD TMDS_33  } [get_ports {hdmi_tx_p[1]}]
+set_property -dict { PACKAGE_PIN R14   IOSTANDARD TMDS_33  } [get_ports {hdmi_tx_p[2]}]
 
 
 
