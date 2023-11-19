@@ -72,12 +72,22 @@ module top_level(
   logic [5:0] frame_count;
   logic [7:0] ballx;
   logic [6:0] bally;
+  logic [15:0] ballx_16; // fixed point
+  logic [15:0] bally_16; // fixed point
+  logic [15:0] ball_speed_16; // fixed point
+  logic [15:0] angle_16;
+  logic [15:0] cam_angle_16;
+  logic [2:0] state_out;
   logic [8:0] angle;
   // assign ballx = sw[7:0];
   // assign bally = sw[14:8];
-  assign ballx = 40;
-  assign bally = 60;
-  assign angle = sw[8:0];
+  // assign ballx = 40;
+  // assign bally = 60;
+  assign ballx = ballx_16[15:8];
+  assign bally = bally_16[14:8];
+
+  //assign angle = sw[8:0];
+  assign angle = angle_16[8:0];
 
   //from week 04! (make sure you include in your hdl)
   video_sig_gen mvg(
@@ -186,6 +196,22 @@ module top_level(
   OBUFDS OBUFDS_green(.I(tmds_signal[1]), .O(hdmi_tx_p[1]), .OB(hdmi_tx_n[1]));
   OBUFDS OBUFDS_red  (.I(tmds_signal[2]), .O(hdmi_tx_p[2]), .OB(hdmi_tx_n[2]));
   OBUFDS OBUFDS_clock(.I(clk_pixel), .O(hdmi_clk_p), .OB(hdmi_clk_n));
+
+  gameplay gameplay_module (
+    .clk_in(clk_pixel),
+    .new_game(sys_rst),
+    .charging_hit(btn[1]),
+    .camera_pan_left(sw[15]),
+    .camera_pan_right(sw[14]),
+    .new_frame(new_frame),
+
+    .ball_position_x(ballx_16),
+    .ball_position_y(bally_16),
+    .ball_speed(ball_speed_16),
+    .ball_direction(angle_16),
+    .cam_angle(cam_angle_16),
+    .state_out(state_out)
+  );
 
 
 endmodule // top_level

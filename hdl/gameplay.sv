@@ -16,7 +16,7 @@ module gameplay
             each line is 0-3
             128^2 lines total
         */
-        parameter MAP_BROM_FILE="image.mem"
+        parameter MAP_BROM_FILE="map1.mem"
     )
     (   input wire clk_in,
         input wire new_game, // essentially rst_in
@@ -34,14 +34,15 @@ module gameplay
         output logic [15:0] ball_direction, // 0 to 360; 0=+x, 90=+y, 180=-x, 270=-y;
         output logic [15:0] cam_angle, // different from ball_direction; user can move cam while ball is moving and at rest;
 
-        output logic out_ready, // 1 when all outs are ready
+        //output logic out_ready, // 1 when all outs are ready
         output logic [2:0] state_out
     );
 
-    parameter WIDTH = 128;
-    parameter HEIGHT = 128;
+    parameter WIDTH = 160;
+    parameter HEIGHT = 90;
     parameter GROUND_DECEL = 2; // in pixels/frame^2, fixed point
     parameter MAX_INIT_SPEED = 16'b0000_0010_0000_0000; // 2 in fixed point; pixels per frame
+    parameter MAX_SPEED_TO_SCORE = 16'b0000_0000_1000_0000; // 0.5 in fixed point; pixels per frame
     parameter MAX_ANGLE = 16'b0000_0001_0110_1000; // 360
     parameter SPEED_COUNTER_THRESH = 390625; // 2 secs to fully charge bar
     parameter ANGLE_COUNTER_THRESH = 1111111; // 90 deg per sec
@@ -58,30 +59,20 @@ module gameplay
     logic [31:0] angle_counter_left; // 0 to 1111111 -> 1 sec per 90 degrees
     logic [31:0] angle_counter_right; // 0 to 1111111 -> 1 sec per 90 degrees
 
-
-    // center of the ball
-    logic [15:0] ball_position_x_rounded_c;
-    logic [15:0] ball_position_y_rounded_c;
-
-    // the 4 sides of the ball, for collision detection
-    logic [15:0] ball_position_x_rounded_r;
-    logic [15:0] ball_position_x_rounded_l;
-    logic [15:0] ball_position_y_rounded_u;
-    logic [15:0] ball_position_y_rounded_d;
-
     logic [1:0] terrain_type;
+    // terrain types of edges of ball for collision detection
+    logic [1:0] terrain_type_xplus;
+    logic [1:0] terrain_type_xminus;
+    logic [1:0] terrain_type_yplus;
+    logic [1:0] terrain_type_yminus;
+    logic [1:0] wall_direction;
+    logic [15:0] new_ball_direction;
 
-
-    // rounder pos_rounder (
-    //     .x_in(ball_position_x),
-    //     .y_in(ball_position_y),
-    //     .x_out_c(ball_position_x_rounded_c),
-    //     .x_out_r(ball_position_x_rounded_r),
-    //     .x_out_l(ball_position_x_rounded_l),
-    //     .y_out_c(ball_position_y_rounded_c),
-    //     .y_out_u(ball_position_y_rounded_u),
-    //     .y_out_d(ball_position_y_rounded_d)
-    // );
+    reflection_helper ref_helper (
+        .ball_direction(ball_direction),
+        .wall_direction(wall_direction),
+        .new_ball_direction(new_ball_direction)
+    );
 
 
 
@@ -90,8 +81,8 @@ module gameplay
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(MAP_BROM_FILE))          // Specify name/location of RAM initialization file if using one (leave blank if not)
-    ) bram_palette (
-        .addra(ball_position_x_rounded_c>>8 + 128*(ball_position_y_rounded_c>>8)),     // Address bus, width determined from RAM_DEPTH
+    ) bram_ball (
+        .addra(ball_position_x>>8 + WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
@@ -99,6 +90,70 @@ module gameplay
         .rsta(new_game),       // Output reset (does not affect memory contents)
         .regcea(1'b1),   // Output register enable
         .douta(terrain_type)      // RAM output data, width determined from RAM_WIDTH
+    );
+
+    xilinx_single_port_ram_read_first #(
+        .RAM_WIDTH(2),                       // Specify RAM data width
+        .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+        .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+        .INIT_FILE(`FPATH(MAP_BROM_FILE))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    ) bram_ball_xplus (
+        .addra((ball_position_x+8'b1000_0000)>>8 + WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
+        .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
+        .clka(clk_in),       // Clock
+        .wea(1'b0),         // Write enable
+        .ena(1'b1),         // RAM Enable, for additional power savings, disable port when not in use
+        .rsta(new_game),       // Output reset (does not affect memory contents)
+        .regcea(1'b1),   // Output register enable
+        .douta(terrain_type_xplus)      // RAM output data, width determined from RAM_WIDTH
+    );
+
+    xilinx_single_port_ram_read_first #(
+        .RAM_WIDTH(2),                       // Specify RAM data width
+        .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+        .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+        .INIT_FILE(`FPATH(MAP_BROM_FILE))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    ) bram_ball_xminus (
+        .addra((ball_position_x-8'b1000_0000)>>8 + WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
+        .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
+        .clka(clk_in),       // Clock
+        .wea(1'b0),         // Write enable
+        .ena(1'b1),         // RAM Enable, for additional power savings, disable port when not in use
+        .rsta(new_game),       // Output reset (does not affect memory contents)
+        .regcea(1'b1),   // Output register enable
+        .douta(terrain_type_xminus)      // RAM output data, width determined from RAM_WIDTH
+    );
+
+    xilinx_single_port_ram_read_first #(
+        .RAM_WIDTH(2),                       // Specify RAM data width
+        .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+        .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+        .INIT_FILE(`FPATH(MAP_BROM_FILE))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    ) bram_ball_yplus (
+        .addra(ball_position_x>>8 + WIDTH*((ball_position_y+8'b1000_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
+        .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
+        .clka(clk_in),       // Clock
+        .wea(1'b0),         // Write enable
+        .ena(1'b1),         // RAM Enable, for additional power savings, disable port when not in use
+        .rsta(new_game),       // Output reset (does not affect memory contents)
+        .regcea(1'b1),   // Output register enable
+        .douta(terrain_type_yplus)      // RAM output data, width determined from RAM_WIDTH
+    );
+
+    xilinx_single_port_ram_read_first #(
+        .RAM_WIDTH(2),                       // Specify RAM data width
+        .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+        .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+        .INIT_FILE(`FPATH(MAP_BROM_FILE))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    ) bram_ball_yminus (
+        .addra(ball_position_x>>8 + WIDTH*((ball_position_y-8'b1000_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
+        .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
+        .clka(clk_in),       // Clock
+        .wea(1'b0),         // Write enable
+        .ena(1'b1),         // RAM Enable, for additional power savings, disable port when not in use
+        .rsta(new_game),       // Output reset (does not affect memory contents)
+        .regcea(1'b1),   // Output register enable
+        .douta(terrain_type_yminus)      // RAM output data, width determined from RAM_WIDTH
     );
 
     logic [15:0] cos_abs;
@@ -131,6 +186,7 @@ module gameplay
             angle_counter_left <= 0;
             angle_counter_right <= 0;
             on_hit_cycles <= 0;
+            wall_direction <= 0;
 
             // initialize ball at starting position
             ball_position_x <= (STARTING_BALL_X<<8);
@@ -200,7 +256,26 @@ module gameplay
                 BALL_MOVING: begin
                     if(new_frame) begin
                         // update position & speed
-                        if(ball_speed==0) state <= RESTING;
+                        if(terrain_type==0 && ball_speed<MAX_SPEED_TO_SCORE) state <= IN_HOLE;
+                        else if(ball_speed==0) state <= RESTING;
+
+                        else if(terrain_type_xplus==1) begin
+                            wall_direction <= 0;
+                            state <= ON_WALL_COLLISION;
+                        end
+                        else if(terrain_type_yplus==1) begin
+                            wall_direction <= 1;
+                            state <= ON_WALL_COLLISION;
+                        end
+                        else if(terrain_type_xminus==1) begin
+                            wall_direction <= 2;
+                            state <= ON_WALL_COLLISION;
+                        end
+                        else if(terrain_type_yminus==1) begin
+                            wall_direction <= 3;
+                            state <= ON_WALL_COLLISION;
+                        end
+
                         else begin
                             if(ball_speed <= GROUND_DECEL) ball_speed <= 0;
                             else ball_speed <= ball_speed - GROUND_DECEL;
@@ -215,8 +290,7 @@ module gameplay
                     end
                 end
                 ON_WALL_COLLISION: begin
-
-
+                    ball_direction <= new_ball_direction;
                     state <= BALL_MOVING;
                 end
 
