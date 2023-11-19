@@ -77,8 +77,6 @@ module top_level(
   logic active_draw;
   logic new_frame;
   logic [5:0] frame_count;
-  logic [7:0] ballx;
-  logic [6:0] bally;
   logic [15:0] ballx_16; // fixed point
   logic [15:0] bally_16; // fixed point
   logic [15:0] ball_speed_16; // fixed point
@@ -90,8 +88,6 @@ module top_level(
   // assign bally = sw[14:8];
   // assign ballx = 40;
   // assign bally = 60;
-  assign ballx = ballx_16[15:8];
-  assign bally = bally_16[14:8];
 
   //assign angle = sw[8:0];
   assign angle = 360 - cam_angle_16[8:0];
@@ -131,8 +127,8 @@ module top_level(
     com_sprite_m (
     .pixel_clk_in(clk_pixel),
     .rst_in(sys_rst),
-    .ballx(ballx),
-    .bally(bally),
+    .ballx(ballx_16),
+    .bally(bally_16),
     .angle(angle),
     .hcount_in(hcount),   //TODO: needs to use pipelined signal (PS1)
     .vcount_in(vcount),   //TODO: needs to use pipelined signal (PS1)
