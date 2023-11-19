@@ -31,7 +31,7 @@ module top_level(
   logic locked; //locked signal (we'll leave unused but still hook it up)
 
 
-
+  logic [31:0] debug_var;
   logic sys_rst;
   assign sys_rst = btn[0];
   assign ble_uart_cts=1;
@@ -49,7 +49,7 @@ module top_level(
   logic [1:0] terrain_type;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-                                  .val_in(terrain_type),
+                                  .val_in(debug_var),
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
@@ -218,7 +218,7 @@ module top_level(
     .ball_direction(angle_16),
     .cam_angle(cam_angle_16),
     .state_out(state_out),
-    .terrain_type(terrain_type)
+    .debug_out(debug_var)
   );
 
 

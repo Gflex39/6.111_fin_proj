@@ -36,7 +36,7 @@ module gameplay
 
         //output logic out_ready, // 1 when all outs are ready
         output logic [2:0] state_out,
-        output logic [1:0] terrain_type
+        output logic [31:0] debug_out
     );
 
     parameter WIDTH = 160;
@@ -51,7 +51,7 @@ module gameplay
     typedef enum {RESTING=0, CHARGING_HIT=1, ON_HIT=2, BALL_MOVING=3, ON_WALL_COLLISION=4, IN_HOLE=5} gameplay_state;
 
     gameplay_state state;
-
+    assign debug_out={wall_direction,ball_direction};
     assign state_out = state;
 
     logic speed_incr; 
@@ -59,7 +59,7 @@ module gameplay
     logic [31:0] angle_counter_left; // 0 to 1111111 -> 1 sec per 90 degrees
     logic [31:0] angle_counter_right; // 0 to 1111111 -> 1 sec per 90 degrees
 
-    //logic [1:0] terrain_type;
+    logic [1:0] terrain_type;
     // terrain types of edges of ball for collision detection
     logic [1:0] terrain_type_xplus;
     logic [1:0] terrain_type_xminus;
@@ -82,7 +82,7 @@ module gameplay
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball (
-        .addra(ball_position_x>>8 + WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
+        .addra((ball_position_x>>8)+ WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
@@ -98,7 +98,7 @@ module gameplay
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_xplus (
-        .addra((ball_position_x+8'b1000_0000)>>8 + WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
+        .addra(((ball_position_x+8'b1000_0000)>>8 )+ WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
@@ -114,7 +114,7 @@ module gameplay
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_xminus (
-        .addra((ball_position_x-8'b1000_0000)>>8 + WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
+        .addra(((ball_position_x-8'b1000_0000)>>8) + WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
@@ -130,7 +130,7 @@ module gameplay
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_yplus (
-        .addra(ball_position_x>>8 + WIDTH*((ball_position_y+8'b1000_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
+        .addra((ball_position_x>>8) + WIDTH*((ball_position_y+8'b1000_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
@@ -146,7 +146,7 @@ module gameplay
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_yminus (
-        .addra(ball_position_x>>8 + WIDTH*((ball_position_y-8'b1000_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
+        .addra((ball_position_x>>8 )+ WIDTH*((ball_position_y-8'b1000_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
@@ -209,7 +209,7 @@ module gameplay
             if(camera_pan_left) begin
                 if(angle_counter_left==ANGLE_COUNTER_THRESH) begin
                     if(cam_angle<MAX_ANGLE) cam_angle <= cam_angle + 1;
-                    else cam_angle = 1;
+                    else cam_angle <= 1;
                     angle_counter_left <= 0;
                 end
                 else angle_counter_left <= angle_counter_left + 1;
@@ -260,18 +260,23 @@ module gameplay
                         else if(ball_speed==0) state <= RESTING;
 
                         else if(terrain_type_xplus==1) begin
+                            ball_position_x<= {ball_position_x[15:8],8'b0};
                             wall_direction <= 0;
                             state <= ON_WALL_COLLISION;
                         end
                         else if(terrain_type_yplus==1) begin
+                            ball_position_y<= {ball_position_y[15:8],8'b0};
+                            
                             wall_direction <= 1;
                             state <= ON_WALL_COLLISION;
                         end
                         else if(terrain_type_xminus==1) begin
+                            ball_position_x<= {ball_position_x[15:8]+8'b1,8'b0};
                             wall_direction <= 2;
                             state <= ON_WALL_COLLISION;
                         end
                         else if(terrain_type_yminus==1) begin
+                            ball_position_y<= {ball_position_y[15:8]+8'b1,8'b0};
                             wall_direction <= 3;
                             state <= ON_WALL_COLLISION;
                         end
@@ -290,8 +295,10 @@ module gameplay
                     end
                 end
                 ON_WALL_COLLISION: begin
-                    ball_direction <= new_ball_direction;
-                    state <= BALL_MOVING;
+                    if(new_frame)begin
+                        ball_direction <= new_ball_direction;
+                        state <= BALL_MOVING;
+                    end
                 end
 
                 IN_HOLE: begin

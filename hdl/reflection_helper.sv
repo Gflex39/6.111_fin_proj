@@ -14,10 +14,10 @@ module reflection_helper
     always_comb begin
       if(wall_direction==0) begin
         if(ball_direction<=90) new_ball_direction = 180 - ball_direction; // Q1
-        else new_ball_direction = ball_direction - 180; // Q4
+        else new_ball_direction = 540-ball_direction; // Q4
       end
-      if(wall_direction==1) new_ball_direction = 360 - ball_direction; // Q1 or Q2
-      if(wall_direction==2) begin
+      else if(wall_direction==1) new_ball_direction = 360 - ball_direction; // Q1 or Q2
+      else if(wall_direction==2) begin
         if(ball_direction<=180) new_ball_direction = 180 - ball_direction; // Q2
         else new_ball_direction = 540 - ball_direction; // Q3
       end
