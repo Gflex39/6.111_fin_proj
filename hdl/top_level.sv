@@ -40,9 +40,16 @@ module top_level(
 
 
 
+  // seven_segment_controller mssc(.clk_in(clk_pixel),
+  //                                 .rst_in(sys_rst),
+  //                                 .val_in(data),
+  //                                 .cat_out(ss_c),
+  //                                 .an_out({ss0_an, ss1_an}));
+
+  logic [1:0] terrain_type;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-                                  .val_in(data),
+                                  .val_in(terrain_type),
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
@@ -87,7 +94,7 @@ module top_level(
   assign bally = bally_16[14:8];
 
   //assign angle = sw[8:0];
-  assign angle = angle_16[8:0];
+  assign angle = 360 - cam_angle_16[8:0];
 
   //from week 04! (make sure you include in your hdl)
   video_sig_gen mvg(
@@ -210,7 +217,8 @@ module top_level(
     .ball_speed(ball_speed_16),
     .ball_direction(angle_16),
     .cam_angle(cam_angle_16),
-    .state_out(state_out)
+    .state_out(state_out),
+    .terrain_type(terrain_type)
   );
 
 
