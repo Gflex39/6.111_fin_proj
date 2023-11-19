@@ -3,24 +3,19 @@ input wire tx,
 input wire clk,
 input wire rst,
 output logic[7:0] data_out,
-output logic [3:0] state,
-output logic [15:0] plo,
 output logic valid_out
 );
 
 
 logic [$clog2(BAUD_COUNT)-1:0] count;
-// logic [3:0] state;
 logic [2:0] data_count;
-logic last_tx;
+logic [1:0] state;
 
 
-
-initial last_tx=1;
 initial state=1;
 initial count=0;
 initial valid_out=0;
-initial plo=0;
+
 
 
 always_ff @(posedge clk  ) begin 
@@ -31,8 +26,6 @@ always_ff @(posedge clk  ) begin
     data_out<=0;
     
     end else if(count==BAUD_COUNT)begin
-        if(tx==0) plo<=plo+ 1;
-
         count<=1;
         case (state)
             1:begin
