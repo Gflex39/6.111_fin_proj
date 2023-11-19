@@ -70,10 +70,10 @@ module top_level(
   logic active_draw;
   logic new_frame;
   logic [5:0] frame_count;
-  logic [6:0] ballx;
+  logic [7:0] ballx;
   logic [6:0] bally;
-  assign ballx = sw[6:0];
-  assign bally = sw[13:7];
+  assign ballx = sw[7:0];
+  assign bally = sw[14:8];
 
   //from week 04! (make sure you include in your hdl)
   video_sig_gen mvg(
@@ -105,8 +105,8 @@ module top_level(
   //use this in the first part of checkoff 01:
   //instance of image sprite.
   map_sprite_1 #(
-    .WIDTH(128),
-    .HEIGHT(128))
+    .WIDTH(160),
+    .HEIGHT(90))
     com_sprite_m (
     .pixel_clk_in(clk_pixel),
     .rst_in(sys_rst),

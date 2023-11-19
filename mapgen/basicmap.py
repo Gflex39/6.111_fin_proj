@@ -1,12 +1,12 @@
 f = open("map1.txt","a")
-for i in range(128):
-    for j in range(128):
-        if((i==64 or i==63) and (j ==64 or j==63)):
-            f.write("00\n")
-        elif(j<90 and j>37 and i in {51,52,75,76}):
-            f.write("01\n")
-        elif(i>52 and i<75 and j in {38,39,88,89}):
-            f.write("01\n")
+for i in range(90):
+    for j in range(160):
+        if((i==45) and (j==80)):
+            f.write("0\n")
+        elif(j<101 and j>59 and i in {34,35,54,55}):
+            f.write("1\n")
+        elif(i>35 and i<54 and j in {60,61,99,100}):
+            f.write("1\n")
         else:
-            f.write("10\n")
+            f.write("2\n")
 f.close()
