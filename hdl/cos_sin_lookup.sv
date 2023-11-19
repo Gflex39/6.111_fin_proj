@@ -30,7 +30,7 @@ module cos_sin_lookup
             sin_sign = 1;
         end else if(angle<270) begin
             cos_sign = 0;
-            sin_sign = 1;
+            sin_sign = 0;
         end else if(angle<360) begin
             cos_sign = 1;
             sin_sign = 0;

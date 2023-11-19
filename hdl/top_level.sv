@@ -72,8 +72,12 @@ module top_level(
   logic [5:0] frame_count;
   logic [7:0] ballx;
   logic [6:0] bally;
-  assign ballx = sw[7:0];
-  assign bally = sw[14:8];
+  logic [8:0] angle;
+  // assign ballx = sw[7:0];
+  // assign bally = sw[14:8];
+  assign ballx = 40;
+  assign bally = 60;
+  assign angle = sw[8:0];
 
   //from week 04! (make sure you include in your hdl)
   video_sig_gen mvg(
@@ -112,6 +116,7 @@ module top_level(
     .rst_in(sys_rst),
     .ballx(ballx),
     .bally(bally),
+    .angle(angle),
     .hcount_in(hcount),   //TODO: needs to use pipelined signal (PS1)
     .vcount_in(vcount),   //TODO: needs to use pipelined signal (PS1)
     .red_out(img_red),

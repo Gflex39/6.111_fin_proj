@@ -15,10 +15,35 @@ module map_sprite_1 #(
   input wire [9:0]  vcount_in,
   input wire [7:0] ballx,
   input wire [6:0] bally,
+  input wire [15:0] angle,
   output logic [7:0] red_out,
   output logic [7:0] green_out,
   output logic [7:0] blue_out
   );
+
+  logic [15:0] cos_abs;
+  logic [15:0] sin_abs;
+  logic cos_sign;
+  logic sin_sign;
+
+  cos_sin_lookup angle_lookup (
+        .clk_in(pixel_clk_in),
+        .angle(angle),
+        .cos_abs(cos_abs),
+        .sin_abs(sin_abs),
+        .cos_sign(cos_sign),
+        .sin_sign(sin_sign)
+    );
+
+  logic [10:0] angle30_pipe_h [3:0];
+  logic [10:0] angle60_pipe_h [3:0];
+  logic [10:0] angle90_pipe_h [3:0];
+  logic [9:0] angle30_pipe_v [3:0];
+  logic [9:0] angle60_pipe_v [3:0];
+  logic [9:0] angle90_pipe_v [3:0];
+
+  logic [10:0] vcount_pipe [3:0];
+  logic [9:0] hcount_pipe [3:0];
 
   
 
@@ -67,12 +92,54 @@ module map_sprite_1 #(
       circleout_pipe[0] <= 1;
     end
     imagesprite_pipe[0] <= isball;
-    
+    hcount_pipe[0] <= hcount_in;
+    vcount_pipe[0] <= vcount_in;
+
+    angle30_pipe_h[0] <= ballx*8+3;
+    angle60_pipe_h[0] <= ballx*8+3;
+    angle90_pipe_h[0] <= ballx*8+3;
+    angle30_pipe_v[0] <= bally*8+4;
+    angle60_pipe_v[0] <= bally*8+4;
+    angle90_pipe_v[0] <= bally*8+4;
+
+    angle30_pipe_h[1] <= angle30_pipe_h[0];
+    angle60_pipe_h[1] <= angle60_pipe_h[0];
+    angle90_pipe_h[1] <= angle90_pipe_h[0];
+    angle30_pipe_v[1] <= angle30_pipe_v[0];
+    angle60_pipe_v[1] <= angle60_pipe_v[0];
+    angle90_pipe_v[1] <= angle90_pipe_v[0];
+
+    angle30_pipe_h[2] <= angle30_pipe_h[1]-(cos_sign==0?30*cos_abs/256-1:0)+(cos_sign==1?30*cos_abs/256:0);
+    angle60_pipe_h[2] <= angle60_pipe_h[1]-(cos_sign==0?60*cos_abs/256-1:0)+(cos_sign==1?60*cos_abs/256:0);
+    angle90_pipe_h[2] <= angle90_pipe_h[1]-(cos_sign==0?90*cos_abs/256-1:0)+(cos_sign==1?90*cos_abs/256:0);
+
+    angle30_pipe_v[2] <= angle30_pipe_v[1]+(sin_sign==0?30*sin_abs/256-1:0)-(sin_sign==1?30*sin_abs/256:0);
+    angle60_pipe_v[2] <= angle60_pipe_v[1]+(sin_sign==0?60*sin_abs/256-1:0)-(sin_sign==1?60*sin_abs/256:0);
+    angle90_pipe_v[2] <= angle90_pipe_v[1]+(sin_sign==0?90*sin_abs/256-1:0)-(sin_sign==1?90*sin_abs/256:0);
+    // if(sin_sign==0) begin
+    //   angle30_pipe_v[2] <= angle30_pipe_v[1]+(30*sin_abs)/cos_abs-1;
+    //   angle60_pipe_v[2] <= angle60_pipe_v[1]+(60*sin_abs)/cos_abs-1;
+    //   angle90_pipe_v[2] <= angle90_pipe_v[1]+(90*sin_abs)/cos_abs-1;
+    // end else begin
+    //   angle30_pipe_v[2] <= angle30_pipe_v[1]-(30*sin_abs)/cos_abs;
+    //   angle60_pipe_v[2] <= angle60_pipe_v[1]-(60*sin_abs)/cos_abs;
+    //   angle90_pipe_v[2] <= angle90_pipe_v[1]-(90*sin_abs)/cos_abs;
+    // end
+
+
+    angle30_pipe_h[3] <= angle30_pipe_h[2];
+    angle60_pipe_h[3] <= angle60_pipe_h[2];
+    angle90_pipe_h[3] <= angle90_pipe_h[2];
+    angle30_pipe_v[3] <= angle30_pipe_v[2];
+    angle60_pipe_v[3] <= angle60_pipe_v[2];
+    angle90_pipe_v[3] <= angle90_pipe_v[2];
     for (int i=1; i<4; i = i+1)begin
       imagesprite_pipe[i] <= imagesprite_pipe[i-1];
+      hcount_pipe[i] <= hcount_pipe[i-1];
     end
     for (int j = 1;j<4;j=j+1) begin
       circleout_pipe[j] <= circleout_pipe[j-1];
+      vcount_pipe[j] <= vcount_pipe[j-1];
     end
   end
 
@@ -113,9 +180,9 @@ module map_sprite_1 #(
   );
 
   // Modify the module below to use your BRAMs!
-  assign red_out =    imagesprite_pipe[3]==1?(circleout_pipe[3]==1?8'b11111111:finalcolors[23:16]):(finalcolors[23:16]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b01111100):finalcolors[23:16]);
-  assign green_out =  imagesprite_pipe[3]==1?(circleout_pipe[3]==1?8'b11111111:finalcolors[15:8]):(finalcolors[15:8]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b11111100):finalcolors[15:8]);
-  assign blue_out =   imagesprite_pipe[3]==1?(circleout_pipe[3]==1?8'b11111111:finalcolors[7:0]):(finalcolors[7:0]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b00000000):finalcolors[7:0]);
+  assign red_out =    ((vcount_pipe[3] == angle30_pipe_v[3] & hcount_pipe[3] == angle30_pipe_h[3])|(vcount_pipe[3] == angle60_pipe_v[3] & hcount_pipe[3] == angle60_pipe_h[3])|(vcount_pipe[3] == angle90_pipe_v[3] & hcount_pipe[3] == angle90_pipe_h[3]))?8'b00000000:(imagesprite_pipe[3]==1?(circleout_pipe[3]==1?8'b11111111:finalcolors[23:16]):(finalcolors[23:16]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b01111100):finalcolors[23:16]));
+  assign green_out =  ((vcount_pipe[3] == angle30_pipe_v[3] & hcount_pipe[3] == angle30_pipe_h[3])|(vcount_pipe[3] == angle60_pipe_v[3] & hcount_pipe[3] == angle60_pipe_h[3])|(vcount_pipe[3] == angle90_pipe_v[3] & hcount_pipe[3] == angle90_pipe_h[3]))?8'b00000000:(imagesprite_pipe[3]==1?(circleout_pipe[3]==1?8'b11111111:finalcolors[15:8]):(finalcolors[15:8]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b11111100):finalcolors[15:8]));
+  assign blue_out =   ((vcount_pipe[3] == angle30_pipe_v[3] & hcount_pipe[3] == angle30_pipe_h[3])|(vcount_pipe[3] == angle60_pipe_v[3] & hcount_pipe[3] == angle60_pipe_h[3])|(vcount_pipe[3] == angle90_pipe_v[3] & hcount_pipe[3] == angle90_pipe_h[3]))?8'b11111111:(imagesprite_pipe[3]==1?(circleout_pipe[3]==1?8'b11111111:finalcolors[7:0]):(finalcolors[7:0]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b00000000):finalcolors[7:0]));
 
 endmodule
 
