@@ -378,7 +378,7 @@ module map_sprite_1 #(
 
   xilinx_single_port_ram_read_first #(
     .RAM_WIDTH(24),                       // Specify RAM data width
-    .RAM_DEPTH(3),                     // Specify RAM depth (number of entries)
+    .RAM_DEPTH(4),                     // Specify RAM depth (number of entries)
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
     .INIT_FILE(`FPATH(palette.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
   ) paletteBROM (

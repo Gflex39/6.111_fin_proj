@@ -43,6 +43,7 @@ module gameplay
     parameter WIDTH = 160;
     parameter HEIGHT = 90;
     parameter GROUND_DECEL = 2; // in pixels/frame^2, fixed point
+    parameter SAND_DECEL = 10;
     parameter MAX_INIT_SPEED = 16'b0000_0010_0000_0000; // 2 in fixed point; pixels per frame
     parameter MAX_SPEED_TO_SCORE = 16'b0000_0000_1000_0000; // 0.5 in fixed point; pixels per frame
     parameter MAX_ANGLE = 16'b0000_0001_0110_1000; // 360
@@ -285,8 +286,15 @@ module gameplay
                         end
 
                         else begin
-                            if(ball_speed <= GROUND_DECEL) ball_speed <= 0;
-                            else ball_speed <= ball_speed - GROUND_DECEL;
+                            if(terrain_type==2) begin // grass
+                                if(ball_speed <= GROUND_DECEL) ball_speed <= 0;
+                                else ball_speed <= ball_speed - GROUND_DECEL;
+                            end
+                            else if(terrain_type==3) begin // sand
+                                if(ball_speed <= SAND_DECEL) ball_speed <= 0;
+                                else ball_speed <= ball_speed - SAND_DECEL;
+                            end
+                            
                             
                             // we can ignore the 2-cycle latency of reading sin/cos from BROM since we only use the output at 60fps
                             if(cos_sign) ball_position_x <= ball_position_x + (delta_x>>8);
