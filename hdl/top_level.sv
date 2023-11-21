@@ -50,7 +50,7 @@ module top_level(
   logic [7:0] score;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-                                  .val_in(score),
+                                  .val_in({ball_speed_16, 8'b0, score}),
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
@@ -143,6 +143,28 @@ module top_level(
   assign green = img_green;
   assign blue = img_blue;
 
+  logic horsync_pipe [3:0];
+  always_ff @(posedge clk_pixel)begin
+    horsync_pipe[0] <= hor_sync;
+    for (int i=1; i<4; i = i+1)begin
+      horsync_pipe[i] <= horsync_pipe[i-1];
+    end
+  end
+  logic vertsync_pipe [3:0];
+  always_ff @(posedge clk_pixel)begin
+    vertsync_pipe[0] <= vert_sync;
+    for (int i=1; i<4; i = i+1)begin
+      vertsync_pipe[i] <= vertsync_pipe[i-1];
+    end
+  end
+  logic adraw_pipe [3:0];
+  always_ff @(posedge clk_pixel)begin
+    adraw_pipe[0] <= active_draw;
+    for (int i=1; i<4; i = i+1)begin
+      adraw_pipe[i] <= adraw_pipe[i-1];
+    end
+  end
+
   logic [9:0] tmds_10b [0:2]; //output of each TMDS encoder!
   logic tmds_signal [2:0]; //output of each TMDS serializer!
 
@@ -154,7 +176,7 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(red),
     .control_in(2'b0),
-    .ve_in(active_draw),
+    .ve_in(adraw_pipe[3]),
     .tmds_out(tmds_10b[2]));
 
   tmds_encoder tmds_green(
@@ -162,15 +184,15 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(green),
     .control_in(2'b0),
-    .ve_in(active_draw),
+    .ve_in(adraw_pipe[3]),
     .tmds_out(tmds_10b[1]));
 
   tmds_encoder tmds_blue(
     .clk_in(clk_pixel),
     .rst_in(sys_rst),
     .data_in(blue),
-    .control_in({vert_sync,hor_sync}),
-    .ve_in(active_draw),
+    .control_in({vertsync_pipe[3],horsync_pipe[3]}),
+    .ve_in(adraw_pipe[3]),
     .tmds_out(tmds_10b[0]));
 
   //four tmds_serializers (blue, green, red, and clock)

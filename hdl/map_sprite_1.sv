@@ -237,8 +237,8 @@ module map_sprite_1 #(
   logic [9:0] angle60_pipe_v [3:0];
   logic [9:0] angle90_pipe_v [3:0];
 
-  logic [10:0] vcount_pipe [3:0];
-  logic [9:0] hcount_pipe [3:0];
+  logic [9:0] vcount_pipe [3:0];
+  logic [10:0] hcount_pipe [3:0];
 
   
 
@@ -329,13 +329,13 @@ module map_sprite_1 #(
     angle60_pipe_v[1] <= angle60_pipe_v[0];
     angle90_pipe_v[1] <= angle90_pipe_v[0];
 
-    angle30_pipe_h[2] <= angle30_pipe_h[1]-(cos_sign==0?30*cos_abs/256-1:0)+(cos_sign==1?30*cos_abs/256:0);
-    angle60_pipe_h[2] <= angle60_pipe_h[1]-(cos_sign==0?60*cos_abs/256-1:0)+(cos_sign==1?60*cos_abs/256:0);
-    angle90_pipe_h[2] <= angle90_pipe_h[1]-(cos_sign==0?90*cos_abs/256-1:0)+(cos_sign==1?90*cos_abs/256:0);
+    angle30_pipe_h[2] <= angle30_pipe_h[1]-(cos_sign==0?((30*cos_abs)>>8)-1:0)+(cos_sign==1?((30*cos_abs)>>8):0);
+    angle60_pipe_h[2] <= angle60_pipe_h[1]-(cos_sign==0?((60*cos_abs)>>8)-1:0)+(cos_sign==1?((60*cos_abs)>>8):0);
+    angle90_pipe_h[2] <= angle90_pipe_h[1]-(cos_sign==0?((90*cos_abs)>>8)-1:0)+(cos_sign==1?((90*cos_abs)>>8):0);
 
-    angle30_pipe_v[2] <= angle30_pipe_v[1]+(sin_sign==0?30*sin_abs/256-1:0)-(sin_sign==1?30*sin_abs/256:0);
-    angle60_pipe_v[2] <= angle60_pipe_v[1]+(sin_sign==0?60*sin_abs/256-1:0)-(sin_sign==1?60*sin_abs/256:0);
-    angle90_pipe_v[2] <= angle90_pipe_v[1]+(sin_sign==0?90*sin_abs/256-1:0)-(sin_sign==1?90*sin_abs/256:0);
+    angle30_pipe_v[2] <= angle30_pipe_v[1]+(sin_sign==0?((30*sin_abs)>>8)-1:0)-(sin_sign==1?((30*sin_abs)>>8):0);
+    angle60_pipe_v[2] <= angle60_pipe_v[1]+(sin_sign==0?((60*sin_abs)>>8)-1:0)-(sin_sign==1?((60*sin_abs)>>8):0);
+    angle90_pipe_v[2] <= angle90_pipe_v[1]+(sin_sign==0?((90*sin_abs)>>8)-1:0)-(sin_sign==1?((90*sin_abs)>>8):0);
 
 
 
@@ -407,4 +407,3 @@ endmodule
 
 
 `default_nettype none
-
