@@ -363,7 +363,7 @@ module map_sprite_1 #(
     .RAM_WIDTH(4),                       // Specify RAM data width
     .RAM_DEPTH(WIDTH*HEIGHT),                     // Specify RAM depth (number of entries)
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-    .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
   ) imageBROM (
     .addra(image_addr),     // Address bus, width determined from RAM_DEPTH
     .dina(0),       // RAM input data, width determined from RAM_WIDTH

@@ -35,6 +35,7 @@ module gameplay
         output logic [15:0] cam_angle, // different from ball_direction; user can move cam while ball is moving and at rest;
 
         //output logic out_ready, // 1 when all outs are ready
+        output logic [7:0] score,
         output logic [2:0] state_out,
         output logic [31:0] debug_out
     );
@@ -80,7 +81,7 @@ module gameplay
         .RAM_WIDTH(2),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+        .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball (
         .addra((ball_position_x>>8)+ WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
@@ -96,7 +97,7 @@ module gameplay
         .RAM_WIDTH(2),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+        .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_xplus (
         .addra(((ball_position_x+8'b1000_0000)>>8 )+ WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
@@ -112,7 +113,7 @@ module gameplay
         .RAM_WIDTH(2),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+        .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_xminus (
         .addra(((ball_position_x-8'b1000_0000)>>8) + WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
@@ -128,7 +129,7 @@ module gameplay
         .RAM_WIDTH(2),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+        .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_yplus (
         .addra((ball_position_x>>8) + WIDTH*((ball_position_y+8'b1000_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
@@ -144,7 +145,7 @@ module gameplay
         .RAM_WIDTH(2),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(map1.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+        .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_yminus (
         .addra((ball_position_x>>8 )+ WIDTH*((ball_position_y-8'b1000_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
@@ -187,6 +188,7 @@ module gameplay
             angle_counter_right <= 0;
             on_hit_cycles <= 0;
             wall_direction <= 0;
+            score <= 0;
 
             // initialize ball at starting position
             ball_position_x <= (STARTING_BALL_X<<8);
@@ -249,6 +251,7 @@ module gameplay
                     if(on_hit_cycles==3) begin 
                         state <= BALL_MOVING;
                         on_hit_cycles <= 0;
+                        score <= score + 1;
                     end
                     else on_hit_cycles <= on_hit_cycles + 1;
 

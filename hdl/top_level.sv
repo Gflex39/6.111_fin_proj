@@ -47,9 +47,10 @@ module top_level(
   //                                 .an_out({ss0_an, ss1_an}));
 
   logic [1:0] terrain_type;
+  logic [7:0] score;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-                                  .val_in(debug_var),
+                                  .val_in(score),
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
@@ -213,6 +214,7 @@ module top_level(
     .ball_speed(ball_speed_16),
     .ball_direction(angle_16),
     .cam_angle(cam_angle_16),
+    .score(score),
     .state_out(state_out),
     .debug_out(debug_var)
   );
