@@ -37,7 +37,7 @@ module top_level(
   assign ble_uart_cts=1;
   logic [7:0] data;
   logic [6:0] ss_c;
-
+  logic new_input;
 
 
   // seven_segment_controller mssc(.clk_in(clk_pixel),
@@ -54,7 +54,7 @@ module top_level(
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
-  uart_rx #(.BAUD_COUNT(645)) test(.tx(ble_uart_tx),.rst(sys_rst),.clk(clk_pixel),.data_out(data));
+  uart_rx #(.BAUD_COUNT(645)) test(.tx(ble_uart_tx),.rst(sys_rst),.clk(clk_pixel),.data_out(data),.valid_out(new_input));
 
 
     // all low (on). to turn off digits, set high
@@ -230,6 +230,8 @@ module top_level(
     .camera_pan_left(sw[15]),
     .camera_pan_right(sw[14]),
     .new_frame(new_frame),
+    .user_input(data),
+    .user_rdy(new_input),
 
     .ball_position_x(ballx_16),
     .ball_position_y(bally_16),

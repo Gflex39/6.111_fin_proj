@@ -24,6 +24,8 @@ module gameplay
         input wire camera_pan_left,
         input wire camera_pan_right,
         input wire new_frame,
+        input wire [7:0] user_input,
+        input wire user_rdy,
 
         // Fixed point numbers; 8 digits before & after decimal
         output logic [15:0] ball_position_x,
@@ -38,6 +40,7 @@ module gameplay
         output logic [7:0] score,
         output logic [2:0] state_out,
         output logic [31:0] debug_out
+
     );
 
     parameter WIDTH = 160;
@@ -222,7 +225,14 @@ module gameplay
 
             case (state)
                 RESTING: begin
-                    if(charging_hit) state <= CHARGING_HIT;
+                    // if(charging_hit) state <= CHARGING_HIT;
+                    ball_direction <= cam_angle;
+
+                    if(user_rdy) begin 
+                        state <= BALL_MOVING;
+                        ball_speed<=user_input;
+                        score <= score + 1;
+                    end
                 end
                 CHARGING_HIT: begin
                     if(charging_hit) begin

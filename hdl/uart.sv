@@ -41,7 +41,7 @@ always_ff @(posedge clk  ) begin
             end
             3:begin
                 valid_out<=1;
-                // state<=1;
+                state<=1;
 
             end
         endcase
