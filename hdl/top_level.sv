@@ -29,7 +29,7 @@ module top_level(
   //Clocking Variables:
   logic clk_pixel, clk_5x; //clock lines
   logic locked; //locked signal (we'll leave unused but still hook it up)
-
+  logic top=sw[0];
 
   logic [31:0] debug_var;
   logic sys_rst;
@@ -106,7 +106,7 @@ module top_level(
       .fc_out(frame_count));
 
   logic [7:0] img_red, img_green, img_blue;
-
+  logic [7:0] im_red, im_green, im_blue;
   //x_com and y_com are the image sprite locations
   // logic [10:0] x_com;
   // logic [9:0] y_com;
@@ -125,6 +125,23 @@ module top_level(
   map_sprite_1 #(
     .WIDTH(160),
     .HEIGHT(90))
+    com_sprite_b (
+    .pixel_clk_in(clk_pixel),
+    .rst_in(sys_rst),
+    .ballx(ballx_16),
+    .bally(bally_16),
+    .angle(angle),
+    .hcount_in(hcount),   //TODO: needs to use pipelined signal (PS1)
+    .vcount_in(vcount),   //TODO: needs to use pipelined signal (PS1)
+    .red_out(im_red),
+    .green_out(im_green),
+    .blue_out(im_blue));
+
+
+
+  map_sprite_2 #(
+    .WIDTH(160),
+    .HEIGHT(90))
     com_sprite_m (
     .pixel_clk_in(clk_pixel),
     .rst_in(sys_rst),
@@ -139,28 +156,28 @@ module top_level(
 
   logic [7:0] red, green, blue;
 
-  assign red = img_red;
-  assign green = img_green;
-  assign blue = img_blue;
+  assign red = (top)?img_red:im_red;
+  assign green = (top)?img_green:im_green;
+  assign blue = (top)?img_blue:im_blue;
 
-  logic horsync_pipe [3:0];
+  logic horsync_pipe [5:0];
   always_ff @(posedge clk_pixel)begin
     horsync_pipe[0] <= hor_sync;
-    for (int i=1; i<4; i = i+1)begin
+    for (int i=1; i<6; i = i+1)begin
       horsync_pipe[i] <= horsync_pipe[i-1];
     end
   end
-  logic vertsync_pipe [3:0];
+  logic vertsync_pipe [5:0];
   always_ff @(posedge clk_pixel)begin
     vertsync_pipe[0] <= vert_sync;
-    for (int i=1; i<4; i = i+1)begin
+    for (int i=1; i<6; i = i+1)begin
       vertsync_pipe[i] <= vertsync_pipe[i-1];
     end
   end
-  logic adraw_pipe [3:0];
+  logic adraw_pipe [5:0];
   always_ff @(posedge clk_pixel)begin
     adraw_pipe[0] <= active_draw;
-    for (int i=1; i<4; i = i+1)begin
+    for (int i=1; i<6; i = i+1)begin
       adraw_pipe[i] <= adraw_pipe[i-1];
     end
   end
@@ -176,7 +193,7 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(red),
     .control_in(2'b0),
-    .ve_in(adraw_pipe[3]),
+    .ve_in(adraw_pipe[(top)?5:3]),
     .tmds_out(tmds_10b[2]));
 
   tmds_encoder tmds_green(
@@ -184,15 +201,15 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(green),
     .control_in(2'b0),
-    .ve_in(adraw_pipe[3]),
+    .ve_in(adraw_pipe[(top)?5:3]),
     .tmds_out(tmds_10b[1]));
 
   tmds_encoder tmds_blue(
     .clk_in(clk_pixel),
     .rst_in(sys_rst),
     .data_in(blue),
-    .control_in({vertsync_pipe[3],horsync_pipe[3]}),
-    .ve_in(adraw_pipe[3]),
+    .control_in({vertsync_pipe[(top)?5:3],horsync_pipe[(top)?5:3]}),
+    .ve_in(adraw_pipe[(top)?5:3]),
     .tmds_out(tmds_10b[0]));
 
   //four tmds_serializers (blue, green, red, and clock)
