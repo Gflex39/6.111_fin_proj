@@ -225,14 +225,14 @@ module gameplay
 
             case (state)
                 RESTING: begin
-                    // if(charging_hit) state <= CHARGING_HIT;
-                    ball_direction <= cam_angle;
+                    if(charging_hit) state <= CHARGING_HIT;
+                    // ball_direction <= cam_angle;
 
-                    if(user_rdy) begin 
-                        state <= BALL_MOVING;
-                        ball_speed<=user_input;
-                        score <= score + 1;
-                    end
+                    // if(user_rdy) begin 
+                    //     state <= BALL_MOVING;
+                    //     ball_speed<=user_input;
+                    //     score <= score + 1;
+                    // end
                 end
                 CHARGING_HIT: begin
                     if(charging_hit) begin

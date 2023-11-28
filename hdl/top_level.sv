@@ -29,7 +29,8 @@ module top_level(
   //Clocking Variables:
   logic clk_pixel, clk_5x; //clock lines
   logic locked; //locked signal (we'll leave unused but still hook it up)
-  logic top=sw[0];
+  logic top;
+  assign top = sw[0];
 
   logic [31:0] debug_var;
   logic sys_rst;
@@ -155,11 +156,31 @@ module top_level(
     .blue_out(img_blue));
 
   logic [7:0] red, green, blue;
+  logic [7:0] map1_red_pipe [2:0];
+  logic [7:0] map1_blue_pipe [2:0];
+  logic [7:0] map1_green_pipe [2:0];
 
-  assign red = (top)?img_red:im_red;
-  assign green = (top)?img_green:im_green;
-  assign blue = (top)?img_blue:im_blue;
+  always_ff @(posedge clk_pixel)begin
+    map1_blue_pipe[0] <= im_blue;
+    map1_blue_pipe[1] <= map1_blue_pipe[0];
+    map1_blue_pipe[2] <= map1_blue_pipe[1];
+    map1_red_pipe[0] <= im_red;
+    map1_red_pipe[1] <= map1_red_pipe[0];
+    map1_red_pipe[2] <= map1_red_pipe[1];
+    map1_green_pipe[0] <= im_green;
+    map1_green_pipe[1] <= map1_green_pipe[0];
+    map1_green_pipe[2] <= map1_green_pipe[1];
+  end
 
+  assign red = (top)?img_red:map1_red_pipe[1];
+  assign green = (top)?img_green:map1_green_pipe[1];
+  assign blue = (top)?img_blue:map1_blue_pipe[1];
+
+  // assign red = map1_red_pipe[1];
+  // assign green = map1_green_pipe[1];
+  // assign blue = map1_blue_pipe[1];
+
+  
   logic horsync_pipe [5:0];
   always_ff @(posedge clk_pixel)begin
     horsync_pipe[0] <= hor_sync;
@@ -193,7 +214,7 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(red),
     .control_in(2'b0),
-    .ve_in(adraw_pipe[(top)?5:3]),
+    .ve_in(adraw_pipe[5]),
     .tmds_out(tmds_10b[2]));
 
   tmds_encoder tmds_green(
@@ -201,15 +222,15 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(green),
     .control_in(2'b0),
-    .ve_in(adraw_pipe[(top)?5:3]),
+    .ve_in(adraw_pipe[5]),
     .tmds_out(tmds_10b[1]));
 
   tmds_encoder tmds_blue(
     .clk_in(clk_pixel),
     .rst_in(sys_rst),
     .data_in(blue),
-    .control_in({vertsync_pipe[(top)?5:3],horsync_pipe[(top)?5:3]}),
-    .ve_in(adraw_pipe[(top)?5:3]),
+    .control_in({vertsync_pipe[5],horsync_pipe[5]}),
+    .ve_in(adraw_pipe[5]),
     .tmds_out(tmds_10b[0]));
 
   //four tmds_serializers (blue, green, red, and clock)
