@@ -39,6 +39,8 @@ module gameplay
         //output logic out_ready, // 1 when all outs are ready
         output logic [7:0] score,
         output logic [2:0] state_out,
+        output logic lfsr_out, // color of tile
+        output logic [15:0] lfsr_addra,
         output logic [31:0] debug_out
 
     );
@@ -53,7 +55,7 @@ module gameplay
     parameter SPEED_COUNTER_THRESH = 390625; // 2 secs to fully charge bar
     parameter ANGLE_COUNTER_THRESH = 1111111; // 90 deg per sec
 
-    typedef enum {RESTING=0, CHARGING_HIT=1, ON_HIT=2, BALL_MOVING=3, ON_WALL_COLLISION=4, IN_HOLE=5} gameplay_state;
+    typedef enum {SETTING_UP=0, RESTING=1, CHARGING_HIT=2, ON_HIT=3, BALL_MOVING=4, ON_WALL_COLLISION=5, IN_HOLE=6} gameplay_state;
 
     gameplay_state state;
     assign debug_out={state};
@@ -161,6 +163,16 @@ module gameplay
         .douta(terrain_type_yminus)      // RAM output data, width determined from RAM_WIDTH
     );
 
+    logic [1:0] lfsr_counter;
+    logic [15:0] q_out;
+
+    lfsr_16 lfsr (
+        .clk_in(clk_in), 
+        .rst_in(new_game),
+        .seed_in(16'b0000_0000_0000_0001),
+        .q_out(q_out)
+    );
+
     logic [15:0] cos_abs;
     logic [15:0] sin_abs;
     logic cos_sign;
@@ -182,7 +194,7 @@ module gameplay
 
     always_ff @(posedge clk_in) begin
         if(new_game) begin
-            state <= RESTING;
+            state <= SETTING_UP;
             speed_incr <= 1;
             ball_speed <= 0;
             ball_direction <= 0;
@@ -193,6 +205,9 @@ module gameplay
             on_hit_cycles <= 0;
             wall_direction <= 0;
             score <= 0;
+            lfsr_addra <= 0;
+            lfsr_counter <= 0;
+            lfsr_out <= 0;
 
             // initialize ball at starting position
             ball_position_x <= (STARTING_BALL_X<<8);
@@ -224,6 +239,15 @@ module gameplay
             */
 
             case (state)
+                SETTING_UP: begin
+                    if(lfsr_counter==1) begin
+                        if(lfsr_addra < 3600) lfsr_addra <= lfsr_addra + 1;
+                        else state <= RESTING;
+                        lfsr_counter <= 0;
+                    end
+                    else lfsr_counter <= lfsr_counter + 1;
+                    lfsr_out <= q_out[0]; 
+                end
                 RESTING: begin
                     if(charging_hit) state <= CHARGING_HIT;
                     // ball_direction <= cam_angle;
