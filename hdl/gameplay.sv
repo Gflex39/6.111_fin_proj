@@ -56,7 +56,7 @@ module gameplay
     typedef enum {RESTING=0, CHARGING_HIT=1, ON_HIT=2, BALL_MOVING=3, ON_WALL_COLLISION=4, IN_HOLE=5} gameplay_state;
 
     gameplay_state state;
-    assign debug_out={wall_direction,ball_direction};
+    assign debug_out=state;
     assign state_out = state;
 
     logic speed_incr; 
@@ -82,7 +82,7 @@ module gameplay
 
 
     xilinx_single_port_ram_read_first #(
-        .RAM_WIDTH(2),                       // Specify RAM data width
+        .RAM_WIDTH(4),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
@@ -98,7 +98,7 @@ module gameplay
     );
 
     xilinx_single_port_ram_read_first #(
-        .RAM_WIDTH(2),                       // Specify RAM data width
+        .RAM_WIDTH(4),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
@@ -114,7 +114,7 @@ module gameplay
     );
 
     xilinx_single_port_ram_read_first #(
-        .RAM_WIDTH(2),                       // Specify RAM data width
+        .RAM_WIDTH(4),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
@@ -130,7 +130,7 @@ module gameplay
     );
 
     xilinx_single_port_ram_read_first #(
-        .RAM_WIDTH(2),                       // Specify RAM data width
+        .RAM_WIDTH(4),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
@@ -146,7 +146,7 @@ module gameplay
     );
 
     xilinx_single_port_ram_read_first #(
-        .RAM_WIDTH(2),                       // Specify RAM data width
+        .RAM_WIDTH(4),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
@@ -273,34 +273,61 @@ module gameplay
                         if(terrain_type==0 && ball_speed<MAX_SPEED_TO_SCORE) state <= IN_HOLE;
                         else if(ball_speed==0) state <= RESTING;
 
-                        else if(terrain_type_xplus==1) begin
-                            ball_position_x<= {ball_position_x[15:8],8'b0};
-                            wall_direction <= 0;
-                            state <= ON_WALL_COLLISION;
-                        end
-                        else if(terrain_type_yplus==1) begin
-                            ball_position_y<= {ball_position_y[15:8],8'b0};
-                            
-                            wall_direction <= 1;
-                            state <= ON_WALL_COLLISION;
-                        end
-                        else if(terrain_type_xminus==1) begin
-                            ball_position_x<= {ball_position_x[15:8]+8'b1,8'b0};
-                            wall_direction <= 2;
-                            state <= ON_WALL_COLLISION;
-                        end
-                        else if(terrain_type_yminus==1) begin
-                            ball_position_y<= {ball_position_y[15:8]+8'b1,8'b0};
-                            wall_direction <= 3;
-                            state <= ON_WALL_COLLISION;
-                        end
 
-                        else begin
-                            if(terrain_type==2) begin // grass
+                        //Check if a collision has occured in any direction
+                        else if((terrain_type_xplus==1 || terrain_type_xplus==8 || terrain_type_xplus==9|| terrain_type_xplus==10 || terrain_type_xplus==11)|| ((terrain_type_xplus==4 || terrain_type_xplus==5) && (ball_direction<45 || ball_direction>225)) ||((terrain_type_xplus==6 || terrain_type_xplus==7) && (ball_direction>315 || ball_direction<135))) begin
+                            ball_position_x<= {ball_position_x[15:8],8'b0};
+                            state <= ON_WALL_COLLISION; 
+                        //Checks if hitting a flat edge
+                            if(terrain_type_xplus==1 || terrain_type_xplus==8 || terrain_type_xplus==9|| terrain_type_xplus==10 || terrain_type_xplus==11)begin
+                                wall_direction <= 0;
+                        //Checks if coming at the correct angle     
+                            end else if (terrain_type_xplus==4 || terrain_type_xplus==5)begin
+                                wall_direction<=4;
+                            end else wall_direction<=6;
+
+
+                        end else if((terrain_type_yplus==1 || terrain_type_yplus==6 || terrain_type_yplus==7 || terrain_type_yplus==8 || terrain_type_yplus==9)|| ((terrain_type_yplus==4 || terrain_type_yplus==5) && (ball_direction>225 || ball_direction<45)) ||((terrain_type_yplus==10 || terrain_type_yplus==11) && ball_direction<315 && ball_direction>135)) begin
+                            ball_position_y<= {ball_position_y[15:8],8'b0};
+                            state <= ON_WALL_COLLISION; 
+                        //Checks if hitting a flat edge
+                            if(terrain_type_yplus==1 || terrain_type_yplus==6 || terrain_type_yplus==7 || terrain_type_yplus==8 || terrain_type_yplus==9)begin
+                                wall_direction <= 1;
+                        //Checks if coming at the correct angle     
+                            end else if (terrain_type_yplus==4 || terrain_type_yplus==5)begin
+                                wall_direction<=4;
+                            end else wall_direction<=10;
+
+                        end else if((terrain_type_xminus==1 || terrain_type_xminus==6 || terrain_type_xminus==7 || terrain_type_xminus==4 || terrain_type_xminus==5)|| ((terrain_type_xminus==8 || terrain_type_xminus==9) && ball_direction<225 && ball_direction>45) ||((terrain_type_xminus==10 || terrain_type_xminus==11) && ball_direction<315 && ball_direction>135)) begin
+                            ball_position_x<= {ball_position_x[15:8]+8'b1,8'b0};
+                            state <= ON_WALL_COLLISION; 
+                        //Checks if hitting a flat edge
+                            if(terrain_type_xminus==1 || terrain_type_xminus==6 || terrain_type_xminus==7 || terrain_type_xminus==4 || terrain_type_xminus==5)begin
+                                wall_direction <= 2;
+                        //Checks if coming at the correct angle     
+                            end else if (terrain_type_xminus==8 || terrain_type_xminus==9)begin
+                                wall_direction<=8;
+                            end else wall_direction<=10;
+
+                         
+                        end else if((terrain_type_yminus==1 || terrain_type_yminus==10 || terrain_type_yminus==11 || terrain_type_yminus==4 || terrain_type_yminus==5)|| ((terrain_type_yminus==6 || terrain_type_yminus==7) && (ball_direction<135 || ball_direction>315)) ||((terrain_type_yminus==8 || terrain_type_yminus==9) && ball_direction<225 && ball_direction>45)) begin
+                            ball_position_y<= {ball_position_y[15:8]+8'b1,8'b0};
+                            state <= ON_WALL_COLLISION; 
+                        //Checks if hitting a flat edge
+                            if((terrain_type_yminus==1 || terrain_type_yminus==10 || terrain_type_yminus==11 || terrain_type_yminus==4 || terrain_type_yminus==5))begin
+                                wall_direction <= 3;
+                        //Checks if coming at the correct angle     
+                            end else if ((terrain_type_yminus==6 || terrain_type_yminus==7))begin
+                                wall_direction<=6;
+                            end else wall_direction<=8;
+
+                            
+                        end else begin
+                            if(terrain_type==2 || terrain_type==4|| terrain_type==6|| terrain_type==8|| terrain_type==10) begin // grass
                                 if(ball_speed <= GROUND_DECEL) ball_speed <= 0;
                                 else ball_speed <= ball_speed - GROUND_DECEL;
                             end
-                            else if(terrain_type==3) begin // sand
+                            else if(terrain_type==3|| terrain_type==5|| terrain_type==7|| terrain_type==9|| terrain_type==11) begin // sand
                                 if(ball_speed <= SAND_DECEL) ball_speed <= 0;
                                 else ball_speed <= ball_speed - SAND_DECEL;
                             end
