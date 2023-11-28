@@ -115,8 +115,8 @@ module map_sprite_2 #(
   assign ballposx = ballpospipe_x[1];
   assign ballposy = ballpospipe_y[1];
 
-  assign camera_pos_x = ballposx+(cos_sign_ang==0?((ball_depth*cos_abs_ang)>>8):0)-(cos_sign_ang==1?((ball_depth*cos_abs_ang)>>8):0);
-  assign camera_pos_y = ballposy-(sin_sign_ang==0?((ball_depth*sin_abs_ang)>>8):0)+(sin_sign_ang==1?((ball_depth*sin_abs_ang)>>8):0);
+  assign camera_pos_x = ballposx+(cos_sign_ang==0?((ball_depth*cos_abs_ang)>>5):0)-(cos_sign_ang==1?((ball_depth*cos_abs_ang)>>5):0);
+  assign camera_pos_y = ballposy-(sin_sign_ang==0?((ball_depth*sin_abs_ang)>>5):0)+(sin_sign_ang==1?((ball_depth*sin_abs_ang)>>5):0);
   logic [15:0] near_mag = ((near_depth<<8)/cos_55);
   logic [15:0] far_mag = (far_depth<<8)/cos_55;
 
@@ -159,19 +159,18 @@ module map_sprite_2 #(
   assign sidel_y = (sky)?0:((vcount - 360)*nearl_y + (719-vcount)*farl_y)/359;
   assign sider_x = (sky)?0:((vcount - 360)*nearr_x + (719-vcount)*farr_x)/359;
   assign sider_y = (sky)?0:((vcount - 360)*nearr_y + (719-vcount)*farr_y)/359;
-  assign pos_x = sidel_x*(hcount)/1279+sider_x*(1279-hcount)/1279;
-  assign pos_y = sidel_y*(hcount)/1279+sider_y*(1279-hcount)/1279;
+  assign pos_x = sider_x*(hcount)/1279+sidel_x*(1279-hcount)/1279;
+  assign pos_y = sider_y*(hcount)/1279+sidel_y*(1279-hcount)/1279;
 
   logic onboard;
-  assign onboard = (pos_x>=90) & (pos_x<=250)&(pos_y>=90)&(pos_y<=180);
-  logic [15:0] addr;
+  assign onboard = (pos_x>=720) & (pos_x<=2000)&(pos_y>=720)&(pos_y<=1440);
+  logic [$clog2(160*90)-1:0] image_addr;
   logic [12:0] map_coord_x;
   logic [12:0] map_coord_y;
   assign map_coord_x = onboard?pos_x[15:3]-90:0;
   assign map_coord_y = onboard?pos_y[15:3]-90:0;
-  assign addr = onboard?(map_coord_y*1280+map_coord_x):0;
-  logic [$clog2(WIDTH*HEIGHT)-1:0] image_addr;
-  assign image_addr = addr[$clog2(WIDTH*HEIGHT)-1:0];
+  assign image_addr = onboard?(map_coord_y*160+map_coord_x):0;
+
 
   always_ff @(posedge pixel_clk_in)begin
     skypipe[0] <= sky;
@@ -215,9 +214,9 @@ module map_sprite_2 #(
     .regcea(1),   // Output register enable
     .douta(finalcolors)      // RAM output data, width determined from RAM_WIDTH
   );
-  assign red_out = skypipe[3]?8'b10000111:((onboard_pipe[3]==0)?8'b01111100:finalcolors[23:16]);
-  assign green_out = skypipe[3]?8'b11001110:((onboard_pipe[3]==0)?8'b11111100:finalcolors[15:8]);
-  assign blue_out = skypipe[3]?8'b11111010:((onboard_pipe[3]==0)?8'b00000000:finalcolors[7:0]);
+  assign red_out = skypipe[3]?8'b10000111:((onboard_pipe[3]==0)?8'b00000001:finalcolors[23:16]);
+  assign green_out = skypipe[3]?8'b11001110:((onboard_pipe[3]==0)?8'b00110010:finalcolors[15:8]);
+  assign blue_out = skypipe[3]?8'b11111010:((onboard_pipe[3]==0)?8'b00100000:finalcolors[7:0]);
 
 
 endmodule
