@@ -41,7 +41,7 @@ module map_sprite_2 #(
   logic [15:0] cos_55;
   assign cos_55 = 16'b0000000010010010;
 
-  cos_sin_lookup angle_lookup (
+  cos_sin_lookup angle_lookp (
         .clk_in(pixel_clk_in),
         .angle(angle),
         .cos_abs(cos_abs_ang),
@@ -57,7 +57,7 @@ module map_sprite_2 #(
   logic cos_sign_rang;
   logic sin_sign_rang;
 
-  cos_sin_lookup rangle_lookup (
+  cos_sin_lookup rangle_lookp (
         .clk_in(pixel_clk_in),
         .angle(rangle),
         .cos_abs(cos_abs_rang),
@@ -73,7 +73,7 @@ module map_sprite_2 #(
   logic cos_sign_lang;
   logic sin_sign_lang;
 
-  cos_sin_lookup langle_lookup (
+  cos_sin_lookup langle_lookp (
         .clk_in(pixel_clk_in),
         .angle(langle),
         .cos_abs(cos_abs_lang),
@@ -188,7 +188,7 @@ module map_sprite_2 #(
     .RAM_DEPTH(WIDTH*HEIGHT),                     // Specify RAM depth (number of entries)
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
     .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
-  ) imageBROM (
+  ) imageBRO (
     .addra(image_addr),     // Address bus, width determined from RAM_DEPTH
     .dina(0),       // RAM input data, width determined from RAM_WIDTH
     .clka(pixel_clk_in),       // Clock
@@ -205,7 +205,7 @@ module map_sprite_2 #(
     .RAM_DEPTH(4),                     // Specify RAM depth (number of entries)
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
     .INIT_FILE(`FPATH(palette.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
-  ) paletteBROM (
+  ) paletteBRO (
     .addra(imageBROMout),     // Address bus, width determined from RAM_DEPTH
     .dina(0),       // RAM input data, width determined from RAM_WIDTH
     .clka(pixel_clk_in),       // Clock
