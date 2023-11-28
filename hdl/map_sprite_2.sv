@@ -20,7 +20,8 @@ module map_sprite_2 #(
   input wire [15:0] angle, 
   output logic [7:0] red_out,
   output logic [7:0] green_out,
-  output logic [7:0] blue_out
+  output logic [7:0] blue_out,
+  output logic [31:0] debug_out
   );
 
   logic [9:0] vcount_pipe [3:0];
@@ -119,7 +120,7 @@ module map_sprite_2 #(
   assign camera_pos_y = ballposy-(sin_sign_ang==0?((ball_depth*sin_abs_ang)>>5):0)+(sin_sign_ang==1?((ball_depth*sin_abs_ang)>>5):0);
   logic [15:0] near_mag = ((near_depth<<8)/cos_55);
   logic [15:0] far_mag = (far_depth<<8)/cos_55;
-
+  assign debug_out={camera_pos_x,camera_pos_y};
   logic [15:0] farl_x;
   logic [15:0] farl_y;
   logic [15:0] farr_x;
