@@ -40,6 +40,25 @@ module top_level(
   logic [6:0] ss_c;
   logic new_input;
 
+  logic clk_slow;
+  logic [2:0] counter_clk;
+
+  always_ff @(posedge clk_pixel) begin
+    if(sys_rst) begin
+      clk_slow <= 0;
+      counter_clk <= 0;
+    end
+    else begin
+      if(counter_clk==3) begin
+        clk_slow <= 1;
+        counter_clk <= 0;
+      end
+      else begin
+        clk_slow <= 0;
+        counter_clk <= counter_clk + 1;
+      end
+    end
+  end
 
   // seven_segment_controller mssc(.clk_in(clk_pixel),
   //                                 .rst_in(sys_rst),
@@ -51,7 +70,7 @@ module top_level(
   logic [7:0] score;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-                                  .val_in({ball_speed_16, 8'b0, score}),
+                                  .val_in(db),//{ball_speed_16, 8'b0, score}),
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
@@ -127,7 +146,7 @@ module top_level(
     .WIDTH(160),
     .HEIGHT(90))
     com_sprite_b (
-    .pixel_clk_in(clk_pixel),
+    .pixel_clk_in(clk_slow),
     .rst_in(sys_rst),
     .ballx(ballx_16),
     .bally(bally_16),
@@ -139,12 +158,12 @@ module top_level(
     .blue_out(im_blue));
 
 
-
-  map_sprite_2 #(
+  logic [31:0] db;
+  map_sprite_3 #(
     .WIDTH(160),
     .HEIGHT(90))
     com_sprite_m (
-    .pixel_clk_in(clk_pixel),
+    .pixel_clk_in(clk_slow),
     .rst_in(sys_rst),
     .ballx(ballx_16),
     .bally(bally_16),
@@ -153,7 +172,8 @@ module top_level(
     .vcount_in(vcount),   //TODO: needs to use pipelined signal (PS1)
     .red_out(img_red),
     .green_out(img_green),
-    .blue_out(img_blue));
+    .blue_out(img_blue),
+    .debug_out(db));
 
   logic [7:0] red, green, blue;
   logic [7:0] map1_red_pipe [2:0];
@@ -172,6 +192,10 @@ module top_level(
     map1_green_pipe[2] <= map1_green_pipe[1];
   end
 
+  // assign red = (top)?img_red:im_red;
+  // assign green = (top)?img_green:im_green;
+  // assign blue = (top)?img_blue:im_blue;
+
   assign red = (top)?img_red:map1_red_pipe[1];
   assign green = (top)?img_green:map1_green_pipe[1];
   assign blue = (top)?img_blue:map1_blue_pipe[1];
@@ -179,6 +203,10 @@ module top_level(
   // assign red = map1_red_pipe[1];
   // assign green = map1_green_pipe[1];
   // assign blue = map1_blue_pipe[1];
+
+  // assign red = img_red;
+  // assign green = img_green;
+  // assign blue = img_blue;
 
   
   logic horsync_pipe [5:0];

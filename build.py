@@ -27,3 +27,4 @@ if not os.access("obj/final.bit", os.R_OK):
 	raise VivadoBuildError("vivado exited successfully, but no out.bit generated")
  
 save("obj/final.bit")
+save("vivado.log")
