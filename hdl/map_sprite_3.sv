@@ -119,7 +119,7 @@ module map_sprite_3 #(
   assign camera_pos_x = ballposx+(cos_sign_ang==0?((ball_depth*cos_abs_ang)>>5):0)-(cos_sign_ang==1?((ball_depth*cos_abs_ang)>>5):0);
   assign camera_pos_y = ballposy-(sin_sign_ang==0?((ball_depth*sin_abs_ang)>>5):0)+(sin_sign_ang==1?((ball_depth*sin_abs_ang)>>5):0);
   logic [15:0] near_mag;
-  assign near_mag = 16'b0000_1000_0000_0000; //16'b0000_0101_0011_1010; // fixed point
+  assign near_mag = 16'b0001_0000_0000_0000; //16'b0000_0101_0011_1010; // fixed point
   logic [15:0] far_mag;
   assign far_mag = 16'b1000_0000_0000_0000; //16'b0110_1101_1101_0110;
   assign debug_out=near_mag;//{camera_pos_x,camera_pos_y};
@@ -180,10 +180,16 @@ module map_sprite_3 #(
   
 
 
-  assign sidel_x = (sky)?0:((vcount - 360)*nearl_x + (719-vcount)*farl_x)*8'b1011_0110;
-  assign sidel_y = (sky)?0:((vcount - 360)*nearl_y + (719-vcount)*farl_y)*8'b1011_0110;
-  assign sider_x = (sky)?0:((vcount - 360)*nearr_x + (719-vcount)*farr_x)*8'b1011_0110;
-  assign sider_y = (sky)?0:((vcount - 360)*nearr_y + (719-vcount)*farr_y)*8'b1011_0110;
+  // assign sidel_x = (sky)?0:((vcount - 360)*nearl_x + (719-vcount)*farl_x)*8'b1011_0110;
+  // assign sidel_y = (sky)?0:((vcount - 360)*nearl_y + (719-vcount)*farl_y)*8'b1011_0110;
+  // assign sider_x = (sky)?0:((vcount - 360)*nearr_x + (719-vcount)*farr_x)*8'b1011_0110;
+  // assign sider_y = (sky)?0:((vcount - 360)*nearr_y + (719-vcount)*farr_y)*8'b1011_0110;
+  logic [15:0] multiplier;
+  assign multiplier = sky?0:360/(vcount - 359);
+  assign sidel_x = (sky)?0:farl_x*multiplier + nearl_x - nearl_x*multiplier;
+  assign sidel_y = (sky)?0:farl_y*multiplier + nearl_y - nearl_y*multiplier;
+  assign sider_x = (sky)?0:farr_x*multiplier + nearr_x - nearr_x*multiplier;
+  assign sider_y = (sky)?0:farr_y*multiplier + nearr_y - nearr_y*multiplier;
   assign pos_x_32 = (sider_x>>16)*(hcount)*8'b0011_0011+(sidel_x>>16)*(1279-hcount)*8'b0011_0011;
   assign pos_y_32 = (sider_y>>16)*(hcount)*8'b0011_0011+(sidel_y>>16)*(1279-hcount)*8'b0011_0011;
 
