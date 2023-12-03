@@ -103,7 +103,7 @@ module gameplay
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map3.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_xplus (
-        .addra(((ball_position_x+8'b1000_0000)>>8 )+ WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
+        .addra(((ball_position_x+8'b0111_0000)>>8 )+ WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
@@ -119,7 +119,7 @@ module gameplay
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map3.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_xminus (
-        .addra(((ball_position_x-8'b1000_0000)>>8) + WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
+        .addra(((ball_position_x-8'b0111_0000)>>8) + WIDTH*(ball_position_y>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
@@ -135,7 +135,7 @@ module gameplay
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map3.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_yplus (
-        .addra((ball_position_x>>8) + WIDTH*((ball_position_y+8'b1000_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
+        .addra((ball_position_x>>8) + WIDTH*((ball_position_y+8'b0111_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
@@ -151,7 +151,7 @@ module gameplay
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(map3.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) bram_ball_yminus (
-        .addra((ball_position_x>>8 )+ WIDTH*((ball_position_y-8'b1000_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
+        .addra((ball_position_x>>8 )+ WIDTH*((ball_position_y-8'b0111_0000)>>8)),     // Address bus, width determined from RAM_DEPTH
         .dina(2'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(1'b0),         // Write enable
