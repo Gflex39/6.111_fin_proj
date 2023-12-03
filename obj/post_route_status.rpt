@@ -2,11 +2,15 @@ Design Route Status
                                                :      # nets :
    ------------------------------------------- : ----------- :
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> fe89141 (better motion)
    # of logical nets.......................... :        2955 :
        # of nets not needing routing.......... :         961 :
            # of internally routed nets........ :         961 :
        # of routable nets..................... :        1994 :
            # of fully routed nets............. :        1994 :
+<<<<<<< HEAD
 =======
    # of logical nets.......................... :        2938 :
        # of nets not needing routing.......... :         958 :
@@ -14,6 +18,8 @@ Design Route Status
        # of routable nets..................... :        1980 :
            # of fully routed nets............. :        1980 :
 >>>>>>> 0cf8a7a (diagonal done)
+=======
+>>>>>>> fe89141 (better motion)
        # of nets with routing errors.......... :           0 :
    ------------------------------------------- : ----------- :
 
