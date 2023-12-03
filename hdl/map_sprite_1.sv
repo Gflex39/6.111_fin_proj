@@ -187,7 +187,15 @@ module map_sprite_1 #(
     .regcea(1),   // Output register enable
     .douta(imageBROMout)      // RAM output data, width determined from RAM_WIDTH
   );
+<<<<<<< HEAD
 
+=======
+  logic [3:0] terrain [1:0];
+  always_ff @( posedge pixel_clk_in ) begin 
+    terrain[0]<=imageBROMout;
+    terrain[1]<=terrain[0];
+  end
+>>>>>>> 0cf8a7a (diagonal done)
   
   always_comb begin
     case(imageBROMout) 
@@ -197,6 +205,7 @@ module map_sprite_1 #(
       3: finalcolors = grass_color?24'h9C972C:24'hB0AA28;
     endcase
 
+<<<<<<< HEAD
   end
 
   // xilinx_single_port_ram_read_first #(
@@ -217,6 +226,26 @@ module map_sprite_1 #(
 
   logic allow=(imageBROMout<4||((imageBROMout==4 || imageBROMout==5) && (7-hcount_pipe[3][2:0]>=vcount_pipe[3][2:0]))||((imageBROMout==6 || imageBROMout==7) && (hcount_pipe[3][2:0]+1<vcount_pipe[3][2:0]))||((imageBROMout==8 || imageBROMout==9) && (6-hcount_pipe[3][2:0]<vcount_pipe[3][2:0]))||((imageBROMout==10 || imageBROMout==11) && (hcount_pipe[3][2:0]+1>vcount_pipe[3][2:0])));
   // logic allow=(imageBROMout<4);
+=======
+  xilinx_single_port_ram_read_first #(
+    .RAM_WIDTH(24),                       // Specify RAM data width
+    .RAM_DEPTH(12),                     // Specify RAM depth (number of entries)
+    .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+    .INIT_FILE(`FPATH(palette.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+  ) paletteBROM (
+    .addra(imageBROMout),     // Address bus, width determined from RAM_DEPTH
+    .dina(0),       // RAM input data, width determined from RAM_WIDTH
+    .clka(pixel_clk_in),       // Clock
+    .wea(0),         // Write enable
+    .ena(1),         // RAM Enable, for additional power savings, disable port when not in use
+    .rsta(rst_in),       // Output reset (does not affect memory contents)
+    .regcea(1),   // Output register enable
+    .douta(finalcolors)      // RAM output data, width determined from RAM_WIDTH
+  );
+
+  logic allow=(terrain[1]<4||((terrain[1]==4 || terrain[1]==5) && (7-hcount_pipe[3][2:0]>=vcount_pipe[3][2:0]))||((terrain[1]==6 || terrain[1]==7) && (hcount_pipe[3][2:0]+1<vcount_pipe[3][2:0]))||((terrain[1]==8 || terrain[1]==9) && (6-hcount_pipe[3][2:0]<vcount_pipe[3][2:0]))||((terrain[1]==10 || terrain[1]==11) && (hcount_pipe[3][2:0]+1>vcount_pipe[3][2:0])));
+  // logic allow=(terrain[1]<4);
+>>>>>>> 0cf8a7a (diagonal done)
   logic [23:0] wall=24'h8B4F39;
   // Modify the module below to use your BRAMs!
   assign red_out =    ((vcount_pipe[3] == angle30_pipe_v[3] & hcount_pipe[3] == angle30_pipe_h[3])|(vcount_pipe[3] == angle60_pipe_v[3] & hcount_pipe[3] == angle60_pipe_h[3])|(vcount_pipe[3] == angle90_pipe_v[3] & hcount_pipe[3] == angle90_pipe_h[3]))?8'b00000000:(imagesprite_pipe[3]==1?(ballout_pipe[3]==1?8'b11111111:finalcolors[23:16]):(finalcolors[23:16]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b01111100):(allow)?finalcolors[23:16]:wall[23:16]));

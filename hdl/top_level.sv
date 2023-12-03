@@ -50,12 +50,7 @@ module top_level(
   logic [7:0] score;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-<<<<<<< HEAD
-                                  // .val_in({ball_speed_16, 8'b0, score}),
-                                  .val_in(debug_var),
-=======
                                   .val_in(state_out),//{ball_speed_16, 8'b0, score}),
->>>>>>> origin/main
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
