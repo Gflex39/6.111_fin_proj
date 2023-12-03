@@ -23,19 +23,19 @@ module reflection_helper
             else new_ball_direction = 540 - ball_direction; // Q3
           end
         3:new_ball_direction = 360 - ball_direction;
-        4:begin
+        6:begin
           if (ball_direction<45) new_ball_direction=90-ball_direction;
           else new_ball_direction<=450-ball_direction;
         end
-        6:begin 
+        4:begin 
           if(ball_direction<135)new_ball_direction<=270-ball_direction;
           else new_ball_direction<=270+360-ball_direction;
         end
-        8:begin if(ball_direction>90)new_ball_direction<=(450-ball_direction);
+        10:begin if(ball_direction>90)new_ball_direction<=(450-ball_direction);
           else new_ball_direction<=(450-ball_direction)-360;
         end
 
-        10:begin
+        8:begin
           if(ball_direction<=270)new_ball_direction<=270-ball_direction;
           else new_ball_direction<=270+360-ball_direction;
 

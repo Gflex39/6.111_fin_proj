@@ -363,7 +363,7 @@ module map_sprite_1 #(
     .RAM_WIDTH(4),                       // Specify RAM data width
     .RAM_DEPTH(WIDTH*HEIGHT),                     // Specify RAM depth (number of entries)
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-    .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    .INIT_FILE(`FPATH(map3.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
   ) imageBROM (
     .addra(image_addr),     // Address bus, width determined from RAM_DEPTH
     .dina(0),       // RAM input data, width determined from RAM_WIDTH
@@ -374,11 +374,16 @@ module map_sprite_1 #(
     .regcea(1),   // Output register enable
     .douta(imageBROMout)      // RAM output data, width determined from RAM_WIDTH
   );
+  logic [3:0] terrain [1:0];
+  always_ff @( posedge pixel_clk_in ) begin 
+    terrain[0]<=imageBROMout;
+    terrain[1]<=terrain[0];
+  end
   
 
   xilinx_single_port_ram_read_first #(
     .RAM_WIDTH(24),                       // Specify RAM data width
-    .RAM_DEPTH(4),                     // Specify RAM depth (number of entries)
+    .RAM_DEPTH(12),                     // Specify RAM depth (number of entries)
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
     .INIT_FILE(`FPATH(palette.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
   ) paletteBROM (
@@ -392,10 +397,13 @@ module map_sprite_1 #(
     .douta(finalcolors)      // RAM output data, width determined from RAM_WIDTH
   );
 
+  logic allow=(terrain[1]<4||((terrain[1]==4 || terrain[1]==5) && (7-hcount_pipe[3][2:0]>=vcount_pipe[3][2:0]))||((terrain[1]==6 || terrain[1]==7) && (hcount_pipe[3][2:0]+1<vcount_pipe[3][2:0]))||((terrain[1]==8 || terrain[1]==9) && (6-hcount_pipe[3][2:0]<vcount_pipe[3][2:0]))||((terrain[1]==10 || terrain[1]==11) && (hcount_pipe[3][2:0]+1>vcount_pipe[3][2:0])));
+  // logic allow=(terrain[1]<4);
+  logic [23:0] wall=24'h8B4F39;
   // Modify the module below to use your BRAMs!
-  assign red_out =    ((vcount_pipe[3] == angle30_pipe_v[3] & hcount_pipe[3] == angle30_pipe_h[3])|(vcount_pipe[3] == angle60_pipe_v[3] & hcount_pipe[3] == angle60_pipe_h[3])|(vcount_pipe[3] == angle90_pipe_v[3] & hcount_pipe[3] == angle90_pipe_h[3]))?8'b00000000:(imagesprite_pipe[3]==1?(ballout_pipe[3]==1?8'b11111111:finalcolors[23:16]):(finalcolors[23:16]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b01111100):finalcolors[23:16]));
-  assign green_out =  ((vcount_pipe[3] == angle30_pipe_v[3] & hcount_pipe[3] == angle30_pipe_h[3])|(vcount_pipe[3] == angle60_pipe_v[3] & hcount_pipe[3] == angle60_pipe_h[3])|(vcount_pipe[3] == angle90_pipe_v[3] & hcount_pipe[3] == angle90_pipe_h[3]))?8'b00000000:(imagesprite_pipe[3]==1?(ballout_pipe[3]==1?8'b11111111:finalcolors[15:8]):(finalcolors[15:8]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b11111100):finalcolors[15:8]));
-  assign blue_out =   ((vcount_pipe[3] == angle30_pipe_v[3] & hcount_pipe[3] == angle30_pipe_h[3])|(vcount_pipe[3] == angle60_pipe_v[3] & hcount_pipe[3] == angle60_pipe_h[3])|(vcount_pipe[3] == angle90_pipe_v[3] & hcount_pipe[3] == angle90_pipe_h[3]))?8'b11111111:(imagesprite_pipe[3]==1?(ballout_pipe[3]==1?8'b11111111:finalcolors[7:0]):(finalcolors[7:0]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b00000000):finalcolors[7:0]));
+  assign red_out =    ((vcount_pipe[3] == angle30_pipe_v[3] & hcount_pipe[3] == angle30_pipe_h[3])|(vcount_pipe[3] == angle60_pipe_v[3] & hcount_pipe[3] == angle60_pipe_h[3])|(vcount_pipe[3] == angle90_pipe_v[3] & hcount_pipe[3] == angle90_pipe_h[3]))?8'b00000000:(imagesprite_pipe[3]==1?(ballout_pipe[3]==1?8'b11111111:finalcolors[23:16]):(finalcolors[23:16]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b01111100):(allow)?finalcolors[23:16]:wall[23:16]));
+  assign green_out =  ((vcount_pipe[3] == angle30_pipe_v[3] & hcount_pipe[3] == angle30_pipe_h[3])|(vcount_pipe[3] == angle60_pipe_v[3] & hcount_pipe[3] == angle60_pipe_h[3])|(vcount_pipe[3] == angle90_pipe_v[3] & hcount_pipe[3] == angle90_pipe_h[3]))?8'b00000000:(imagesprite_pipe[3]==1?(ballout_pipe[3]==1?8'b11111111:finalcolors[15:8]):(finalcolors[15:8]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b11111100):(allow)?finalcolors[15:8]:wall[15:8]));
+  assign blue_out =   ((vcount_pipe[3] == angle30_pipe_v[3] & hcount_pipe[3] == angle30_pipe_h[3])|(vcount_pipe[3] == angle60_pipe_v[3] & hcount_pipe[3] == angle60_pipe_h[3])|(vcount_pipe[3] == angle90_pipe_v[3] & hcount_pipe[3] == angle90_pipe_h[3]))?8'b11111111:(imagesprite_pipe[3]==1?(ballout_pipe[3]==1?8'b11111111:finalcolors[7:0]):(finalcolors[7:0]==8'b00000000 ?(circleout_pipe[3] == 1?8'b00000000:8'b00000000):(allow)?finalcolors[7:0]:wall[7:0]));
   // assign red_out =    (imagesprite_pipe[3]==1?(8'b11111111):finalcolors[23:16]);
   // assign green_out =  (imagesprite_pipe[3]==1?(8'b11111111):(finalcolors[15:8]));
   // assign blue_out =   (imagesprite_pipe[3]==1?(8'b11111111):finalcolors[7:0]);

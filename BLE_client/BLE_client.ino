@@ -195,8 +195,8 @@ void loop() {
       if (calc>255){
         calc=255;
       }
-      Serial.println("Sending: "+ String((byte)calc*pow(2,6)) + "to FPGA");
-      pRemoteCharacteristic->writeValue((byte)calc*pow(2,6));
+      Serial.println("Sending: "+ String((byte)calc*pow(2,5)) + "to FPGA");
+      pRemoteCharacteristic->writeValue((byte)calc*pow(2,5));
       calc=0;
       til=0;
       new_val=false;
