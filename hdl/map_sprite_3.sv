@@ -89,13 +89,15 @@ module map_sprite_3 #(
   logic [15:0] ball_depth;
   assign near_depth = 3;
   assign ball_depth = 4+near_depth;
-  assign far_depth = 63;
+  assign far_depth = 600;
 
   logic [15:0] temp_ballposx;
   logic [15:0] temp_ballposy;
 
-  assign temp_ballposx = ballx[15:5]+720;
-  assign temp_ballposy = bally[15:5]+720;
+  // assign temp_ballposx = ballx[15:5]+720;
+  // assign temp_ballposy = bally[15:5]+720;
+  assign temp_ballposx = ballx[15:5]+6400;
+  assign temp_ballposy = bally[15:5]+6400;
 
   logic [15:0] ballpospipe_x [1:0];
   logic [15:0] ballpospipe_y [1:0];
@@ -118,10 +120,10 @@ module map_sprite_3 #(
 
   assign camera_pos_x = ballposx+(cos_sign_ang==0?((ball_depth*cos_abs_ang)>>5):0)-(cos_sign_ang==1?((ball_depth*cos_abs_ang)>>5):0);
   assign camera_pos_y = ballposy-(sin_sign_ang==0?((ball_depth*sin_abs_ang)>>5):0)+(sin_sign_ang==1?((ball_depth*sin_abs_ang)>>5):0);
-  logic [15:0] near_mag;
-  assign near_mag = 16'b0001_0000_0000_0000; //16'b0000_0101_0011_1010; // fixed point
-  logic [15:0] far_mag;
-  assign far_mag = 16'b1000_0000_0000_0000; //16'b0110_1101_1101_0110;
+  logic [31:0] near_mag;
+  assign near_mag = 32'b0000_0000_0000_0000_0001_0000_0000_0000; //16'b0000_0101_0011_1010; // fixed point
+  logic [31:0] far_mag;
+  assign far_mag = 32'b0000_0000_0000_0100_0000_0000_0000_0000; //16'b0110_1101_1101_0110;
   assign debug_out=near_mag;//{camera_pos_x,camera_pos_y};
   logic [15:0] farl_x;
   logic [15:0] farl_y;
@@ -198,12 +200,16 @@ module map_sprite_3 #(
   assign pos_y = pos_y_32>>16;
 
   logic onboard;
-  assign onboard = (pos_x>=720) & (pos_x<=2000)&(pos_y>=720)&(pos_y<=1440);
+  assign onboard = (pos_x>=6400) & (pos_x<=7680)&(pos_y>=6400)&(pos_y<=7120);
+  // logic onboard;
+  // assign onboard = (pos_x>=720) & (pos_x<=2000)&(pos_y>=720)&(pos_y<=1440);
   logic [$clog2(160*90)-1:0] image_addr;
   logic [12:0] map_coord_x;
   logic [12:0] map_coord_y;
-  assign map_coord_x = onboard?pos_x[15:3]-90:0;
-  assign map_coord_y = onboard?pos_y[15:3]-90:0;
+  // assign map_coord_x = onboard?pos_x[15:3]-90:0;
+  // assign map_coord_y = onboard?pos_y[15:3]-90:0;
+  assign map_coord_x = onboard?pos_x[15:3]-800:0;
+  assign map_coord_y = onboard?pos_y[15:3]-800:0;
   assign image_addr = onboard?(map_coord_y*160+map_coord_x):0;
 
 

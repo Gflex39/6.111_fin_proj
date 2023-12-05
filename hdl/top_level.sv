@@ -15,7 +15,8 @@ module top_level(
   output logic [6:0] ss0_c, //cathode controls for the segments of upper four digits
   output logic [6:0] ss1_c,//cathod controls for the segments of lower four digits
   output logic ble_uart_cts,
-  output logic ble_uart_rx
+  output logic ble_uart_rx,
+  output logic spkl, spkr
   );
 
 
