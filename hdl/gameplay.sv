@@ -298,23 +298,23 @@ module gameplay
                         else if(ball_speed==0) state <= RESTING;
 
                         else if(terrain_type_xplus==1) begin
-                            ball_position_x<= {ball_position_x[15:8],8'b0};
+                            ball_position_x<= {ball_position_x[15:8]-8'b1,8'b1000_0000};
                             wall_direction <= 0;
                             state <= ON_WALL_COLLISION;
                         end
                         else if(terrain_type_yplus==1) begin
-                            ball_position_y<= {ball_position_y[15:8],8'b0};
+                            ball_position_y<= {ball_position_y[15:8]-8'b1,8'b1000_0000};
                             
                             wall_direction <= 1;
                             state <= ON_WALL_COLLISION;
                         end
                         else if(terrain_type_xminus==1) begin
-                            ball_position_x<= {ball_position_x[15:8]+8'b1,8'b0};
+                            ball_position_x<= {ball_position_x[15:8]+8'b1,8'b1000_0000};
                             wall_direction <= 2;
                             state <= ON_WALL_COLLISION;
                         end
                         else if(terrain_type_yminus==1) begin
-                            ball_position_y<= {ball_position_y[15:8]+8'b1,8'b0};
+                            ball_position_y<= {ball_position_y[15:8]+8'b1,8'b1000_0000};
                             wall_direction <= 3;
                             state <= ON_WALL_COLLISION;
                         end

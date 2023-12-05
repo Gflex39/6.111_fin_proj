@@ -2,7 +2,7 @@
 `default_nettype none
 
 module top_level(
-  input wire clk_100mhz, //
+  input wire clk_100mhz, 
   input wire ble_uart_tx,
   input wire ble_uart_rts,
   input wire [15:0] sw, //all 16 input slide switches
@@ -15,13 +15,11 @@ module top_level(
   output logic [6:0] ss0_c, //cathode controls for the segments of upper four digits
   output logic [6:0] ss1_c,//cathod controls for the segments of lower four digits
   output logic ble_uart_cts,
-  output logic ble_uart_rx
+  output logic ble_uart_rx,
+  output logic spkl, spkr, //speaker outputs
+  output logic mic_clk, //microphone clock
+  input wire  mic_data //microphone data
   );
-  parameter WIDTH = 160;
-
-
-
-
 
   /* have btnd control system reset */
 
@@ -38,6 +36,9 @@ module top_level(
   logic [7:0] data;
   logic [6:0] ss_c;
   logic new_input;
+
+  logic clk_100mhz_copy;
+  assign clk_100mhz_copy = clk_100mhz;
 
 
   // seven_segment_controller mssc(.clk_in(clk_pixel),
@@ -68,7 +69,7 @@ module top_level(
 
   //clock manager...creates 74.25 Hz and 5 times 74.25 MHz for pixel and TMDS
   hdmi_clk_wiz_720p mhdmicw (.clk_pixel(clk_pixel),.clk_tmds(clk_5x),
-          .reset(0), .locked(locked), .clk_ref(clk_100mhz));
+          .reset(0), .locked(locked), .clk_ref(clk_100mhz_copy));
 
   //signals related to driving the video pipeline
   logic [10:0] hcount;
@@ -276,12 +277,52 @@ module top_level(
     .debug_out(debug_var)
   );
 
+  logic clk_m;
+  audio_clk_wiz macw (.clk_in(clk_100mhz_copy), .clk_out(clk_m)); //98.3MHz
+  logic old_mic_clk;
+  logic [8:0] m_clock_counter;
+  localparam PDM_COUNT_PERIOD = 32;
+  localparam NUM_PDM_SAMPLES = 256;
+
+  always_ff @(posedge clk_m) begin
+    mic_clk <= m_clock_counter < PDM_COUNT_PERIOD/2;
+    m_clock_counter <= (m_clock_counter==PDM_COUNT_PERIOD-1)?0:m_clock_counter+1;
+    old_mic_clk <= mic_clk;
+  end
+
+  logic signed [7:0] audio_out;
+  logic [8:0] pdm_counter;
+  logic audio_sample_valid; //12khz
+  logic pdm_signal_valid; //single-cycle signal at 3.072 MHz indicating pdm steps
+  assign pdm_signal_valid = mic_clk && ~old_mic_clk;
+  always_ff @(posedge clk_m) begin
+    if(pdm_signal_valid) begin
+      pdm_counter         <= (pdm_counter==NUM_PDM_SAMPLES)?0:pdm_counter + 1;
+      audio_sample_valid  <= (pdm_counter==NUM_PDM_SAMPLES);
+    end
+  end
+
+  playback my_playback (
+    .clk_in(clk_m),
+    .rst_in(sys_rst),
+    .start_playback(state_out==5),
+    .signal_12khz(audio_sample_valid),
+    .audio_out(audio_out)
+  );
+  logic audio_out_pdm;
+  pdm my_pdm(
+    .clk_in(clk_m),
+    .rst_in(sys_rst),
+    .level_in(audio_out),
+    .tick_in(pdm_signal_valid),
+    .pdm_out(audio_out_pdm)
+  );
+  assign spkl = audio_out_pdm;
+  assign spkr = audio_out_pdm;
+
 
 endmodule // top_level
 
-
-
-`timescale 1ns / 1ps
-`default_nettype none // prevents system from inferring an undeclared logic (good practice)
+`default_nettype wire // prevents system from inferring an undeclared logic (good practice)
  
 
