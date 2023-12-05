@@ -185,11 +185,11 @@ module map_sprite_3 #(
   // assign sider_x = (sky)?0:((vcount - 360)*nearr_x + (719-vcount)*farr_x)*8'b1011_0110;
   // assign sider_y = (sky)?0:((vcount - 360)*nearr_y + (719-vcount)*farr_y)*8'b1011_0110;
   logic [15:0] multiplier;
-  assign multiplier = sky?0:360/(vcount - 359);
-  assign sidel_x = (sky)?0:farl_x*multiplier + nearl_x - nearl_x*multiplier;
-  assign sidel_y = (sky)?0:farl_y*multiplier + nearl_y - nearl_y*multiplier;
-  assign sider_x = (sky)?0:farr_x*multiplier + nearr_x - nearr_x*multiplier;
-  assign sider_y = (sky)?0:farr_y*multiplier + nearr_y - nearr_y*multiplier;
+  assign multiplier = sky?0:1/(vcount-359);
+  assign sidel_x = (sky)?0:(farl_x*multiplier + nearl_x - nearl_x*multiplier)<<16;
+  assign sidel_y = (sky)?0:(farl_y*multiplier + nearl_y - nearl_y*multiplier)<<16;
+  assign sider_x = (sky)?0:(farr_x*multiplier + nearr_x - nearr_x*multiplier)<<16;
+  assign sider_y = (sky)?0:(farr_y*multiplier + nearr_y - nearr_y*multiplier)<<16;
   assign pos_x_32 = (sider_x>>16)*(hcount)*8'b0011_0011+(sidel_x>>16)*(1279-hcount)*8'b0011_0011;
   assign pos_y_32 = (sider_y>>16)*(hcount)*8'b0011_0011+(sidel_y>>16)*(1279-hcount)*8'b0011_0011;
 
