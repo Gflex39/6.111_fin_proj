@@ -1,15 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-<<<<<<< HEAD
-<<<<<<< HEAD
-| Date         : Sun Dec  3 02:49:53 2023
-=======
-| Date         : Sun Dec  3 02:37:55 2023
->>>>>>> 0cf8a7a (diagonal done)
-=======
-| Date         : Sun Dec  3 02:49:53 2023
->>>>>>> fe89141 (better motion)
+| Date         : Tue Dec  5 20:20:26 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_drc -file obj/post_imp_drc.rpt
 | Design       : top_level
@@ -32,13 +24,14 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 3
-+----------+----------+-------------------+------------+
-| Rule     | Severity | Description       | Violations |
-+----------+----------+-------------------+------------+
-| DPIP-1   | Warning  | Input pipelining  | 2          |
-| PDRC-153 | Warning  | Gated clock check | 1          |
-+----------+----------+-------------------+------------+
+             Violations found: 6
++----------+----------+--------------------------------------------------------------+------------+
+| Rule     | Severity | Description                                                  | Violations |
++----------+----------+--------------------------------------------------------------+------------+
+| DPIP-1   | Warning  | Input pipelining                                             | 2          |
+| PDCN-137 | Warning  | enum_RAM_EXTENSION_A_not_NONE_connects_ADDRARDADDRL15_Tieoff | 2          |
+| PDRC-153 | Warning  | Gated clock check                                            | 2          |
++----------+----------+--------------------------------------------------------------+------------+
 
 2. REPORT DETAILS
 -----------------
@@ -52,7 +45,22 @@ Input pipelining
 DSP gameplay_module/addra0 input gameplay_module/addra0/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
+PDCN-137#1 Warning
+enum_RAM_EXTENSION_A_not_NONE_connects_ADDRARDADDRL15_Tieoff  
+RAMB36E1 site RAMB36_X0Y7 has BlockRam (lfsr_ram/BRAM_reg_0) with RAM_EXTENSION_A attribute set to LOWER and ADDRARADDRL15 pin tied to LOGIC 0 (GND). In this case only the Lower BRAM will be used.
+Related violations: <none>
+
+PDCN-137#2 Warning
+enum_RAM_EXTENSION_A_not_NONE_connects_ADDRARDADDRL15_Tieoff  
+RAMB36E1 site RAMB36_X0Y8 has BlockRam (lfsr_ram/BRAM_reg_1) with RAM_EXTENSION_A attribute set to UPPER and ADDRARADDRL15 pin tied to LOGIC 0 (GND). In this case only the Lower BRAM will be used.
+Related violations: <none>
+
 PDRC-153#1 Warning
+Gated clock check  
+Net com_sprite_m/imageBROM/BRAM_reg_1_0[0] is a gated clock net sourced by a combinational pin com_sprite_m/imageBROM/finalcolors_reg[23]_i_1/O, cell com_sprite_m/imageBROM/finalcolors_reg[23]_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Related violations: <none>
+
+PDRC-153#2 Warning
 Gated clock check  
 Net gameplay_module/ref_helper/new_ball_direction_reg[15]_i_2_n_0 is a gated clock net sourced by a combinational pin gameplay_module/ref_helper/new_ball_direction_reg[15]_i_2/O, cell gameplay_module/ref_helper/new_ball_direction_reg[15]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
