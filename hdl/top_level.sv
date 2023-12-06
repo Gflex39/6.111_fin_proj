@@ -17,7 +17,7 @@ module top_level(
   output logic ble_uart_cts,
   output logic ble_uart_rx
   );
-  parameter WIDTH = 160;
+
 
 
 
@@ -29,7 +29,8 @@ module top_level(
   //Clocking Variables:
   logic clk_pixel, clk_5x; //clock lines
   logic locked; //locked signal (we'll leave unused but still hook it up)
-
+  logic top;
+  assign top = sw[0];
 
   logic [31:0] debug_var;
   logic sys_rst;
@@ -39,6 +40,25 @@ module top_level(
   logic [6:0] ss_c;
   logic new_input;
 
+  logic clk_slow;
+  logic [2:0] counter_clk;
+
+  always_ff @(posedge clk_pixel) begin
+    if(sys_rst) begin
+      clk_slow <= 0;
+      counter_clk <= 0;
+    end
+    else begin
+      if(counter_clk==3) begin
+        clk_slow <= ~clk_slow;
+        counter_clk <= 0;
+      end
+      else begin
+        // clk_slow <= 0;
+        counter_clk <= counter_clk + 1;
+      end
+    end
+  end
 
   // seven_segment_controller mssc(.clk_in(clk_pixel),
   //                                 .rst_in(sys_rst),
@@ -50,7 +70,7 @@ module top_level(
   logic [7:0] score;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-                                  .val_in(state_out),//{ball_speed_16, 8'b0, score}),
+                                  .val_in(db),//{ball_speed_16, 8'b0, score}),
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
@@ -106,7 +126,7 @@ module top_level(
       .fc_out(frame_count));
 
   logic [7:0] img_red, img_green, img_blue;
-
+  logic [7:0] im_red, im_green, im_blue;
   //x_com and y_com are the image sprite locations
   // logic [10:0] x_com;
   // logic [9:0] y_com;
@@ -122,76 +142,92 @@ module top_level(
 
   //use this in the first part of checkoff 01:
   //instance of image sprite.
-
-  logic lfsr_wea;
-  assign lfsr_wea = (state_out==0);
-  logic [15:0] lfsr_addra;
-  logic grass_color;
-  logic lfsr_out;
-
-  xilinx_single_port_ram_read_first #(
-      .RAM_WIDTH(1),                       // Specify RAM data width
-      .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
-      .RAM_PERFORMANCE("HIGH_PERFORMANCE") // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-  ) lfsr_ram (
-      .addra(lfsr_wea?lfsr_addra:image_addr),     // Address bus, width determined from RAM_DEPTH
-      .dina(lfsr_out),       // RAM input data, width determined from RAM_WIDTH
-      .clka(clk_pixel),       // Clock
-      .wea(lfsr_wea),         // Write enable
-      .ena(1'b1),         // RAM Enable, for additional power savings, disable port when not in use
-      .rsta(sys_rst),       // Output reset (does not affect memory contents)
-      .regcea(1'b1),   // Output register enable
-      .douta(grass_color)      // RAM output data, width determined from RAM_WIDTH
-  );
-  logic [7:0] pixelx;
-  logic [6:0] pixely;
-  logic [15:0] image_addr;
-  assign pixelx = hcount>>4;
-  assign pixely = vcount>>4;
-  assign image_addr = pixelx + (pixely * 80);
-
-
-
   map_sprite_1 #(
     .WIDTH(160),
     .HEIGHT(90))
-    com_sprite_m (
-    .pixel_clk_in(clk_pixel),
+    com_sprite_b (
+    .pixel_clk_in(clk_slow),
     .rst_in(sys_rst),
     .ballx(ballx_16),
     .bally(bally_16),
     .angle(angle),
-    .grass_color(grass_color),
+    .hcount_in(hcount),   //TODO: needs to use pipelined signal (PS1)
+    .vcount_in(vcount),   //TODO: needs to use pipelined signal (PS1)
+    .red_out(im_red),
+    .green_out(im_green),
+    .blue_out(im_blue));
+
+
+  logic [31:0] db;
+  map_sprite_3 #(
+    .WIDTH(160),
+    .HEIGHT(90))
+    com_sprite_m (
+    .pixel_clk_in(clk_slow),
+    .rst_in(sys_rst),
+    .ballx(ballx_16),
+    .bally(bally_16),
+    .angle(angle),
+    .change({sw[4],sw[3],sw[2],sw[1]}),
     .hcount_in(hcount),   //TODO: needs to use pipelined signal (PS1)
     .vcount_in(vcount),   //TODO: needs to use pipelined signal (PS1)
     .red_out(img_red),
     .green_out(img_green),
-    .blue_out(img_blue));
+    .blue_out(img_blue),
+    .debug_out(db));
 
   logic [7:0] red, green, blue;
+  logic [7:0] map1_red_pipe [2:0];
+  logic [7:0] map1_blue_pipe [2:0];
+  logic [7:0] map1_green_pipe [2:0];
 
-  assign red = img_red;
-  assign green = img_green;
-  assign blue = img_blue;
+  always_ff @(posedge clk_pixel)begin
+    map1_blue_pipe[0] <= im_blue;
+    map1_blue_pipe[1] <= map1_blue_pipe[0];
+    map1_blue_pipe[2] <= map1_blue_pipe[1];
+    map1_red_pipe[0] <= im_red;
+    map1_red_pipe[1] <= map1_red_pipe[0];
+    map1_red_pipe[2] <= map1_red_pipe[1];
+    map1_green_pipe[0] <= im_green;
+    map1_green_pipe[1] <= map1_green_pipe[0];
+    map1_green_pipe[2] <= map1_green_pipe[1];
+  end
 
-  logic horsync_pipe [3:0];
+  // assign red = (top)?img_red:im_red;
+  // assign green = (top)?img_green:im_green;
+  // assign blue = (top)?img_blue:im_blue;
+
+  assign red = (top)?img_red:map1_red_pipe[1];
+  assign green = (top)?img_green:map1_green_pipe[1];
+  assign blue = (top)?img_blue:map1_blue_pipe[1];
+
+  // assign red = map1_red_pipe[1];
+  // assign green = map1_green_pipe[1];
+  // assign blue = map1_blue_pipe[1];
+
+  // assign red = img_red;
+  // assign green = img_green;
+  // assign blue = img_blue;
+
+  
+  logic horsync_pipe [5:0];
   always_ff @(posedge clk_pixel)begin
     horsync_pipe[0] <= hor_sync;
-    for (int i=1; i<4; i = i+1)begin
+    for (int i=1; i<6; i = i+1)begin
       horsync_pipe[i] <= horsync_pipe[i-1];
     end
   end
-  logic vertsync_pipe [3:0];
+  logic vertsync_pipe [5:0];
   always_ff @(posedge clk_pixel)begin
     vertsync_pipe[0] <= vert_sync;
-    for (int i=1; i<4; i = i+1)begin
+    for (int i=1; i<6; i = i+1)begin
       vertsync_pipe[i] <= vertsync_pipe[i-1];
     end
   end
-  logic adraw_pipe [3:0];
+  logic adraw_pipe [5:0];
   always_ff @(posedge clk_pixel)begin
     adraw_pipe[0] <= active_draw;
-    for (int i=1; i<4; i = i+1)begin
+    for (int i=1; i<6; i = i+1)begin
       adraw_pipe[i] <= adraw_pipe[i-1];
     end
   end
@@ -207,7 +243,7 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(red),
     .control_in(2'b0),
-    .ve_in(adraw_pipe[3]),
+    .ve_in(adraw_pipe[5]),
     .tmds_out(tmds_10b[2]));
 
   tmds_encoder tmds_green(
@@ -215,15 +251,15 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(green),
     .control_in(2'b0),
-    .ve_in(adraw_pipe[3]),
+    .ve_in(adraw_pipe[5]),
     .tmds_out(tmds_10b[1]));
 
   tmds_encoder tmds_blue(
     .clk_in(clk_pixel),
     .rst_in(sys_rst),
     .data_in(blue),
-    .control_in({vertsync_pipe[3],horsync_pipe[3]}),
-    .ve_in(adraw_pipe[3]),
+    .control_in({vertsync_pipe[5],horsync_pipe[5]}),
+    .ve_in(adraw_pipe[5]),
     .tmds_out(tmds_10b[0]));
 
   //four tmds_serializers (blue, green, red, and clock)
@@ -271,8 +307,6 @@ module top_level(
     .cam_angle(cam_angle_16),
     .score(score),
     .state_out(state_out),
-    .lfsr_out(lfsr_out),
-    .lfsr_addra(lfsr_addra),
     .debug_out(debug_var)
   );
 
