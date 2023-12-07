@@ -16,9 +16,7 @@ module top_level(
   output logic [6:0] ss1_c,//cathod controls for the segments of lower four digits
   output logic ble_uart_cts,
   output logic ble_uart_rx,
-  output logic spkl, spkr, //speaker outputs
-  output logic mic_clk, //microphone clock
-  input wire  mic_data //microphone data
+  output logic spkl, spkr //speaker outputs
   );
 
   /* have btnd control system reset */
@@ -38,7 +36,7 @@ module top_level(
   logic new_input;
 
   logic clk_100mhz_copy;
-  assign clk_100mhz_copy = clk_100mhz;
+  BUFG mbf (.I(clk_100mhz), .O(clk_100mhz_copy));
 
 
   // seven_segment_controller mssc(.clk_in(clk_pixel),
@@ -51,7 +49,7 @@ module top_level(
   logic [7:0] score;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-                                  .val_in(state_out),//{ball_speed_16, 8'b0, score}),
+                                  .val_in(counter),//{ball_speed_16, 8'b0, score}),
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
@@ -279,10 +277,11 @@ module top_level(
 
   logic clk_m;
   audio_clk_wiz macw (.clk_in(clk_100mhz_copy), .clk_out(clk_m)); //98.3MHz
+  logic mic_clk;
   logic old_mic_clk;
   logic [8:0] m_clock_counter;
   localparam PDM_COUNT_PERIOD = 32;
-  localparam NUM_PDM_SAMPLES = 256;
+  localparam NUM_PDM_SAMPLES = 16;
 
   always_ff @(posedge clk_m) begin
     mic_clk <= m_clock_counter < PDM_COUNT_PERIOD/2;
@@ -300,25 +299,35 @@ module top_level(
       pdm_counter         <= (pdm_counter==NUM_PDM_SAMPLES)?0:pdm_counter + 1;
       audio_sample_valid  <= (pdm_counter==NUM_PDM_SAMPLES);
     end
+    else begin
+      audio_sample_valid <= 0;
+    end
   end
 
+  logic [31:0] counter;
+  logic prev_start_playback_hole;
+  always_ff @(posedge clk_m) begin
+    prev_start_playback_hole <= (state_out==6);
+  end
   playback my_playback (
     .clk_in(clk_m),
     .rst_in(sys_rst),
-    .start_playback(state_out==5),
+    .start_playback_bounce(state_out==5),
+    .start_playback_hole(state_out==6 && ~prev_start_playback_hole),
     .signal_12khz(audio_sample_valid),
-    .audio_out(audio_out)
+    .audio_out(audio_out),
+    .debug_out(counter)
   );
   logic audio_out_pdm;
   pdm my_pdm(
     .clk_in(clk_m),
     .rst_in(sys_rst),
-    .level_in(audio_out),
+    .level_in(audio_out>>>3),
     .tick_in(pdm_signal_valid),
     .pdm_out(audio_out_pdm)
   );
-  assign spkl = audio_out_pdm;
-  assign spkr = audio_out_pdm;
+  assign spkl = ((audio_out==0)?0:audio_out_pdm);
+  assign spkr = ((audio_out==0)?0:audio_out_pdm);
 
 
 endmodule // top_level

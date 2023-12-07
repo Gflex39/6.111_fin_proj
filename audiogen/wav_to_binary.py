@@ -1,7 +1,7 @@
 import wave
 
-w = wave.open("bounce.wav", "rb")
+w = wave.open("hole.wav", "rb")
 binary_data = w.readframes(w.getnframes())
-with open(f'bounce.mem', 'w') as fout:
-  fout.write('\n'.join(["{:02x}".format(elt) for elt in binary_data]))
+with open(f'hole.mem', 'w') as fout:
+  fout.write('\n'.join(["{:02x}".format(binary_data[i]) for i in range(0, 65536)]))
 w.close()
