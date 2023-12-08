@@ -111,6 +111,16 @@ module map_sprite_3 #(
     hcount_pipe[1]  <= hcount_pipe[0];
     vcount_pipe[0]  <= vcount_in;
     vcount_pipe[1]  <= vcount_pipe[0];
+
+
+
+
+    hcount_pipe[2]  <= hcount_pipe[1];
+
+    vcount_pipe[2]  <= vcount_pipe[1];
+    hcount_pipe[3]  <= hcount_pipe[2];
+
+    vcount_pipe[3]  <= vcount_pipe[2];
   end
 
   logic [23:0] ballposx;
@@ -273,17 +283,52 @@ module map_sprite_3 #(
  
   assign poo =(pos_x[27:12]+(1<<7))>>8;
 
+  logic [23:0] tfarl_x;
+  logic [23:0] tfarl_y;
+  logic [23:0] tfarr_x;
+  logic [23:0] tfarr_y;
+  logic [23:0] tnearl_x;
+  logic [23:0] tnearl_y;
+  logic [23:0] tnearr_x;
+  logic [23:0] tnearr_y;
 
+  always_ff @( posedge pixel_clk_in) begin 
+    tfarl_x<=farl_x;
+    tfarl_y<=farl_y;
+    tfarr_x<=farr_x;
+    tfarr_y<=farr_y;
+    tnearl_x<=nearl_x;
+    tnearl_y<=nearl_y;
+    tnearr_x<=nearr_x;
+    tnearr_y<=nearr_y;
+
+  end
+  
   
 
 
   logic [39:0] scale=32'd360;
-  assign sidel_x = (sky)?0:(((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))*farl_x)-((((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))-(1<<8))*nearl_x); //101101000 is 360
-  assign sidel_y = (sky)?0:(((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))*farl_y)-((((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))-(1<<8))*nearl_y); //101101000 is 360
-  assign sider_x = (sky)?0:(((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))*farr_x)-((((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))-(1<<8))*nearr_x); //101101000 is 360
-  assign sider_y = (sky)?0:(((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))*farr_y)-((((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))-(1<<8))*nearr_y); //101101000 is 360
-  assign pos_x_32 = (((sider_x)>>16)*(hcount)*8'b0011_0011+(sidel_x>>16)*(1280-hcount)*8'b0011_0011);
-  assign pos_y_32 = (((sider_y)>>16)*(hcount)*8'b0011_0011+((sidel_y)>>16)*(1280-hcount)*8'b0011_0011);
+  assign sidel_x = (sky)?0:(((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12))*tfarl_x)-((((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12))-(1<<8))*tnearl_x); //101101000 is 360
+  assign sidel_y = (sky)?0:(((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12))*tfarl_y)-((((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12))-(1<<8))*tnearl_y); //101101000 is 360
+  assign sider_x = (sky)?0:(((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12))*tfarr_x)-((((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12))-(1<<8))*tnearr_x); //101101000 is 360
+  assign sider_y = (sky)?0:(((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12))*tfarr_y)-((((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12))-(1<<8))*tnearr_y);
+  
+  
+  logic [39:0] tsidel_x;
+  logic [39:0] tsidel_y;
+  logic [39:0] tsider_x;
+  logic [39:0] tsider_y;
+
+  always_ff @( posedge pixel_clk_in) begin 
+    tsidel_x<=sidel_x;
+    tsidel_y<=sidel_y;
+    tsider_x<=sider_x;
+    tsider_y<=sider_y;
+  end
+  
+   //101101000 is 360
+  assign pos_x_32 = (((tsider_x)>>16)*(hcount_pipe[3])*8'b0011_0011+(tsidel_x>>16)*(1280-hcount_pipe[3])*8'b0011_0011);
+  assign pos_y_32 = (((tsider_y)>>16)*(hcount_pipe[3])*8'b0011_0011+((tsidel_y)>>16)*(1280-hcount_pipe[3])*8'b0011_0011);
 
 
 

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Fri Dec  8 02:06:59 2023
+| Date         : Fri Dec  8 09:05:52 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_drc -file obj/post_imp_drc.rpt
 | Design       : top_level
@@ -24,11 +24,11 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 61
+             Violations found: 33
 +----------+----------+-------------------+------------+
 | Rule     | Severity | Description       | Violations |
 +----------+----------+-------------------+------------+
-| DPIP-1   | Warning  | Input pipelining  | 60         |
+| DPIP-1   | Warning  | Input pipelining  | 32         |
 | PDRC-153 | Warning  | Gated clock check | 1          |
 +----------+----------+-------------------+------------+
 
@@ -61,275 +61,135 @@ Related violations: <none>
 
 DPIP-1#6 Warning
 Input pipelining  
-DSP com_sprite_m/pos_x_321 input com_sprite_m/pos_x_321/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/pos_x_321__0 input com_sprite_m/pos_x_321__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#7 Warning
 Input pipelining  
-DSP com_sprite_m/pos_x_321__0 input com_sprite_m/pos_x_321__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/pos_x_321__1 input com_sprite_m/pos_x_321__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#8 Warning
 Input pipelining  
-DSP com_sprite_m/pos_x_321__0 input com_sprite_m/pos_x_321__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/pos_y_321 input com_sprite_m/pos_y_321/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#9 Warning
 Input pipelining  
-DSP com_sprite_m/pos_x_321__1 input com_sprite_m/pos_x_321__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/pos_y_321__0 input com_sprite_m/pos_y_321__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#10 Warning
 Input pipelining  
-DSP com_sprite_m/pos_x_321__1 input com_sprite_m/pos_x_321__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/pos_y_321__1 input com_sprite_m/pos_y_321__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#11 Warning
 Input pipelining  
-DSP com_sprite_m/pos_x_321__2 input com_sprite_m/pos_x_321__2/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsidel_x1 input com_sprite_m/tsidel_x1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#12 Warning
 Input pipelining  
-DSP com_sprite_m/pos_y_321 input com_sprite_m/pos_y_321/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsidel_x1__0 input com_sprite_m/tsidel_x1__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#13 Warning
 Input pipelining  
-DSP com_sprite_m/pos_y_321 input com_sprite_m/pos_y_321/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsidel_x1__1 input com_sprite_m/tsidel_x1__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#14 Warning
 Input pipelining  
-DSP com_sprite_m/pos_y_321__0 input com_sprite_m/pos_y_321__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsidel_x1__2 input com_sprite_m/tsidel_x1__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#15 Warning
 Input pipelining  
-DSP com_sprite_m/pos_y_321__0 input com_sprite_m/pos_y_321__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsidel_x1__3 input com_sprite_m/tsidel_x1__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#16 Warning
 Input pipelining  
-DSP com_sprite_m/pos_y_321__1 input com_sprite_m/pos_y_321__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsidel_y1 input com_sprite_m/tsidel_y1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#17 Warning
 Input pipelining  
-DSP com_sprite_m/pos_y_321__1 input com_sprite_m/pos_y_321__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsidel_y1__0 input com_sprite_m/tsidel_y1__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#18 Warning
 Input pipelining  
-DSP com_sprite_m/pos_y_321__2 input com_sprite_m/pos_y_321__2/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsidel_y1__1 input com_sprite_m/tsidel_y1__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#19 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_x1 input com_sprite_m/sidel_x1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsidel_y1__2 input com_sprite_m/tsidel_y1__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#20 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_x1 input com_sprite_m/sidel_x1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsidel_y1__3 input com_sprite_m/tsidel_y1__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#21 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_x1__0 input com_sprite_m/sidel_x1__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsider_x1 input com_sprite_m/tsider_x1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#22 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_x1__0 input com_sprite_m/sidel_x1__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsider_x1__0 input com_sprite_m/tsider_x1__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#23 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_x1__1 input com_sprite_m/sidel_x1__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsider_x1__1 input com_sprite_m/tsider_x1__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#24 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_x1__1 input com_sprite_m/sidel_x1__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsider_x1__2 input com_sprite_m/tsider_x1__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#25 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_x1__2 input com_sprite_m/sidel_x1__2/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsider_x1__3 input com_sprite_m/tsider_x1__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#26 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_x1__2 input com_sprite_m/sidel_x1__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsider_y1 input com_sprite_m/tsider_y1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#27 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_x1__3 input com_sprite_m/sidel_x1__3/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsider_y1__0 input com_sprite_m/tsider_y1__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#28 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_x1__3 input com_sprite_m/sidel_x1__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsider_y1__1 input com_sprite_m/tsider_y1__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#29 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_y1 input com_sprite_m/sidel_y1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsider_y1__2 input com_sprite_m/tsider_y1__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#30 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_y1 input com_sprite_m/sidel_y1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP com_sprite_m/tsider_y1__3 input com_sprite_m/tsider_y1__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#31 Warning
 Input pipelining  
-DSP com_sprite_m/sidel_y1__0 input com_sprite_m/sidel_y1__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#32 Warning
-Input pipelining  
-DSP com_sprite_m/sidel_y1__0 input com_sprite_m/sidel_y1__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#33 Warning
-Input pipelining  
-DSP com_sprite_m/sidel_y1__1 input com_sprite_m/sidel_y1__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#34 Warning
-Input pipelining  
-DSP com_sprite_m/sidel_y1__1 input com_sprite_m/sidel_y1__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#35 Warning
-Input pipelining  
-DSP com_sprite_m/sidel_y1__2 input com_sprite_m/sidel_y1__2/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#36 Warning
-Input pipelining  
-DSP com_sprite_m/sidel_y1__2 input com_sprite_m/sidel_y1__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#37 Warning
-Input pipelining  
-DSP com_sprite_m/sidel_y1__3 input com_sprite_m/sidel_y1__3/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#38 Warning
-Input pipelining  
-DSP com_sprite_m/sidel_y1__3 input com_sprite_m/sidel_y1__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#39 Warning
-Input pipelining  
-DSP com_sprite_m/sider_x1 input com_sprite_m/sider_x1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#40 Warning
-Input pipelining  
-DSP com_sprite_m/sider_x1 input com_sprite_m/sider_x1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#41 Warning
-Input pipelining  
-DSP com_sprite_m/sider_x1__0 input com_sprite_m/sider_x1__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#42 Warning
-Input pipelining  
-DSP com_sprite_m/sider_x1__0 input com_sprite_m/sider_x1__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#43 Warning
-Input pipelining  
-DSP com_sprite_m/sider_x1__1 input com_sprite_m/sider_x1__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#44 Warning
-Input pipelining  
-DSP com_sprite_m/sider_x1__1 input com_sprite_m/sider_x1__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#45 Warning
-Input pipelining  
-DSP com_sprite_m/sider_x1__2 input com_sprite_m/sider_x1__2/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#46 Warning
-Input pipelining  
-DSP com_sprite_m/sider_x1__2 input com_sprite_m/sider_x1__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#47 Warning
-Input pipelining  
-DSP com_sprite_m/sider_x1__3 input com_sprite_m/sider_x1__3/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#48 Warning
-Input pipelining  
-DSP com_sprite_m/sider_x1__3 input com_sprite_m/sider_x1__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#49 Warning
-Input pipelining  
-DSP com_sprite_m/sider_y1 input com_sprite_m/sider_y1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#50 Warning
-Input pipelining  
-DSP com_sprite_m/sider_y1 input com_sprite_m/sider_y1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#51 Warning
-Input pipelining  
-DSP com_sprite_m/sider_y1__0 input com_sprite_m/sider_y1__0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#52 Warning
-Input pipelining  
-DSP com_sprite_m/sider_y1__0 input com_sprite_m/sider_y1__0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#53 Warning
-Input pipelining  
-DSP com_sprite_m/sider_y1__1 input com_sprite_m/sider_y1__1/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#54 Warning
-Input pipelining  
-DSP com_sprite_m/sider_y1__1 input com_sprite_m/sider_y1__1/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#55 Warning
-Input pipelining  
-DSP com_sprite_m/sider_y1__2 input com_sprite_m/sider_y1__2/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#56 Warning
-Input pipelining  
-DSP com_sprite_m/sider_y1__2 input com_sprite_m/sider_y1__2/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#57 Warning
-Input pipelining  
-DSP com_sprite_m/sider_y1__3 input com_sprite_m/sider_y1__3/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#58 Warning
-Input pipelining  
-DSP com_sprite_m/sider_y1__3 input com_sprite_m/sider_y1__3/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#59 Warning
-Input pipelining  
 DSP gameplay_module/addra0 input gameplay_module/addra0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
-DPIP-1#60 Warning
+DPIP-1#32 Warning
 Input pipelining  
 DSP gameplay_module/addra0 input gameplay_module/addra0/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
