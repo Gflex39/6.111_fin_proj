@@ -10,7 +10,7 @@
 `endif  /* ! SYNTHESIS */
 
 module map_sprite_3 #(
-  parameter WIDTH=160, HEIGHT=90,BORDER=16'b0010_1101_0000_0000) (
+  parameter WIDTH=160, HEIGHT=90,BORDER=16'b1101_1111_0000_0000) (
   input wire pixel_clk_in,
   input wire rst_in,
   input wire [10:0] hcount_in,
@@ -85,23 +85,23 @@ module map_sprite_3 #(
         .sin_sign(sin_sign_lang)
     );  
 
-  logic [15:0] camera_pos_x;
-  logic [15:0] camera_pos_y;
-  logic [15:0] near_depth;
-  logic [15:0] far_depth;
-  logic [15:0] ball_depth;
+  logic [23:0] camera_pos_x;
+  logic [23:0] camera_pos_y;
+  logic [23:0] near_depth;
+  logic [23:0] far_depth;
+  logic [23:0] ball_depth;
   assign near_depth = 0;
   assign ball_depth = 15+near_depth;
   assign far_depth = 63;
 
-  logic [15:0] temp_ballposx;
-  logic [15:0] temp_ballposy;
+  logic [23:0] temp_ballposx;
+  logic [23:0] temp_ballposy;
 
-  assign temp_ballposx = ballx+(BORDER);
-  assign temp_ballposy = bally+(BORDER);
+  assign temp_ballposx = {4'b0,ballx,4'b0}+({4'b0,BORDER,4'b0});
+  assign temp_ballposy = {4'b0,bally,4'b0}+({4'b0,BORDER,4'b0});
 
-  logic [15:0] ballpospipe_x [1:0];
-  logic [15:0] ballpospipe_y [1:0];
+  logic [23:0] ballpospipe_x [1:0];
+  logic [23:0] ballpospipe_y [1:0];
   always_ff @(posedge pixel_clk_in)begin
     ballpospipe_x[0] <= temp_ballposx;
     ballpospipe_x[1] <= ballpospipe_x[0];
@@ -113,24 +113,24 @@ module map_sprite_3 #(
     vcount_pipe[1]  <= vcount_pipe[0];
   end
 
-  logic [15:0] ballposx;
-  logic [15:0] ballposy;
+  logic [23:0] ballposx;
+  logic [23:0] ballposy;
 
   assign ballposx = ballpospipe_x[1];
   assign ballposy = ballpospipe_y[1];
 
-  assign camera_pos_x = ballposx+(cos_sign_ang==0?(((ball_depth)*cos_abs_ang)):0)-(cos_sign_ang==1?(((ball_depth)*cos_abs_ang)):0);
-  assign camera_pos_y = ballposy-(sin_sign_ang==0?((ball_depth*sin_abs_ang)):0)+(sin_sign_ang==1?((ball_depth*sin_abs_ang)):0);
-  logic [15:0] near_mag;
+  assign camera_pos_x = ballposx+(cos_sign_ang==0?(((ball_depth)*(cos_abs_ang<<4))):0)-(cos_sign_ang==1?(((ball_depth)*(cos_abs_ang<<4))):0);
+  assign camera_pos_y = ballposy-(sin_sign_ang==0?((ball_depth*(sin_abs_ang<<4))):0)+(sin_sign_ang==1?((ball_depth*(sin_abs_ang<<4))):0);
+  logic [19:0] near_mag;
   initial near_mag = 16'b0; //16'b0000_0101_0011_1010; // fixed point
-  logic [15:0] far_mag;
+  logic [19:0] far_mag;
   // assign far_mag = 16'b0010_1000; //16'b0110_1101_1101_0110;
-  initial far_mag = 16'b0000_0010;
+  initial far_mag = 16'b0001_0001;
   logic[31:0] far_count;
 
   always_ff @(posedge pixel_clk_in ) begin 
     if(rst_in)begin
-      far_mag <= 16'b0000_0010;
+      far_mag <= 16'b0001_0001;
       far_count<=0;
 
     end else begin
@@ -190,34 +190,34 @@ module map_sprite_3 #(
 
 
 
-  assign debug_out={far_mag,near_mag};//{camera_pos_x,camera_pos_y};
-  logic [15:0] farl_x;
-  logic [15:0] farl_y;
-  logic [15:0] farr_x;
-  logic [15:0] farr_y;
-  logic [15:0] nearl_x;
-  logic [15:0] nearl_y;
-  logic [15:0] nearr_x;
-  logic [15:0] nearr_y;
+  assign debug_out={ballx,bally};//{camera_pos_x,camera_pos_y};
+  logic [23:0] farl_x;
+  logic [23:0] farl_y;
+  logic [23:0] farr_x;
+  logic [23:0] farr_y;
+  logic [23:0] nearl_x;
+  logic [23:0] nearl_y;
+  logic [23:0] nearr_x;
+  logic [23:0] nearr_y;
 
 
 //Doesnt need to be shifted because the cos_abs is already in fixes point while far_mag is not, this is good
-  logic  [15:0] farl_x_helper;
-  assign farl_x_helper = far_mag*cos_abs_lang;
-  logic  [15:0] farl_y_helper;
-  assign farl_y_helper = far_mag*sin_abs_lang;
-  logic  [15:0] farr_x_helper;
-  assign farr_x_helper = far_mag*cos_abs_rang;
-  logic  [15:0] farr_y_helper;
-  assign farr_y_helper = far_mag*sin_abs_rang;
-  logic  [15:0] nearl_x_helper;
-  assign nearl_x_helper = near_mag*cos_abs_lang;
-  logic  [15:0] nearl_y_helper;
-  assign nearl_y_helper = near_mag*sin_abs_lang;
-  logic  [15:0] nearr_x_helper;
-  assign nearr_x_helper = near_mag*cos_abs_rang;
-  logic  [15:0] nearr_y_helper;
-  assign nearr_y_helper = near_mag*sin_abs_rang;
+  logic  [23:0] farl_x_helper;
+  assign farl_x_helper = far_mag*(cos_abs_lang<<4);
+  logic  [23:0] farl_y_helper;
+  assign farl_y_helper = far_mag*(sin_abs_lang<<4);
+  logic  [23:0] farr_x_helper;
+  assign farr_x_helper = far_mag*(cos_abs_rang<<4);
+  logic  [23:0] farr_y_helper;
+  assign farr_y_helper = far_mag*(sin_abs_rang<<4);
+  logic  [23:0] nearl_x_helper;
+  assign nearl_x_helper = near_mag*(cos_abs_lang<<4);
+  logic  [23:0] nearl_y_helper;
+  assign nearl_y_helper = near_mag*(sin_abs_lang<<4);
+  logic  [23:0] nearr_x_helper;
+  assign nearr_x_helper = near_mag*(cos_abs_rang<<4);
+  logic  [23:0] nearr_y_helper;
+  assign nearr_y_helper = near_mag*(sin_abs_rang<<4);
 
 
   //Same thing as before one is shifted one is not making the outcome shifted
@@ -239,29 +239,29 @@ module map_sprite_3 #(
   assign sky = vcount < scale;
 
   // fixed point; 16 decimal points
-  logic [31:0] pos_x_32;
-  logic [31:0] pos_y_32;
-  logic [31:0] pos_x;
-  logic [31:0] pos_y;
+  logic [39:0] pos_x_32;
+  logic [39:0] pos_y_32;
+  logic [39:0] pos_x;
+  logic [39:0] pos_y;
   
-  logic [31:0] sidel_x;
-  logic [31:0] sidel_y;
-  logic [31:0] sider_x;
-  logic [31:0] sider_y;
+  logic [39:0] sidel_x;
+  logic [39:0] sidel_y;
+  logic [39:0] sider_x;
+  logic [39:0] sider_y;
   
 
 
-  logic[31:0] poo;
+  logic[39:0] poo;
 
-  logic [31:0] l;
+  logic [39:0] l;
   assign l =(farl_x)*(32'b101101000<<16)/((vcount<<16)-(32'b101101000<<16));
-  logic [31:0] plo;
+  logic [39:0] plo;
   
   
-  logic [31:0] k;
+  logic [39:0] k;
 
 
-  logic [31:0] f;
+  logic [39:0] f;
   assign plo=(32'b101101000<<20)/((vcount<<12)-(32'b101101000<<12));
   assign k  =(sidel_x>>16)*(1280-hcount)*8'b0011_0011;
 
@@ -269,15 +269,15 @@ module map_sprite_3 #(
    assign bj=((sider_x)>>16)*(hcount)*8'b0011_0011;
   assign f  =(sider_x)>>16;
 
-  logic [31:0] bj;
+  logic [39:0] bj;
  
-  assign poo =(hcount)*8'b0011_0011;
+  assign poo =(pos_x[27:12]+(1<<7))>>8;
 
 
+  
 
 
-
-  logic [31:0] scale=32'd360;
+  logic [39:0] scale=32'd360;
   assign sidel_x = (sky)?0:(((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))*farl_x)-((((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))-(1<<8))*nearl_x); //101101000 is 360
   assign sidel_y = (sky)?0:(((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))*farl_y)-((((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))-(1<<8))*nearl_y); //101101000 is 360
   assign sider_x = (sky)?0:(((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))*farr_x)-((((32'd720-scale)<<20)/((vcount<<12)-(scale<<12))-(1<<8))*nearr_x); //101101000 is 360
@@ -295,22 +295,22 @@ module map_sprite_3 #(
   logic lo;
   logic fl;
 
-  assign fi=(pos_x_32>={8'b0,BORDER,8'b0});
-  assign pi=(pos_x_32<={8'b0,BORDER,8'b0}+(160<<16));
-  assign lo=(pos_y_32>={8'b0,BORDER,8'b0});
-  assign fl= (pos_y_32<={8'b0,BORDER,8'b0}+(80<<16));
+  assign fi=(pos_x_32>={12'b0,BORDER,12'b0});
+  assign pi=(pos_x_32<={12'b0,BORDER,12'b0}+(160<<20));
+  assign lo=(pos_y_32>={12'b0,BORDER,12'b0});
+  assign fl= (pos_y_32<={12'b0,BORDER,12'b0}+(90<<20));
 
 
-  assign pos_x = pos_x_32-{8'b0,BORDER,8'b0};
-  assign pos_y = pos_y_32-{8'b0,BORDER,8'b0};
+  assign pos_x = pos_x_32-{12'b0,BORDER,12'b0};
+  assign pos_y = pos_y_32-{12'b0,BORDER,12'b0};
 
   logic onboard;
-  assign onboard = (pos_x_32>={8'b0,BORDER,8'b0}) && (pos_x_32<={8'b0,BORDER,8'b0}+(160<<16))&&(pos_y_32>={8'b0,BORDER,8'b0})&&(pos_y_32<={8'b0,BORDER,8'b0}+(90<<16));
+  assign onboard = (pos_x_32>={12'b0,BORDER,12'b0}) && (pos_x_32<={12'b0,BORDER,12'b0}+(160<<20))&&(pos_y_32>={12'b0,BORDER,12'b0})&&(pos_y_32<={12'b0,BORDER,12'b0}+(90<<20));
   logic [$clog2(160*90)-1:0] image_addr;
   logic [15:0] map_coord_x;
   logic [15:0] map_coord_y;
-  assign map_coord_x = onboard?pos_x[23:8]:0;
-  assign map_coord_y = onboard?pos_y[23:8]:0;
+  assign map_coord_x = onboard?pos_x[27:12]+(1<<7):0;
+  assign map_coord_y = onboard?pos_y[27:12]+(1<<7):0;
   assign image_addr = onboard?((map_coord_y>>8)*160+(map_coord_x>>8)):0;
 
 

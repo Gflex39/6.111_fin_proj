@@ -9,7 +9,7 @@ module video_tb();
  
   //make inputs and outputs of appropriate size for the module testing:
   logic clk;
-  logic[15:0] ballx_16=16'd10<<8;
+  logic[15:0] ballx_16=16'h40<<8;
   logic[15:0] bally_16=16'd10<<8;
   logic angle=0;
     logic [10:0] hcount;

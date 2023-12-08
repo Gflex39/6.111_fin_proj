@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Wed Dec  6 23:00:17 2023
+| Date         : Fri Dec  8 02:06:25 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing_summary -file obj/post_synth_timing_summary.rpt
 | Design       : top_level
@@ -48,10 +48,10 @@ check_timing report
 
 Table of Contents
 -----------------
-1. checking no_clock (461)
+1. checking no_clock (488)
 2. checking constant_clock (0)
 3. checking pulse_width_clock (0)
-4. checking unconstrained_internal_endpoints (1113)
+4. checking unconstrained_internal_endpoints (1062)
 5. checking no_input_delay (9)
 6. checking no_output_delay (25)
 7. checking multiple_clock (0)
@@ -61,9 +61,9 @@ Table of Contents
 11. checking partial_output_delay (0)
 12. checking latch_loops (0)
 
-1. checking no_clock (461)
+1. checking no_clock (488)
 --------------------------
- There are 413 register/latch pins with no clock driven by root clock pin: clk_slow_reg/Q (HIGH)
+ There are 440 register/latch pins with no clock driven by root clock pin: clk_slow_reg/Q (HIGH)
 
  There are 16 register/latch pins with no clock driven by root clock pin: gameplay_module/wall_direction_reg[0]/Q (HIGH)
 
@@ -82,9 +82,9 @@ Table of Contents
  There are 0 register/latch pins which need pulse_width check
 
 
-4. checking unconstrained_internal_endpoints (1113)
+4. checking unconstrained_internal_endpoints (1062)
 ---------------------------------------------------
- There are 1113 pins that are not constrained for maximum delay. (HIGH)
+ There are 1062 pins that are not constrained for maximum delay. (HIGH)
 
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 
@@ -143,7 +143,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-      4.183        0.000                      0                 1434        0.003        0.000                      0                 1434        0.538        0.000                       0                   442  
+      4.182        0.000                      0                 1453        0.003        0.000                      0                 1453        0.538        0.000                       0                   461  
 
 
 All user specified timing constraints are met.
@@ -170,7 +170,7 @@ gclk                   {0.000 4.000}        10.000          100.000
 Clock                      WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----                      -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
 gclk                                                                                                                                                                     2.000        0.000                       0                     1  
-  clk_pixel_clk_wiz_0        4.183        0.000                      0                 1434        0.003        0.000                      0                 1434        5.754        0.000                       0                   430  
+  clk_pixel_clk_wiz_0        4.182        0.000                      0                 1453        0.003        0.000                      0                 1453        5.754        0.000                       0                   449  
   clk_tmds_clk_wiz_0                                                                                                                                                     0.538        0.000                       0                     8  
   clkfbout_clk_wiz_0                                                                                                                                                    47.845        0.000                       0                     3  
 
@@ -228,7 +228,7 @@ High Pulse Width  Slow    MMCME2_ADV/CLKIN1  n/a            2.000         4.000 
 From Clock:  clk_pixel_clk_wiz_0
   To Clock:  clk_pixel_clk_wiz_0
 
-Setup :            0  Failing Endpoints,  Worst Slack        4.183ns,  Total Violation        0.000ns
+Setup :            0  Failing Endpoints,  Worst Slack        4.182ns,  Total Violation        0.000ns
 Hold  :            0  Failing Endpoints,  Worst Slack        0.003ns,  Total Violation        0.000ns
 PW    :            0  Failing Endpoints,  Worst Slack        5.754ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
@@ -236,7 +236,7 @@ PW    :            0  Failing Endpoints,  Worst Slack        5.754ns,  Total Vio
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             4.183ns  (required time - arrival time)
+Slack (MET) :             4.182ns  (required time - arrival time)
   Source:                 gameplay_module/ball_position_y_reg[6]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Destination:            gameplay_module/bram_ball_yminus/BRAM_reg_0_0/ADDRARDADDR[0]
@@ -244,7 +244,7 @@ Slack (MET) :             4.183ns  (required time - arrival time)
   Path Group:             clk_pixel_clk_wiz_0
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            13.468ns  (clk_pixel_clk_wiz_0 rise@13.468ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        8.405ns  (logic 5.749ns (68.396%)  route 2.656ns (31.604%))
+  Data Path Delay:        8.406ns  (logic 5.749ns (68.388%)  route 2.657ns (31.612%))
   Logic Levels:           5  (CARRY4=4 DSP48E1=1)
   Clock Path Skew:        -0.145ns (DCD - SCD + CPR)
     Destination Clock Delay (DCD):    -2.063ns = ( 11.405 - 13.468 ) 
@@ -267,26 +267,26 @@ Slack (MET) :             4.183ns  (required time - arrival time)
                                                      -5.108    -3.083 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.800    -2.284    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.096    -2.188 r  mhdmicw/clkout1_buf/O
-                         net (fo=431, unplaced)       0.800    -1.388    gameplay_module/clk_pixel
+                         net (fo=450, unplaced)       0.800    -1.388    gameplay_module/clk_pixel
                          FDRE                                         r  gameplay_module/ball_position_y_reg[6]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.456    -0.932 r  gameplay_module/ball_position_y_reg[6]/Q
-                         net (fo=25, unplaced)        1.048     0.116    gameplay_module/ball_position_y[6]
+                         net (fo=26, unplaced)        1.049     0.117    gameplay_module/ball_position_y[6]
                          CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.697     0.813 r  gameplay_module/addra0_i_9/CO[3]
-                         net (fo=1, unplaced)         0.009     0.822    gameplay_module/addra0_i_9_n_0
+                                                      0.697     0.814 r  gameplay_module/addra0_i_9/CO[3]
+                         net (fo=1, unplaced)         0.009     0.823    gameplay_module/addra0_i_9_n_0
                          CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     0.936 r  gameplay_module/addra0_i_3/CO[3]
-                         net (fo=1, unplaced)         0.000     0.936    gameplay_module/addra0_i_3_n_0
+                                                      0.114     0.937 r  gameplay_module/addra0_i_3/CO[3]
+                         net (fo=1, unplaced)         0.000     0.937    gameplay_module/addra0_i_3_n_0
                          CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     1.050 r  gameplay_module/addra0_i_2/CO[3]
-                         net (fo=1, unplaced)         0.000     1.050    gameplay_module/addra0_i_2_n_0
+                                                      0.114     1.051 r  gameplay_module/addra0_i_2/CO[3]
+                         net (fo=1, unplaced)         0.000     1.051    gameplay_module/addra0_i_2_n_0
                          CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.348     1.398 r  gameplay_module/addra0_i_1/O[1]
-                         net (fo=8, unplaced)         0.800     2.198    gameplay_module/addra3[23]
+                                                      0.348     1.399 r  gameplay_module/addra0_i_1/O[1]
+                         net (fo=8, unplaced)         0.800     2.199    gameplay_module/addra3[23]
                          DSP48E1 (Prop_dsp48e1_A[15]_P[0])
-                                                      4.020     6.218 r  gameplay_module/addra0/P[0]
-                         net (fo=8, unplaced)         0.800     7.017    gameplay_module/bram_ball_yminus/addra[0]
+                                                      4.020     6.219 r  gameplay_module/addra0/P[0]
+                         net (fo=8, unplaced)         0.800     7.018    gameplay_module/bram_ball_yminus/addra[0]
                          RAMB36E1                                     r  gameplay_module/bram_ball_yminus/BRAM_reg_0_0/ADDRARDADDR[0]
   -------------------------------------------------------------------    -------------------
 
@@ -300,7 +300,7 @@ Slack (MET) :             4.183ns  (required time - arrival time)
                                                      -5.378     9.899 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760    10.659    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.091    10.750 r  mhdmicw/clkout1_buf/O
-                         net (fo=431, unplaced)       0.655    11.405    gameplay_module/bram_ball_yminus/clk_pixel
+                         net (fo=450, unplaced)       0.655    11.405    gameplay_module/bram_ball_yminus/clk_pixel
                          RAMB36E1                                     r  gameplay_module/bram_ball_yminus/BRAM_reg_0_0/CLKARDCLK
                          clock pessimism              0.530    11.935    
                          clock uncertainty           -0.168    11.767    
@@ -308,9 +308,9 @@ Slack (MET) :             4.183ns  (required time - arrival time)
                                                      -0.566    11.201    gameplay_module/bram_ball_yminus/BRAM_reg_0_0
   -------------------------------------------------------------------
                          required time                         11.201    
-                         arrival time                          -7.017    
+                         arrival time                          -7.018    
   -------------------------------------------------------------------
-                         slack                                  4.183    
+                         slack                                  4.182    
 
 
 
@@ -345,7 +345,7 @@ Slack (MET) :             0.003ns  (arrival time - required time)
                                                      -1.776    -1.454 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.337    -1.116    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.026    -1.090 r  mhdmicw/clkout1_buf/O
-                         net (fo=431, unplaced)       0.210    -0.881    red_ser/clk_pixel
+                         net (fo=450, unplaced)       0.210    -0.881    red_ser/clk_pixel
                          FDRE                                         r  red_ser/pwup_rst_reg/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.141    -0.740 r  red_ser/pwup_rst_reg/Q
@@ -365,7 +365,7 @@ Slack (MET) :             0.003ns  (arrival time - required time)
                                                      -2.410    -1.755 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.355    -1.400    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.029    -1.371 r  mhdmicw/clkout1_buf/O
-                         net (fo=431, unplaced)       0.355    -1.016    blue_ser/clk_pixel
+                         net (fo=450, unplaced)       0.355    -1.016    blue_ser/clk_pixel
     OLOGIC_X0Y20         OSERDESE2                                    r  blue_ser/primary/CLKDIV
                          clock pessimism              0.281    -0.736    
     OLOGIC_X0Y20         OSERDESE2 (Hold_oserdese2_CLKDIV_RST)

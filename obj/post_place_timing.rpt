@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Wed Dec  6 23:00:28 2023
+| Date         : Fri Dec  8 02:06:40 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing -file obj/post_place_timing.rpt
 | Design       : top_level
@@ -12,20 +12,20 @@ Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanc
 
 Timing Report
 
-Slack (MET) :             2.744ns  (required time - arrival time)
-  Source:                 gameplay_module/bram_ball/BRAM_reg_0_3/CLKARDCLK
+Slack (MET) :             3.003ns  (required time - arrival time)
+  Source:                 gameplay_module/ball_position_y_reg[4]/C
+                            (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
+  Destination:            gameplay_module/bram_ball_yminus/BRAM_reg_0_0/ADDRARDADDR[10]
                             (rising edge-triggered cell RAMB36E1 clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            gameplay_module/delta_y/A[2]
-                            (rising edge-triggered cell DSP48E1 clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_clk_wiz_0
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            13.468ns  (clk_pixel_clk_wiz_0 rise@13.468ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        9.755ns  (logic 1.853ns (18.995%)  route 7.902ns (81.005%))
-  Logic Levels:           4  (LUT3=1 LUT4=1 LUT5=1 RAMB36E1=1)
-  Clock Path Skew:        -0.237ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    -1.520ns = ( 11.948 - 13.468 ) 
-    Source Clock Delay      (SCD):    -0.809ns
-    Clock Pessimism Removal (CPR):    0.474ns
+  Data Path Delay:        9.637ns  (logic 5.774ns (59.915%)  route 3.863ns (40.085%))
+  Logic Levels:           6  (CARRY4=4 DSP48E1=1 LUT1=1)
+  Clock Path Skew:        -0.094ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    -1.591ns = ( 11.877 - 13.468 ) 
+    Source Clock Delay      (SCD):    -1.017ns
+    Clock Pessimism Removal (CPR):    0.481ns
   Clock Uncertainty:      0.168ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Discrete Jitter          (DJ):    0.329ns
@@ -43,22 +43,29 @@ Slack (MET) :             2.744ns  (required time - arrival time)
                                                      -7.025    -4.352 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, estimated)        1.666    -2.686    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096    -2.590 r  mhdmicw/clkout1_buf/O
-                         net (fo=436, estimated)      1.780    -0.809    gameplay_module/bram_ball/clk_pixel
-    RAMB36_X0Y20         RAMB36E1                                     r  gameplay_module/bram_ball/BRAM_reg_0_3/CLKARDCLK
+                         net (fo=455, estimated)      1.573    -1.017    gameplay_module/clk_pixel
+    SLICE_X52Y3          FDRE                                         r  gameplay_module/ball_position_y_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    RAMB36_X0Y20         RAMB36E1 (Prop_ramb36e1_CLKARDCLK_CASCADEOUTA)
-                                                      1.028     0.219 r  gameplay_module/bram_ball/BRAM_reg_0_3/CASCADEOUTA
-                         net (fo=1, estimated)        0.065     0.284    gameplay_module/bram_ball/BRAM_reg_0_3_n_0
-    RAMB36_X0Y21         RAMB36E1 (Prop_ramb36e1_CASCADEINA_DOADO[0])
-                                                      0.425     0.709 r  gameplay_module/bram_ball/BRAM_reg_1_3/DOADO[0]
-                         net (fo=3, estimated)        3.440     4.149    gameplay_module/bram_ball/output_register.douta_reg[3]
-    SLICE_X10Y25         LUT4 (Prop_lut4_I1_O)        0.124     4.273 r  gameplay_module/bram_ball/ball_speed[0]_i_3/O
-                         net (fo=16, estimated)       2.451     6.724    gameplay_module/bram_ball/ball_speed[0]_i_3_n_0
-    SLICE_X44Y6          LUT5 (Prop_lut5_I2_O)        0.124     6.848 r  gameplay_module/bram_ball/ball_speed[2]_i_2/O
-                         net (fo=1, estimated)        0.960     7.808    gameplay_module/bram_ball/ball_speed[2]_i_2_n_0
-    SLICE_X43Y5          LUT3 (Prop_lut3_I0_O)        0.152     7.960 r  gameplay_module/bram_ball/ball_speed[2]_i_1/O
-                         net (fo=3, estimated)        0.986     8.946    gameplay_module/A[2]
-    DSP48_X1Y3           DSP48E1                                      r  gameplay_module/delta_y/A[2]
+    SLICE_X52Y3          FDRE (Prop_fdre_C_Q)         0.518    -0.499 f  gameplay_module/ball_position_y_reg[4]/Q
+                         net (fo=10, estimated)       0.479    -0.020    gameplay_module/ball_position_y[4]
+    SLICE_X53Y4          LUT1 (Prop_lut1_I0_O)        0.124     0.104 r  gameplay_module/addra0_i_14/O
+                         net (fo=1, routed)           0.000     0.104    gameplay_module/addra0_i_14_n_0
+    SLICE_X53Y4          CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550     0.654 r  gameplay_module/addra0_i_9/CO[3]
+                         net (fo=1, estimated)        0.000     0.654    gameplay_module/addra0_i_9_n_0
+    SLICE_X53Y5          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     0.768 r  gameplay_module/addra0_i_3/CO[3]
+                         net (fo=1, estimated)        0.000     0.768    gameplay_module/addra0_i_3_n_0
+    SLICE_X53Y6          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     0.882 r  gameplay_module/addra0_i_2/CO[3]
+                         net (fo=1, estimated)        0.000     0.882    gameplay_module/addra0_i_2_n_0
+    SLICE_X53Y7          CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334     1.216 r  gameplay_module/addra0_i_1/O[1]
+                         net (fo=8, estimated)        0.648     1.864    gameplay_module/addra3[23]
+    DSP48_X1Y2           DSP48E1 (Prop_dsp48e1_A[12]_P[10])
+                                                      4.020     5.884 r  gameplay_module/addra0/P[10]
+                         net (fo=8, estimated)        2.736     8.620    gameplay_module/bram_ball_yminus/addra[10]
+    RAMB36_X0Y4          RAMB36E1                                     r  gameplay_module/bram_ball_yminus/BRAM_reg_0_0/ADDRARDADDR[10]
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_clk_wiz_0 rise edge)
@@ -71,17 +78,17 @@ Slack (MET) :             2.744ns  (required time - arrival time)
                                                      -7.279     8.731 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, estimated)        1.583    10.314    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091    10.405 r  mhdmicw/clkout1_buf/O
-                         net (fo=436, estimated)      1.544    11.948    gameplay_module/clk_pixel
-    DSP48_X1Y3           DSP48E1                                      r  gameplay_module/delta_y/CLK
-                         clock pessimism              0.474    12.422    
-                         clock uncertainty           -0.168    12.254    
-    DSP48_X1Y3           DSP48E1 (Setup_dsp48e1_CLK_A[2])
-                                                     -0.564    11.690    gameplay_module/delta_y
+                         net (fo=455, estimated)      1.472    11.877    gameplay_module/bram_ball_yminus/clk_pixel
+    RAMB36_X0Y4          RAMB36E1                                     r  gameplay_module/bram_ball_yminus/BRAM_reg_0_0/CLKARDCLK
+                         clock pessimism              0.481    12.358    
+                         clock uncertainty           -0.168    12.189    
+    RAMB36_X0Y4          RAMB36E1 (Setup_ramb36e1_CLKARDCLK_ADDRARDADDR[10])
+                                                     -0.566    11.623    gameplay_module/bram_ball_yminus/BRAM_reg_0_0
   -------------------------------------------------------------------
-                         required time                         11.690    
-                         arrival time                          -8.946    
+                         required time                         11.623    
+                         arrival time                          -8.620    
   -------------------------------------------------------------------
-                         slack                                  2.744    
+                         slack                                  3.003    
 
 
 
