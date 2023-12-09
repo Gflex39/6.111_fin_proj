@@ -24,6 +24,7 @@ module video_tb();
         com_sprite_m (
         .pixel_clk_in(clk),
         // .rst_in(),
+        .grass_color(24'heb4034),
         .ballx(ballx_16),
         .bally(bally_16),
         .angle(angle),

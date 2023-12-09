@@ -19,7 +19,7 @@ module map_sprite_3 #(
   input wire [15:0] bally,
   input wire [15:0] angle, 
   input wire [3:0] change,
-
+  input wire grass_color,
   output logic [7:0] red_out,
   output logic [7:0] green_out,
   output logic [7:0] blue_out,
@@ -30,6 +30,8 @@ module map_sprite_3 #(
   logic [9:0] vcount_pipe [3:0];
   logic [10:0] hcount_pipe [3:0];
   logic skypipe [3:0];
+
+  logic allow_pipe [1:0];
   logic onboard_pipe [3:0];
   logic [3:0] imageBROMout;
   logic [23:0] finalcolors;
@@ -281,7 +283,7 @@ module map_sprite_3 #(
 
   logic [39:0] bj;
  
-  assign poo =(pos_x[27:12]+(1<<7))>>8;
+  assign poo =((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12));
 
   logic [23:0] tfarl_x;
   logic [23:0] tfarl_y;
@@ -350,6 +352,7 @@ module map_sprite_3 #(
   assign pos_y = pos_y_32-{12'b0,BORDER,12'b0};
 
   logic onboard;
+
   assign onboard = (pos_x_32>={12'b0,BORDER,12'b0}) && (pos_x_32<={12'b0,BORDER,12'b0}+(160<<20))&&(pos_y_32>={12'b0,BORDER,12'b0})&&(pos_y_32<={12'b0,BORDER,12'b0}+(90<<20));
   logic [$clog2(160*90)-1:0] image_addr;
   logic [15:0] map_coord_x;
@@ -357,9 +360,16 @@ module map_sprite_3 #(
   assign map_coord_x = onboard?pos_x[27:12]+(1<<7):0;
   assign map_coord_y = onboard?pos_y[27:12]+(1<<7):0;
   assign image_addr = onboard?((map_coord_y>>8)*160+(map_coord_x>>8)):0;
-
+  logic [7:0] mapx_pipe[1:0];
+  logic [7:0] mapy_pipe[1:0];
 
   always_ff @(posedge pixel_clk_in)begin
+    mapx_pipe[0]<=map_coord_x[7:0];
+    mapy_pipe[0]<=map_coord_y[7:0];
+    mapx_pipe[1]<=mapx_pipe[0];
+    mapy_pipe[1]<=mapy_pipe[0];
+
+
     skypipe[0] <= sky;
     onboard_pipe[0] <= onboard;
     for (int i=1; i<4; i = i+1)begin
@@ -373,7 +383,7 @@ module map_sprite_3 #(
     .RAM_WIDTH(4),                       // Specify RAM data width
     .RAM_DEPTH(WIDTH*HEIGHT),                     // Specify RAM depth (number of entries)
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-    .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    .INIT_FILE(`FPATH(map3.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
   ) imageBRO (
     .addra(image_addr),     // Address bus, width determined from RAM_DEPTH
     .dina(0),       // RAM input data, width determined from RAM_WIDTH
@@ -384,26 +394,51 @@ module map_sprite_3 #(
     .regcea(1),   // Output register enable
     .douta(imageBROMout)      // RAM output data, width determined from RAM_WIDTH
   );
+
+  logic allow=(imageBROMout<4||((imageBROMout==4 || imageBROMout==5) && ((9'b100000000)-{1'b0,mapx_pipe[1]}>{1'b0,mapy_pipe[1]}))||((imageBROMout==6 || imageBROMout==7) && (mapx_pipe[1]<mapy_pipe[1]))||((imageBROMout==8 || imageBROMout==9) && ((9'b100000000)-mapx_pipe[1]<mapy_pipe[1]))||((imageBROMout==10 || imageBROMout==11) && (mapx_pipe[1]>mapy_pipe[1])));
+  // logic allow=1;
+  logic [23:0] wall=24'h8B4F39;
+
+
+    always_comb begin
+    case(imageBROMout) 
+      0: finalcolors = 24'h000000;
+      1: finalcolors = 24'h8B4F39;
+      2: finalcolors = grass_color?24'h7CFC00:24'h73DE0B;
+      3: finalcolors = grass_color?24'h9C972C:24'hB0AA28;
+      4: finalcolors = grass_color?24'h7CFC00:24'h73DE0B;
+      5: finalcolors = grass_color?24'h9C972C:24'hB0AA28;
+      6: finalcolors = grass_color?24'h7CFC00:24'h73DE0B;
+      7: finalcolors = grass_color?24'h9C972C:24'hB0AA28;
+      8: finalcolors = grass_color?24'h7CFC00:24'h73DE0B;
+      9: finalcolors = grass_color?24'h9C972C:24'hB0AA28;
+      10: finalcolors = grass_color?24'h7CFC00:24'h73DE0B;
+      11: finalcolors = grass_color?24'h9C972C:24'hB0AA28;
+      
+    endcase
+
+  end
+
   
 
-  xilinx_single_port_ram_read_first #(
-    .RAM_WIDTH(24),                       // Specify RAM data width
-    .RAM_DEPTH(4),                     // Specify RAM depth (number of entries)
-    .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-    .INIT_FILE(`FPATH(palette.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
-  ) paletteBRO (
-    .addra(imageBROMout),     // Address bus, width determined from RAM_DEPTH
-    .dina(0),       // RAM input data, width determined from RAM_WIDTH
-    .clka(pixel_clk_in),       // Clock
-    .wea(0),         // Write enable
-    .ena(1),         // RAM Enable, for additional power savings, disable port when not in use
-    .rsta(rst_in),       // Output reset (does not affect memory contents)
-    .regcea(1),   // Output register enable
-    .douta(finalcolors)      // RAM output data, width determined from RAM_WIDTH
-  );
-  assign red_out = skypipe[3]?8'b10000111:((onboard_pipe[3]==0)?8'b00000001:finalcolors[23:16]);
-  assign green_out = skypipe[3]?8'b11001110:((onboard_pipe[3]==0)?8'b00110010:finalcolors[15:8]);
-  assign blue_out = skypipe[3]?8'b11111010:((onboard_pipe[3]==0)?8'b00100000:finalcolors[7:0]);
+  // xilinx_single_port_ram_read_first #(
+  //   .RAM_WIDTH(24),                       // Specify RAM data width
+  //   .RAM_DEPTH(4),                     // Specify RAM depth (number of entries)
+  //   .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+  //   .INIT_FILE(`FPATH(palette.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+  // ) paletteBRO (
+  //   .addra(imageBROMout),     // Address bus, width determined from RAM_DEPTH
+  //   .dina(0),       // RAM input data, width determined from RAM_WIDTH
+  //   .clka(pixel_clk_in),       // Clock
+  //   .wea(0),         // Write enable
+  //   .ena(1),         // RAM Enable, for additional power savings, disable port when not in use
+  //   .rsta(rst_in),       // Output reset (does not affect memory contents)
+  //   .regcea(1),   // Output register enable
+  //   .douta(finalcolors)      // RAM output data, width determined from RAM_WIDTH
+  // );
+  assign red_out = skypipe[1]?8'b10000111:((onboard_pipe[1]==0)?8'b00000001:(allow)?finalcolors[23:16]:wall[23:16]);
+  assign green_out = skypipe[1]?8'b11001110:((onboard_pipe[1]==0)?8'b00110010:(allow)?finalcolors[15:8]:wall[15:8]);
+  assign blue_out = skypipe[1]?8'b11111010:((onboard_pipe[1]==0)?8'b00100000:(allow)?finalcolors[7:0]:wall[7:0]);
 
 
 endmodule
