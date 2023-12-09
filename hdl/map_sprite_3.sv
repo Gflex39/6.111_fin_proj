@@ -281,18 +281,19 @@ module map_sprite_3 #(
  
 
 
-  logic [23:0] tfarl_x [39:0]; 
-  logic [23:0] tfarl_y [39:0];
-  logic [23:0] tfarr_x [39:0];
-  logic [23:0] tfarr_y [39:0];
-  logic [23:0] tnearl_x [39:0];
-  logic [23:0] tnearl_y [39:0];
-  logic [23:0] tnearr_x [39:0];
-  logic [23:0] tnearr_y [39:0];
-  logic [10:0] hcounter_pipe [39:0];
-  logic [9:0] vcounter_pipe [39:0];
+  logic [23:0] tfarl_x [41:0]; 
+  logic [23:0] tfarl_y [41:0];
+  logic [23:0] tfarr_x [41:0];
+  logic [23:0] tfarr_y [41:0];
+  logic [23:0] tnearl_x [41:0];
+  logic [23:0] tnearl_y [41:0];
+  logic [23:0] tnearr_x [41:0];
+  logic [23:0] tnearr_y [41:0];
+  logic [10:0] hcounter_pipe [41:0];
+  logic [9:0] vcounter_pipe [41:0];
 
   always_ff @( posedge pixel_clk_in) begin 
+    multiplier1 <= multiplier;
     hcounter_pipe[0] <= hcount;
     vcounter_pipe[0] <= vcount;
     tfarl_x[0]<=farl_x;
@@ -303,7 +304,7 @@ module map_sprite_3 #(
     tnearl_y[0]<=nearl_y;
     tnearr_x[0]<=nearr_x;
     tnearr_y[0]<=nearr_y;
-    for (int i=1; i<40; i = i+1)begin
+    for (int i=1; i<42; i = i+1)begin
       hcounter_pipe[i] <= hcounter_pipe[i-1];
       vcounter_pipe[i] <= vcounter_pipe[i-1];
       tfarl_x[i]<=tfarl_x[i-1];
@@ -320,6 +321,7 @@ module map_sprite_3 #(
   logic valid_division;
   logic [39:0] multiplier;
   logic [39:0] scale=32'd360;
+  logic [39:0] multiplier1;
   
   divider4 depth_calc (
         .clk_in(pixel_clk_in),
@@ -336,11 +338,28 @@ module map_sprite_3 #(
   logic sky;
   assign sky = vcounter_pipe[39] <= scale;
 
+  // logic [39:0] sidelx_pipe [3:0];
+  // logic [39:0] sidely_pipe [3:0];
+  // logic [39:0] siderx_pipe [3:0];
+  // logic [39:0] sidery_pipe [3:0];
 
-  assign sidel_x = (sky)?0:(multiplier*tfarl_x[39])-((multiplier-(1<<8))*nearl_x[39]); //101101000 is 360
-  assign sidel_y = (sky)?0:(multiplier*tfarl_y[39])-((multiplier-(1<<8))*nearl_y[39]); //101101000 is 360
-  assign sider_x = (sky)?0:(multiplier*tfarr_x[39])-((multiplier-(1<<8))*nearr_x[39]); //101101000 is 360
-  assign sider_y = (sky)?0:(multiplier*tfarr_y[39])-((multiplier-(1<<8))*nearr_y[39]); //101101000 is 360
+  // always_ff @( posedge pixel_clk_in) begin
+  //   sidelx_pipe[0] <= multiplier*tfarl_x[39];
+  //   sidely_pipe[0] <= multiplier*tfarl_y[39];
+  //   siderx_pipe[0] <= multiplier*tfarr_x[39];
+  //   sidery_pipe[0] <= multiplier*tfarr_y[39];
+  //   sidelx_pipe[1] <= sidelx_pipe[0]+nearl_x;
+  //   sidely_pipe[1] <= multiplier*tfarl_y[39];
+  //   siderx_pipe[1] <= multiplier*tfarr_x[39];
+  //   sidery_pipe[1] <= multiplier*tfarr_y[39];
+  // end
+
+
+
+  assign sidel_x = (sky)?0:(multiplier*tfarl_x[39])-((multiplier-(1<<8))*tnearl_x[39]); //101101000 is 360
+  assign sidel_y = (sky)?0:(multiplier*tfarl_y[39])-((multiplier-(1<<8))*tnearl_y[39]); //101101000 is 360
+  assign sider_x = (sky)?0:(multiplier*tfarr_x[39])-((multiplier-(1<<8))*tnearr_x[39]); //101101000 is 360
+  assign sider_y = (sky)?0:(multiplier*tfarr_y[39])-((multiplier-(1<<8))*tnearr_y[39]); //101101000 is 360
   assign pos_x_32 = (((sider_x)>>16)*(hcounter_pipe[39])*8'b0011_0011+(sidel_x>>16)*(1280-hcounter_pipe[39])*8'b0011_0011);
   assign pos_y_32 = (((sider_y)>>16)*(hcounter_pipe[39])*8'b0011_0011+((sidel_y)>>16)*(1280-hcounter_pipe[39])*8'b0011_0011);
 

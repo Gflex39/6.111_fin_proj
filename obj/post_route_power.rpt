@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date             : Sat Dec  9 21:50:58 2023
+| Date             : Sat Dec  9 22:10:13 2023
 | Host             : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command          : report_power -file obj/post_route_power.rpt
 | Design           : top_level
@@ -30,14 +30,14 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.421        |
+| Total On-Chip Power (W)  | 0.444        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.346        |
+| Dynamic (W)              | 0.369        |
 | Device Static (W)        | 0.075        |
 | Effective TJA (C/W)      | 4.9          |
-| Max Ambient (C)          | 82.9         |
-| Junction Temperature (C) | 27.1         |
+| Max Ambient (C)          | 82.8         |
+| Junction Temperature (C) | 27.2         |
 | Confidence Level         | Low          |
 | Setting File             | ---          |
 | Simulation Activity File | ---          |
@@ -52,22 +52,22 @@ Table of Contents
 +--------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
-| Clocks                   |     0.011 |        6 |       --- |             --- |
-| Slice Logic              |     0.026 |     7849 |       --- |             --- |
-|   LUT as Logic           |     0.021 |     3755 |     32600 |           11.52 |
-|   CARRY4                 |     0.003 |      838 |      8150 |           10.28 |
-|   LUT as Shift Register  |     0.001 |      310 |      9600 |            3.23 |
-|   Register               |    <0.001 |     1764 |     65200 |            2.71 |
-|   F7/F8 Muxes            |    <0.001 |       19 |     32600 |            0.06 |
-|   Others                 |     0.000 |       76 |       --- |             --- |
+| Clocks                   |     0.012 |        6 |       --- |             --- |
+| Slice Logic              |     0.030 |     8997 |       --- |             --- |
+|   LUT as Logic           |     0.023 |     4254 |     32600 |           13.05 |
+|   CARRY4                 |     0.003 |      948 |      8150 |           11.63 |
+|   LUT as Shift Register  |     0.002 |      501 |      9600 |            5.22 |
+|   Register               |    <0.001 |     1981 |     65200 |            3.04 |
+|   F7/F8 Muxes            |    <0.001 |       20 |     32600 |            0.06 |
+|   Others                 |     0.000 |       78 |       --- |             --- |
 |   LUT as Distributed RAM |     0.000 |       21 |      9600 |            0.22 |
-| Signals                  |     0.028 |     6214 |       --- |             --- |
-| Block RAM                |     0.016 |       43 |        75 |           57.33 |
+| Signals                  |     0.036 |     7555 |       --- |             --- |
+| Block RAM                |     0.017 |       45 |        75 |           60.00 |
 | MMCM                     |     0.105 |        1 |         5 |           20.00 |
-| DSPs                     |     0.020 |       33 |       120 |           27.50 |
+| DSPs                     |     0.028 |       49 |       120 |           40.83 |
 | I/O                      |     0.141 |       42 |       210 |           20.00 |
 | Static Power             |     0.075 |          |           |                 |
-| Total                    |     0.421 |          |           |                 |
+| Total                    |     0.444 |          |           |                 |
 +--------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -77,7 +77,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.113 |       0.102 |      0.011 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.136 |       0.125 |      0.011 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.071 |       0.058 |      0.013 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.043 |       0.042 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -147,18 +147,20 @@ Table of Contents
 +----------------------+-----------+
 | Name                 | Power (W) |
 +----------------------+-----------+
-| top_level            |     0.346 |
-|   com_sprite_b       |     0.012 |
-|     angle_lookup     |     0.003 |
-|       cos_lookup     |     0.001 |
+| top_level            |     0.369 |
+|   com_sprite_b       |     0.009 |
+|     angle_lookup     |     0.001 |
+|   com_sprite_m       |     0.092 |
+|     angle_lookp      |     0.003 |
+|       cos_lookup     |     0.002 |
 |       sin_lookup     |     0.001 |
-|     imageBROM        |     0.002 |
-|   com_sprite_m       |     0.068 |
-|     depth_calc       |     0.029 |
-|     langle_lookp     |     0.002 |
-|       cos_lookup     |     0.001 |
+|     depth_calc       |     0.028 |
+|     imageBRO         |     0.010 |
+|     langle_lookp     |     0.004 |
+|       cos_lookup     |     0.002 |
+|       sin_lookup     |     0.002 |
 |     paletteBRO       |     0.003 |
-|   gameplay_module    |     0.018 |
+|   gameplay_module    |     0.019 |
 |     bram_ball_yminus |     0.009 |
 |   mhdmicw            |     0.105 |
 +----------------------+-----------+
