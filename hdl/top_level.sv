@@ -146,7 +146,7 @@ module top_level(
     .WIDTH(160),
     .HEIGHT(90))
     com_sprite_b (
-    .pixel_clk_in(clk_slow),
+    .pixel_clk_in(clk_pixel),
     .rst_in(sys_rst),
     .ballx(ballx_16),
     .bally(bally_16),
@@ -163,7 +163,7 @@ module top_level(
     .WIDTH(160),
     .HEIGHT(90))
     com_sprite_m (
-    .pixel_clk_in(clk_slow),
+    .pixel_clk_in(clk_pixel),
     .rst_in(sys_rst),
     .ballx(ballx_16),
     .bally(bally_16),
@@ -177,29 +177,28 @@ module top_level(
     .debug_out(db));
 
   logic [7:0] red, green, blue;
-  logic [7:0] map1_red_pipe [2:0];
-  logic [7:0] map1_blue_pipe [2:0];
-  logic [7:0] map1_green_pipe [2:0];
+  logic [7:0] map1_red_pipe [41:0];
+  logic [7:0] map1_blue_pipe [41:0];
+  logic [7:0] map1_green_pipe [41:0];
 
   always_ff @(posedge clk_pixel)begin
     map1_blue_pipe[0] <= im_blue;
-    map1_blue_pipe[1] <= map1_blue_pipe[0];
-    map1_blue_pipe[2] <= map1_blue_pipe[1];
     map1_red_pipe[0] <= im_red;
-    map1_red_pipe[1] <= map1_red_pipe[0];
-    map1_red_pipe[2] <= map1_red_pipe[1];
     map1_green_pipe[0] <= im_green;
-    map1_green_pipe[1] <= map1_green_pipe[0];
-    map1_green_pipe[2] <= map1_green_pipe[1];
+    for (int i=1; i<42; i = i+1)begin
+      map1_blue_pipe[i] <= map1_blue_pipe[i-1];
+      map1_red_pipe[i] <= map1_red_pipe[i-1];
+      map1_green_pipe[i] <= map1_green_pipe[i-1];
+    end
   end
 
   // assign red = (top)?img_red:im_red;
   // assign green = (top)?img_green:im_green;
   // assign blue = (top)?img_blue:im_blue;
 
-  assign red = (top)?img_red:map1_red_pipe[1];
-  assign green = (top)?img_green:map1_green_pipe[1];
-  assign blue = (top)?img_blue:map1_blue_pipe[1];
+  assign red = (top)?img_red:map1_red_pipe[41];
+  assign green = (top)?img_green:map1_green_pipe[41];
+  assign blue = (top)?img_blue:map1_blue_pipe[41];
 
   // assign red = map1_red_pipe[1];
   // assign green = map1_green_pipe[1];
@@ -210,24 +209,24 @@ module top_level(
   // assign blue = img_blue;
 
   
-  logic horsync_pipe [7:0];
+  logic horsync_pipe [45:0];
   always_ff @(posedge clk_pixel)begin
     horsync_pipe[0] <= hor_sync;
-    for (int i=1; i<8; i = i+1)begin
+    for (int i=1; i<46; i = i+1)begin
       horsync_pipe[i] <= horsync_pipe[i-1];
     end
   end
-  logic vertsync_pipe [7:0];
+  logic vertsync_pipe [45:0];
   always_ff @(posedge clk_pixel)begin
     vertsync_pipe[0] <= vert_sync;
-    for (int i=1; i<8; i = i+1)begin
+    for (int i=1; i<46; i = i+1)begin
       vertsync_pipe[i] <= vertsync_pipe[i-1];
     end
   end
-  logic adraw_pipe [7:0];
+  logic adraw_pipe [45:0];
   always_ff @(posedge clk_pixel)begin
     adraw_pipe[0] <= active_draw;
-    for (int i=1; i<8; i = i+1)begin
+    for (int i=1; i<46; i = i+1)begin
       adraw_pipe[i] <= adraw_pipe[i-1];
     end
   end
@@ -243,7 +242,7 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(red),
     .control_in(2'b0),
-    .ve_in(adraw_pipe[7]),
+    .ve_in(adraw_pipe[45]),
     .tmds_out(tmds_10b[2]));
 
   tmds_encoder tmds_green(
@@ -251,15 +250,15 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(green),
     .control_in(2'b0),
-    .ve_in(adraw_pipe[7]),
+    .ve_in(adraw_pipe[45]),
     .tmds_out(tmds_10b[1]));
 
   tmds_encoder tmds_blue(
     .clk_in(clk_pixel),
     .rst_in(sys_rst),
     .data_in(blue),
-    .control_in({vertsync_pipe[7],horsync_pipe[7]}),
-    .ve_in(adraw_pipe[7]),
+    .control_in({vertsync_pipe[45],horsync_pipe[45]}),
+    .ve_in(adraw_pipe[45]),
     .tmds_out(tmds_10b[0]));
 
   //four tmds_serializers (blue, green, red, and clock)
