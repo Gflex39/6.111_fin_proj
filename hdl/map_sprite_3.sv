@@ -263,27 +263,27 @@ module map_sprite_3 #(
   
 
 
-  logic[39:0] poo;
+  // logic[39:0] poo;
 
-  logic [39:0] l;
-  assign l =(farl_x)*(32'b101101000<<16)/((vcount<<16)-(32'b101101000<<16));
-  logic [39:0] plo;
+  // logic [39:0] l;
+  // assign l =(farl_x)*(32'b101101000<<16)/((vcount<<16)-(32'b101101000<<16));
+  // logic [39:0] plo;
   
   
-  logic [39:0] k;
+  // logic [39:0] k;
 
 
-  logic [39:0] f;
-  assign plo=(32'b101101000<<20)/((vcount<<12)-(32'b101101000<<12));
-  assign k  =(sidel_x>>16)*(1280-hcount)*8'b0011_0011;
+  // logic [39:0] f;
+  // assign plo=(32'b101101000<<20)/((vcount<<12)-(32'b101101000<<12));
+  // assign k  =(sidel_x>>16)*(1280-hcount)*8'b0011_0011;
 
 
-   assign bj=((sider_x)>>16)*(hcount)*8'b0011_0011;
-  assign f  =(sider_x)>>16;
+  //  assign bj=((sider_x)>>16)*(hcount)*8'b0011_0011;
+  // assign f  =(sider_x)>>16;
 
-  logic [39:0] bj;
+  // logic [39:0] bj;
  
-  assign poo =((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12));
+  // assign poo =((32'd720-scale)<<20)/((vcount_pipe[2]<<12)-(scale<<12));
 
   logic [23:0] tfarl_x;
   logic [23:0] tfarl_y;
@@ -383,7 +383,7 @@ module map_sprite_3 #(
     .RAM_WIDTH(4),                       // Specify RAM data width
     .RAM_DEPTH(WIDTH*HEIGHT),                     // Specify RAM depth (number of entries)
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-    .INIT_FILE(`FPATH(map3.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    .INIT_FILE(`FPATH(map4.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
   ) imageBRO (
     .addra(image_addr),     // Address bus, width determined from RAM_DEPTH
     .dina(0),       // RAM input data, width determined from RAM_WIDTH
@@ -395,7 +395,7 @@ module map_sprite_3 #(
     .douta(imageBROMout)      // RAM output data, width determined from RAM_WIDTH
   );
 
-  logic allow=(imageBROMout<4||((imageBROMout==4 || imageBROMout==5) && ((9'b100000000)-{1'b0,mapx_pipe[1]}>{1'b0,mapy_pipe[1]}))||((imageBROMout==6 || imageBROMout==7) && (mapx_pipe[1]<mapy_pipe[1]))||((imageBROMout==8 || imageBROMout==9) && ((9'b100000000)-mapx_pipe[1]<mapy_pipe[1]))||((imageBROMout==10 || imageBROMout==11) && (mapx_pipe[1]>mapy_pipe[1])));
+  logic allow=(imageBROMout<4||((imageBROMout==4 || imageBROMout==5) && ((9'b100000000)-{1'b0,mapx_pipe[1]}>{1'b0,mapy_pipe[1]}))||((imageBROMout==6 || imageBROMout==7) && (mapx_pipe[1]<mapy_pipe[1]))||((imageBROMout==8 || imageBROMout==9) && ((9'b100000000)-{1'b0,mapx_pipe[1]}<{1'b0,mapy_pipe[1]}))||((imageBROMout==10 || imageBROMout==11) && (mapx_pipe[1]>mapy_pipe[1])));
   // logic allow=1;
   logic [23:0] wall=24'h8B4F39;
 
