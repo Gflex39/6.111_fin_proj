@@ -112,21 +112,33 @@ module top_level(
 
   logic [7:0] img_red, img_green, img_blue;
   logic [7:0] im_red, im_green, im_blue;
-  //x_com and y_com are the image sprite locations
-  // logic [10:0] x_com;
-  // logic [9:0] y_com;
-  // logic pop;
-  // logic [15:0] q;
-  // lfsr_16 popping(
-  //       .clk_in(clk_pixel),
-  //       .rst_in(sys_rst),
-  //       .seed_in(16'b0011100111100001),
-  //       .q_out(q)
-  //     );
-  // //update center of mass x_com, y_com based on new_com signal
+ 
+  logic lfsr_wea;
+  assign lfsr_wea = (state_out==0);
+  logic [15:0] lfsr_addra;
+  logic grass_color;
+  logic lfsr_out;
 
-  //use this in the first part of checkoff 01:
-  //instance of image sprite.
+  xilinx_single_port_ram_read_first #(
+      .RAM_WIDTH(1),                       // Specify RAM data width
+      .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+      .RAM_PERFORMANCE("HIGH_PERFORMANCE") // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+  ) lfsr_ram (
+      .addra(lfsr_wea?lfsr_addra:image_addr),     // Address bus, width determined from RAM_DEPTH
+      .dina(lfsr_out),       // RAM input data, width determined from RAM_WIDTH
+      .clka(clk_pixel),       // Clock
+      .wea(lfsr_wea),         // Write enable
+      .ena(1'b1),         // RAM Enable, for additional power savings, disable port when not in use
+      .rsta(sys_rst),       // Output reset (does not affect memory contents)
+      .regcea(1'b1),   // Output register enable
+      .douta(grass_color)      // RAM output data, width determined from RAM_WIDTH
+  );
+  logic [7:0] pixelx;
+  logic [6:0] pixely;
+  logic [15:0] image_addr;
+  assign pixelx = hcount>>4;
+  assign pixely = vcount>>4;
+  assign image_addr = pixelx + (pixely * 80);
   map_sprite_1 #(
     .WIDTH(160),
     .HEIGHT(90))
@@ -136,6 +148,7 @@ module top_level(
     .ballx(ballx_16),
     .bally(bally_16),
     .angle(angle),
+    .grass_color(grass_color),
     .hcount_in(hcount),   //TODO: needs to use pipelined signal (PS1)
     .vcount_in(vcount),   //TODO: needs to use pipelined signal (PS1)
     .red_out(im_red),
@@ -291,6 +304,8 @@ module top_level(
     .cam_angle(cam_angle_16),
     .score(score),
     .state_out(state_out),
+    .lfsr_out(lfsr_out),
+    .lfsr_addra(lfsr_addra),
     .debug_out(debug_var)
   );
 

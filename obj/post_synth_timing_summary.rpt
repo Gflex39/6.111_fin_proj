@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Sun Dec 10 21:01:01 2023
+| Date         : Sun Dec 10 21:13:36 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing_summary -file obj/post_synth_timing_summary.rpt
 | Design       : top_level
@@ -48,10 +48,10 @@ check_timing report
 
 Table of Contents
 -----------------
-1. checking no_clock (62)
+1. checking no_clock (82)
 2. checking constant_clock (0)
 3. checking pulse_width_clock (0)
-4. checking unconstrained_internal_endpoints (23)
+4. checking unconstrained_internal_endpoints (33)
 5. checking no_input_delay (9)
 6. checking no_output_delay (27)
 7. checking multiple_clock (0)
@@ -61,11 +61,11 @@ Table of Contents
 11. checking partial_output_delay (0)
 12. checking latch_loops (0)
 
-1. checking no_clock (62)
+1. checking no_clock (82)
 -------------------------
- There are 7 register/latch pins with no clock driven by root clock pin: com_sprite_b/imageBROM/BRAM_reg_1/DOADO[0] (HIGH)
+ There are 17 register/latch pins with no clock driven by root clock pin: com_sprite_b/imageBROM/BRAM_reg_1/DOADO[0] (HIGH)
 
- There are 7 register/latch pins with no clock driven by root clock pin: com_sprite_b/imageBROM/BRAM_reg_1/DOADO[1] (HIGH)
+ There are 17 register/latch pins with no clock driven by root clock pin: com_sprite_b/imageBROM/BRAM_reg_1/DOADO[1] (HIGH)
 
  There are 16 register/latch pins with no clock driven by root clock pin: gameplay_module/wall_direction_reg[0]/Q (HIGH)
 
@@ -84,9 +84,9 @@ Table of Contents
  There are 0 register/latch pins which need pulse_width check
 
 
-4. checking unconstrained_internal_endpoints (23)
+4. checking unconstrained_internal_endpoints (33)
 -------------------------------------------------
- There are 23 pins that are not constrained for maximum delay. (HIGH)
+ There are 33 pins that are not constrained for maximum delay. (HIGH)
 
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 
@@ -145,7 +145,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-     -4.496     -501.970                    176                13666       -0.452       -0.873                      3                13666        0.538        0.000                       0                  4238  
+     -4.530    -1103.424                   1065                19682       -0.444       -0.851                      3                19682        0.538        0.000                       0                  4975  
 
 
 Timing constraints are not met.
@@ -175,7 +175,7 @@ Clock                         WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS T
 -----                         -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
 gclk                                                                                                                                                                        2.000        0.000                       0                     3  
   clk_out_audio_clk_wiz         6.360        0.000                      0                  876        0.119        0.000                      0                  876        4.587        0.000                       0                   172  
-  clk_pixel_clk_wiz_0          -2.223      -33.402                     69                12789        0.003        0.000                      0                12789        5.484        0.000                       0                  4049  
+  clk_pixel_clk_wiz_0          -3.941     -631.390                    958                18805        0.003        0.000                      0                18805        5.484        0.000                       0                  4786  
   clk_tmds_clk_wiz_0                                                                                                                                                        0.538        0.000                       0                     8  
   clkfbout_audio_clk_wiz                                                                                                                                                   47.845        0.000                       0                     3  
   clkfbout_clk_wiz_0                                                                                                                                                       47.845        0.000                       0                     3  
@@ -188,7 +188,7 @@ gclk                                                                            
 
 From Clock             To Clock                   WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
 ----------             --------                   -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
-clk_pixel_clk_wiz_0    clk_out_audio_clk_wiz       -4.496     -468.568                    107                  107       -0.452       -0.873                      3                  107  
+clk_pixel_clk_wiz_0    clk_out_audio_clk_wiz       -4.530     -472.034                    107                  107       -0.444       -0.851                      3                  107  
 
 
 ------------------------------------------------------------------------------------------------
@@ -409,7 +409,7 @@ High Pulse Width  Slow    FDRE/C              n/a            0.500         5.087
 From Clock:  clk_pixel_clk_wiz_0
   To Clock:  clk_pixel_clk_wiz_0
 
-Setup :           69  Failing Endpoints,  Worst Slack       -2.223ns,  Total Violation      -33.402ns
+Setup :          958  Failing Endpoints,  Worst Slack       -3.941ns,  Total Violation     -631.390ns
 Hold  :            0  Failing Endpoints,  Worst Slack        0.003ns,  Total Violation        0.000ns
 PW    :            0  Failing Endpoints,  Worst Slack        5.484ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
@@ -417,16 +417,16 @@ PW    :            0  Failing Endpoints,  Worst Slack        5.484ns,  Total Vio
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (VIOLATED) :        -2.223ns  (required time - arrival time)
+Slack (VIOLATED) :        -3.941ns  (required time - arrival time)
   Source:                 com_sprite_m/m1y/pdt_int_reg[5][0]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            com_sprite_m/imageBRO/BRAM_reg_0/ADDRARDADDR[13]
-                            (rising edge-triggered cell RAMB36E1 clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
+  Destination:            com_sprite_m/imageBRO/ram_data_reg[0]/D
+                            (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_clk_wiz_0
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            13.468ns  (clk_pixel_clk_wiz_0 rise@13.468ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        14.812ns  (logic 7.687ns (51.898%)  route 7.125ns (48.102%))
-  Logic Levels:           15  (CARRY4=11 LUT2=1 LUT3=1 LUT4=1 LUT6=1)
+  Data Path Delay:        17.160ns  (logic 8.319ns (48.479%)  route 8.841ns (51.521%))
+  Logic Levels:           20  (CARRY4=10 LUT2=2 LUT3=1 LUT4=1 LUT6=4 MUXF7=1 MUXF8=1)
   Clock Path Skew:        -0.145ns (DCD - SCD + CPR)
     Destination Clock Delay (DCD):    2.876ns = ( 16.344 - 13.468 ) 
     Source Clock Delay      (SCD):    3.136ns
@@ -450,53 +450,62 @@ Slack (VIOLATED) :        -2.223ns  (required time - arrival time)
                                                      -1.480     1.440 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.800     2.240    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.096     2.336 r  mhdmicw/clkout1_buf/O
-                         net (fo=4048, unplaced)      0.800     3.136    com_sprite_m/m1y/clk_pixel
+                         net (fo=4785, unplaced)      0.800     3.136    com_sprite_m/m1y/clk_pixel
                          FDRE                                         r  com_sprite_m/m1y/pdt_int_reg[5][0]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.438     3.574 r  com_sprite_m/m1y/pdt_int_reg[5][0]/Q
                          net (fo=9, unplaced)         0.707     4.281    com_sprite_m/m1y/pdt_int_reg_n_0_[5][0]
                          CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.827     5.108 r  com_sprite_m/m1y/BRAM_reg_0_i_242/CO[3]
-                         net (fo=1, unplaced)         0.009     5.117    com_sprite_m/m1y/BRAM_reg_0_i_242_n_0
+                                                      0.827     5.108 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_245/CO[3]
+                         net (fo=1, unplaced)         0.009     5.117    com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_245_n_0
                          CARRY4 (Prop_carry4_CI_O[3])
-                                                      0.329     5.446 r  com_sprite_m/m1y/BRAM_reg_0_i_527/O[3]
-                         net (fo=2, unplaced)         0.629     6.075    com_sprite_m/m1y/BRAM_reg_0_i_527_n_4
-                         LUT3 (Prop_lut3_I1_O)        0.307     6.382 r  com_sprite_m/m1y/BRAM_reg_0_i_408/O
-                         net (fo=2, unplaced)         0.460     6.842    com_sprite_m/m1y/BRAM_reg_0_i_408_n_0
-                         LUT4 (Prop_lut4_I3_O)        0.124     6.966 r  com_sprite_m/m1y/BRAM_reg_0_i_412/O
-                         net (fo=1, unplaced)         0.000     6.966    com_sprite_m/m1y/BRAM_reg_0_i_412_n_0
+                                                      0.329     5.446 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_548/O[3]
+                         net (fo=2, unplaced)         0.629     6.075    com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_548_n_4
+                         LUT3 (Prop_lut3_I1_O)        0.307     6.382 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_416/O
+                         net (fo=2, unplaced)         0.460     6.842    com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_416_n_0
+                         LUT4 (Prop_lut4_I3_O)        0.124     6.966 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_420/O
+                         net (fo=1, unplaced)         0.000     6.966    com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_420_n_0
                          CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.532     7.498 r  com_sprite_m/m1y/BRAM_reg_0_i_247/CO[3]
-                         net (fo=1, unplaced)         0.000     7.498    com_sprite_m/m1y/BRAM_reg_0_i_247_n_0
+                                                      0.532     7.498 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_250/CO[3]
+                         net (fo=1, unplaced)         0.000     7.498    com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_250_n_0
                          CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.348     7.846 r  com_sprite_m/m1y/BRAM_reg_0_i_237/O[1]
+                                                      0.348     7.846 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_226/O[1]
                          net (fo=2, unplaced)         0.622     8.468    com_sprite_m/m1y/pos_y_3200_in[13]
-                         LUT2 (Prop_lut2_I0_O)        0.306     8.774 r  com_sprite_m/m1y/BRAM_reg_0_i_240/O
-                         net (fo=1, unplaced)         0.000     8.774    com_sprite_m/m1y/BRAM_reg_0_i_240_n_0
+                         LUT2 (Prop_lut2_I0_O)        0.306     8.774 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_229/O
+                         net (fo=1, unplaced)         0.000     8.774    com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_229_n_0
                          CARRY4 (Prop_carry4_S[1]_CO[3])
-                                                      0.550     9.324 r  com_sprite_m/m1y/BRAM_reg_0_i_129/CO[3]
-                         net (fo=1, unplaced)         0.000     9.324    com_sprite_m/m1y/BRAM_reg_0_i_129_n_0
+                                                      0.550     9.324 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_122/CO[3]
+                         net (fo=1, unplaced)         0.000     9.324    com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_122_n_0
                          CARRY4 (Prop_carry4_CI_O[3])
-                                                      0.329     9.653 r  com_sprite_m/m1y/BRAM_reg_0_i_67/O[3]
+                                                      0.329     9.653 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_57/O[3]
                          net (fo=2, unplaced)         0.819    10.472    com_sprite_m/m1y/pos_y_32[19]
                          CARRY4 (Prop_carry4_S[0]_O[2])
-                                                      0.854    11.326 r  com_sprite_m/m1y/BRAM_reg_0_i_116/O[2]
+                                                      0.854    11.326 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_55/O[2]
                          net (fo=1, unplaced)         0.813    12.139    com_sprite_m/m1y/pos_y[21]
                          CARRY4 (Prop_carry4_S[3]_O[3])
-                                                      0.550    12.689 r  com_sprite_m/m1y/BRAM_reg_0_i_49/O[3]
+                                                      0.550    12.689 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_19/O[3]
                          net (fo=3, unplaced)         0.826    13.515    com_sprite_m/m1y/image_addr3[9]
-                         CARRY4 (Prop_carry4_S[0]_O[2])
-                                                      0.854    14.369 r  com_sprite_m/m1y/BRAM_reg_0_i_48/O[2]
-                         net (fo=1, unplaced)         0.813    15.182    com_sprite_m/m1y/image_addr1[8]
-                         CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.703    15.885 r  com_sprite_m/m1y/BRAM_reg_0_i_22/CO[3]
-                         net (fo=1, unplaced)         0.009    15.894    com_sprite_m/m1y/BRAM_reg_0_i_22_n_0
-                         CARRY4 (Prop_carry4_CI_O[3])
-                                                      0.329    16.223 r  com_sprite_m/m1y/BRAM_reg_0_i_21/O[3]
-                         net (fo=1, unplaced)         0.618    16.841    com_sprite_m/m1y/image_addr0[12]
-                         LUT6 (Prop_lut6_I0_O)        0.307    17.148 r  com_sprite_m/m1y/BRAM_reg_0_i_2/O
-                         net (fo=1, unplaced)         0.800    17.947    com_sprite_m/imageBRO/ADDRARDADDR[12]
-                         RAMB36E1                                     r  com_sprite_m/imageBRO/BRAM_reg_0/ADDRARDADDR[13]
+                         CARRY4 (Prop_carry4_S[0]_O[0])
+                                                      0.554    14.069 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_18/O[0]
+                         net (fo=2, unplaced)         0.322    14.391    com_sprite_m/m1y/image_addr1[6]
+                         LUT2 (Prop_lut2_I0_O)        0.295    14.686 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_21/O
+                         net (fo=1, unplaced)         0.000    14.686    com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_21_n_0
+                         CARRY4 (Prop_carry4_S[1]_O[2])
+                                                      0.580    15.266 r  com_sprite_m/m1y/BRAM_reg_0_255_0_0_i_9/O[2]
+                         net (fo=4, unplaced)         0.476    15.742    com_sprite_m/m1y/image_addr0[7]
+                         LUT6 (Prop_lut6_I0_O)        0.301    16.043 r  com_sprite_m/m1y/BRAM_reg_8192_8447_0_0_i_1/O
+                         net (fo=121, unplaced)       0.743    16.786    com_sprite_m/imageBRO/BRAM_reg_13568_13823_0_0/A7
+                         MUXF8 (Prop_muxf8_S_O)       0.283    17.069 r  com_sprite_m/imageBRO/BRAM_reg_13568_13823_0_0/F8/O
+                         net (fo=1, unplaced)         0.611    17.680    com_sprite_m/imageBRO/BRAM_reg_13568_13823_0_0_n_0
+                         LUT6 (Prop_lut6_I0_O)        0.319    17.999 r  com_sprite_m/imageBRO/ram_data[0]_i_29/O
+                         net (fo=1, unplaced)         0.902    18.901    com_sprite_m/imageBRO/ram_data[0]_i_29_n_0
+                         LUT6 (Prop_lut6_I1_O)        0.124    19.025 r  com_sprite_m/imageBRO/ram_data[0]_i_9/O
+                         net (fo=1, unplaced)         0.902    19.927    com_sprite_m/m1y/ram_data_reg[0]_1
+                         LUT6 (Prop_lut6_I1_O)        0.124    20.051 r  com_sprite_m/m1y/ram_data[0]_i_3/O
+                         net (fo=1, unplaced)         0.000    20.051    com_sprite_m/m1y/ram_data[0]_i_3_n_0
+                         MUXF7 (Prop_muxf7_I1_O)      0.245    20.296 r  com_sprite_m/m1y/ram_data_reg[0]_i_1/O
+                         net (fo=1, unplaced)         0.000    20.296    com_sprite_m/imageBRO/D[0]
+                         FDRE                                         r  com_sprite_m/imageBRO/ram_data_reg[0]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_clk_wiz_0 rise edge)
@@ -511,17 +520,16 @@ Slack (VIOLATED) :        -2.223ns  (required time - arrival time)
                                                      -1.290    14.838 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760    15.598    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.091    15.689 r  mhdmicw/clkout1_buf/O
-                         net (fo=4048, unplaced)      0.655    16.344    com_sprite_m/imageBRO/clk_pixel
-                         RAMB36E1                                     r  com_sprite_m/imageBRO/BRAM_reg_0/CLKARDCLK
+                         net (fo=4785, unplaced)      0.655    16.344    com_sprite_m/imageBRO/clk_pixel
+                         FDRE                                         r  com_sprite_m/imageBRO/ram_data_reg[0]/C
                          clock pessimism              0.115    16.459    
                          clock uncertainty           -0.168    16.291    
-                         RAMB36E1 (Setup_ramb36e1_CLKARDCLK_ADDRARDADDR[13])
-                                                     -0.566    15.725    com_sprite_m/imageBRO/BRAM_reg_0
+                         FDRE (Setup_fdre_C_D)        0.064    16.355    com_sprite_m/imageBRO/ram_data_reg[0]
   -------------------------------------------------------------------
-                         required time                         15.725    
-                         arrival time                         -17.947    
+                         required time                         16.355    
+                         arrival time                         -20.296    
   -------------------------------------------------------------------
-                         slack                                 -2.223    
+                         slack                                 -3.941    
 
 
 
@@ -558,7 +566,7 @@ Slack (MET) :             0.003ns  (arrival time - required time)
                                                      -0.477     0.209 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.337     0.546    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.026     0.572 r  mhdmicw/clkout1_buf/O
-                         net (fo=4048, unplaced)      0.210     0.782    red_ser/clk_pixel
+                         net (fo=4785, unplaced)      0.210     0.782    red_ser/clk_pixel
                          FDRE                                         r  red_ser/pwup_rst_reg/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.141     0.923 r  red_ser/pwup_rst_reg/Q
@@ -580,7 +588,7 @@ Slack (MET) :             0.003ns  (arrival time - required time)
                                                      -0.643     0.396 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.355     0.751    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.029     0.780 r  mhdmicw/clkout1_buf/O
-                         net (fo=4048, unplaced)      0.355     1.135    blue_ser/clk_pixel
+                         net (fo=4785, unplaced)      0.355     1.135    blue_ser/clk_pixel
     OLOGIC_X0Y20         OSERDESE2                                    r  blue_ser/primary/CLKDIV
                          clock pessimism             -0.208     0.927    
     OLOGIC_X0Y20         OSERDESE2 (Hold_oserdese2_CLKDIV_RST)
@@ -683,22 +691,22 @@ Max Period  n/a     MMCME2_ADV/CLKFBIN  n/a            100.000       50.000     
 From Clock:  clk_pixel_clk_wiz_0
   To Clock:  clk_out_audio_clk_wiz
 
-Setup :          107  Failing Endpoints,  Worst Slack       -4.496ns,  Total Violation     -468.568ns
-Hold  :            3  Failing Endpoints,  Worst Slack       -0.452ns,  Total Violation       -0.873ns
+Setup :          107  Failing Endpoints,  Worst Slack       -4.530ns,  Total Violation     -472.034ns
+Hold  :            3  Failing Endpoints,  Worst Slack       -0.444ns,  Total Violation       -0.851ns
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (VIOLATED) :        -4.496ns  (required time - arrival time)
-  Source:                 gameplay_module/state_reg[1]/C
+Slack (VIOLATED) :        -4.530ns  (required time - arrival time)
+  Source:                 gameplay_module/state_reg[2]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Destination:            my_playback/counter_reg[0]/R
                             (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
   Path Group:             clk_out_audio_clk_wiz
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            0.024ns  (clk_out_audio_clk_wiz rise@3326.623ns - clk_pixel_clk_wiz_0 rise@3326.599ns)
-  Data Path Delay:        3.019ns  (logic 0.875ns (28.983%)  route 2.144ns (71.017%))
+  Data Path Delay:        3.053ns  (logic 0.875ns (28.660%)  route 2.178ns (71.340%))
   Logic Levels:           2  (LUT5=1 LUT6=1)
   Clock Path Skew:        -0.361ns (DCD - SCD + CPR)
     Destination Clock Delay (DCD):    2.660ns = ( 3329.283 - 3326.623 ) 
@@ -723,15 +731,15 @@ Slack (VIOLATED) :        -4.496ns  (required time - arrival time)
                                                      -1.480  3328.040 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.800  3328.839    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.096  3328.935 r  mhdmicw/clkout1_buf/O
-                         net (fo=4048, unplaced)      0.800  3329.735    gameplay_module/clk_pixel
-                         FDRE                                         r  gameplay_module/state_reg[1]/C
+                         net (fo=4785, unplaced)      0.800  3329.735    gameplay_module/clk_pixel
+                         FDRE                                         r  gameplay_module/state_reg[2]/C
   -------------------------------------------------------------------    -------------------
-                         FDRE (Prop_fdre_C_Q)         0.456  3330.191 r  gameplay_module/state_reg[1]/Q
-                         net (fo=21, unplaced)        0.802  3330.993    gameplay_module/state_out[1]
-                         LUT5 (Prop_lut5_I2_O)        0.295  3331.288 f  gameplay_module/counter[15]_i_4/O
-                         net (fo=3, unplaced)         0.467  3331.755    gameplay_module/playing_back_hole_reg
-                         LUT6 (Prop_lut6_I0_O)        0.124  3331.879 r  gameplay_module/counter[15]_i_1/O
-                         net (fo=96, unplaced)        0.875  3332.754    my_playback/p_0_in
+                         FDRE (Prop_fdre_C_Q)         0.456  3330.191 r  gameplay_module/state_reg[2]/Q
+                         net (fo=85, unplaced)        0.836  3331.027    gameplay_module/state_out[2]
+                         LUT5 (Prop_lut5_I2_O)        0.295  3331.322 f  gameplay_module/counter[15]_i_4/O
+                         net (fo=3, unplaced)         0.467  3331.789    gameplay_module/playing_back_hole_reg
+                         LUT6 (Prop_lut6_I0_O)        0.124  3331.913 r  gameplay_module/counter[15]_i_1/O
+                         net (fo=96, unplaced)        0.875  3332.788    my_playback/p_0_in
                          FDRE                                         r  my_playback/counter_reg[0]/R
   -------------------------------------------------------------------    -------------------
 
@@ -754,9 +762,9 @@ Slack (VIOLATED) :        -4.496ns  (required time - arrival time)
                          FDRE (Setup_fdre_C_R)       -0.433  3328.258    my_playback/counter_reg[0]
   -------------------------------------------------------------------
                          required time                       3328.258    
-                         arrival time                       -3332.754    
+                         arrival time                       -3332.788    
   -------------------------------------------------------------------
-                         slack                                 -4.496    
+                         slack                                 -4.530    
 
 
 
@@ -764,7 +772,7 @@ Slack (VIOLATED) :        -4.496ns  (required time - arrival time)
 
 Min Delay Paths
 --------------------------------------------------------------------------------------
-Slack (VIOLATED) :        -0.452ns  (arrival time - required time)
+Slack (VIOLATED) :        -0.444ns  (arrival time - required time)
   Source:                 gameplay_module/state_reg[0]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Destination:            prev_start_playback_hole_reg/D
@@ -772,7 +780,7 @@ Slack (VIOLATED) :        -0.452ns  (arrival time - required time)
   Path Group:             clk_out_audio_clk_wiz
   Path Type:              Hold (Min at Fast Process Corner)
   Requirement:            0.000ns  (clk_out_audio_clk_wiz rise@0.000ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        0.395ns  (logic 0.239ns (60.448%)  route 0.156ns (39.552%))
+  Data Path Delay:        0.403ns  (logic 0.239ns (59.309%)  route 0.164ns (40.691%))
   Logic Levels:           1  (LUT3=1)
   Clock Path Skew:        0.049ns (DCD - SCD - CPR)
     Destination Clock Delay (DCD):    1.039ns
@@ -797,13 +805,13 @@ Slack (VIOLATED) :        -0.452ns  (arrival time - required time)
                                                      -0.477     0.209 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.337     0.546    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.026     0.572 r  mhdmicw/clkout1_buf/O
-                         net (fo=4048, unplaced)      0.210     0.782    gameplay_module/clk_pixel
+                         net (fo=4785, unplaced)      0.210     0.782    gameplay_module/clk_pixel
                          FDRE                                         r  gameplay_module/state_reg[0]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.141     0.923 f  gameplay_module/state_reg[0]/Q
-                         net (fo=20, unplaced)        0.156     1.079    gameplay_module/state_out[0]
-                         LUT3 (Prop_lut3_I2_O)        0.098     1.177 r  gameplay_module/prev_start_playback_hole_i_1/O
-                         net (fo=1, unplaced)         0.000     1.177    prev_start_playback_hole0
+                         net (fo=42, unplaced)        0.164     1.086    gameplay_module/state_out[0]
+                         LUT3 (Prop_lut3_I2_O)        0.098     1.184 r  gameplay_module/prev_start_playback_hole_i_1/O
+                         net (fo=1, unplaced)         0.000     1.184    p_0_in
                          FDRE                                         r  prev_start_playback_hole_reg/D
   -------------------------------------------------------------------    -------------------
 
@@ -826,9 +834,9 @@ Slack (VIOLATED) :        -0.452ns  (arrival time - required time)
                          FDRE (Hold_fdre_C_D)         0.091     1.629    prev_start_playback_hole_reg
   -------------------------------------------------------------------
                          required time                         -1.629    
-                         arrival time                           1.177    
+                         arrival time                           1.184    
   -------------------------------------------------------------------
-                         slack                                 -0.452    
+                         slack                                 -0.444    
 
 
 
