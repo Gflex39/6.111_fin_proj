@@ -323,7 +323,7 @@ module map_sprite_3 #(
   logic [39:0] scale=32'd360;
   logic [39:0] multiplier1;
   
-  divider4 depth_calc (
+  divider4 #(.WIDTH(40)) depth_calc (
         .clk_in(pixel_clk_in),
         .rst_in(rst_in),
         .dividend_in(((32'd720-scale)<<20)),
@@ -360,8 +360,40 @@ module map_sprite_3 #(
   assign sidel_y = (sky)?0:(multiplier*tfarl_y[39])-((multiplier-(1<<8))*tnearl_y[39]); //101101000 is 360
   assign sider_x = (sky)?0:(multiplier*tfarr_x[39])-((multiplier-(1<<8))*tnearr_x[39]); //101101000 is 360
   assign sider_y = (sky)?0:(multiplier*tfarr_y[39])-((multiplier-(1<<8))*tnearr_y[39]); //101101000 is 360
-  assign pos_x_32 = (((sider_x)>>16)*(hcounter_pipe[39])*8'b0011_0011+(sidel_x>>16)*(1280-hcounter_pipe[39])*8'b0011_0011);
-  assign pos_y_32 = (((sider_y)>>16)*(hcounter_pipe[39])*8'b0011_0011+((sidel_y)>>16)*(1280-hcounter_pipe[39])*8'b0011_0011);
+
+
+  logic [79:0] p1x;
+  multiplier m1x (
+    .clk_in(pixel_clk_in),
+    .a((sider_x)>>16),
+    .b(hcounter_pipe[39]),
+    .pdt(p1x)
+  );
+  logic [79:0] p1y;
+  multiplier m1y (
+    .clk_in(pixel_clk_in),
+    .a((sider_y)>>16),
+    .b(hcounter_pipe[39]),
+    .pdt(p1y)
+  );
+  logic [79:0] p2x;
+  multiplier m2x (
+    .clk_in(pixel_clk_in),
+    .a((sidel_x)>>16),
+    .b(1280-hcounter_pipe[39]),
+    .pdt(p2x)
+  );
+  logic [79:0] p2y;
+  multiplier m2y (
+    .clk_in(pixel_clk_in),
+    .a((sidel_y)>>16),
+    .b(1280-hcounter_pipe[39]),
+    .pdt(p2y)
+  );
+  assign pos_x_32 = (p1x*8'b0011_0011+p2x*8'b0011_0011);
+  assign pos_y_32 = (p1y*8'b0011_0011+p2y*8'b0011_0011);
+  //assign pos_x_32 = (((sider_x)>>16)*(hcounter_pipe[39])*8'b0011_0011+(sidel_x>>16)*(1280-hcounter_pipe[39])*8'b0011_0011);
+  //assign pos_y_32 = (((sider_y)>>16)*(hcounter_pipe[39])*8'b0011_0011+((sidel_y)>>16)*(1280-hcounter_pipe[39])*8'b0011_0011);
 
 
 
@@ -430,7 +462,7 @@ module map_sprite_3 #(
     .RAM_WIDTH(4),                       // Specify RAM data width
     .RAM_DEPTH(WIDTH*HEIGHT),                     // Specify RAM depth (number of entries)
     .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-    .INIT_FILE(`FPATH(map2.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    .INIT_FILE(`FPATH(map4.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
   ) imageBRO (
     .addra(image_addr),     // Address bus, width determined from RAM_DEPTH
     .dina(0),       // RAM input data, width determined from RAM_WIDTH

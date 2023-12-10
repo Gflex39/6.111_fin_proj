@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date             : Sat Dec  9 22:10:13 2023
+| Date             : Sun Dec 10 21:03:30 2023
 | Host             : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command          : report_power -file obj/post_route_power.rpt
 | Design           : top_level
@@ -30,14 +30,14 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.444        |
+| Total On-Chip Power (W)  | 0.559        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.369        |
-| Device Static (W)        | 0.075        |
+| Dynamic (W)              | 0.483        |
+| Device Static (W)        | 0.076        |
 | Effective TJA (C/W)      | 4.9          |
-| Max Ambient (C)          | 82.8         |
-| Junction Temperature (C) | 27.2         |
+| Max Ambient (C)          | 82.2         |
+| Junction Temperature (C) | 27.8         |
 | Confidence Level         | Low          |
 | Setting File             | ---          |
 | Simulation Activity File | ---          |
@@ -52,22 +52,22 @@ Table of Contents
 +--------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
-| Clocks                   |     0.012 |        6 |       --- |             --- |
-| Slice Logic              |     0.030 |     8997 |       --- |             --- |
-|   LUT as Logic           |     0.023 |     4254 |     32600 |           13.05 |
-|   CARRY4                 |     0.003 |      948 |      8150 |           11.63 |
-|   LUT as Shift Register  |     0.002 |      501 |      9600 |            5.22 |
-|   Register               |    <0.001 |     1981 |     65200 |            3.04 |
-|   F7/F8 Muxes            |    <0.001 |       20 |     32600 |            0.06 |
-|   Others                 |     0.000 |       78 |       --- |             --- |
-|   LUT as Distributed RAM |     0.000 |       21 |      9600 |            0.22 |
-| Signals                  |     0.036 |     7555 |       --- |             --- |
-| Block RAM                |     0.017 |       45 |        75 |           60.00 |
-| MMCM                     |     0.105 |        1 |         5 |           20.00 |
-| DSPs                     |     0.028 |       49 |       120 |           40.83 |
-| I/O                      |     0.141 |       42 |       210 |           20.00 |
-| Static Power             |     0.075 |          |           |                 |
-| Total                    |     0.444 |          |           |                 |
+| Clocks                   |     0.021 |        8 |       --- |             --- |
+| Slice Logic              |     0.025 |    11871 |       --- |             --- |
+|   LUT as Logic           |     0.020 |     4723 |     32600 |           14.49 |
+|   CARRY4                 |     0.003 |      955 |      8150 |           11.72 |
+|   LUT as Shift Register  |     0.001 |      582 |      9600 |            6.06 |
+|   Register               |    <0.001 |     2515 |     65200 |            3.86 |
+|   F7/F8 Muxes            |    <0.001 |      500 |     32600 |            1.53 |
+|   Others                 |     0.000 |      114 |       --- |             --- |
+|   LUT as Distributed RAM |     0.000 |     1141 |      9600 |           11.89 |
+| Signals                  |     0.030 |     8894 |       --- |             --- |
+| Block RAM                |     0.016 |       75 |        75 |          100.00 |
+| MMCM                     |     0.237 |        2 |         5 |           40.00 |
+| DSPs                     |     0.013 |       45 |       120 |           37.50 |
+| I/O                      |     0.141 |       44 |       210 |           20.95 |
+| Static Power             |     0.076 |          |           |                 |
+| Total                    |     0.559 |          |           |                 |
 +--------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -77,8 +77,8 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.136 |       0.125 |      0.011 |       NA    | Unspecified | NA         |
-| Vccaux    |       1.800 |     0.071 |       0.058 |      0.013 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.118 |       0.106 |      0.012 |       NA    | Unspecified | NA         |
+| Vccaux    |       1.800 |     0.144 |       0.132 |      0.013 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.043 |       0.042 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -86,7 +86,7 @@ Table of Contents
 | Vcco135   |       1.350 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco12    |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vccaux_io |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
-| Vccbram   |       1.000 |     0.003 |       0.001 |      0.001 |       NA    | Unspecified | NA         |
+| Vccbram   |       1.000 |     0.003 |       0.001 |      0.002 |       NA    | Unspecified | NA         |
 | Vccadc    |       1.800 |     0.020 |       0.000 |      0.020 |       NA    | Unspecified | NA         |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 
@@ -128,14 +128,16 @@ Table of Contents
 2.2 Clock Constraints
 ---------------------
 
-+---------------------+-----------------------------+-----------------+
-| Clock               | Domain                      | Constraint (ns) |
-+---------------------+-----------------------------+-----------------+
-| clk_pixel_clk_wiz_0 | mhdmicw/clk_pixel_clk_wiz_0 |            13.5 |
-| clk_tmds_clk_wiz_0  | mhdmicw/clk_tmds_clk_wiz_0  |             2.7 |
-| clkfbout_clk_wiz_0  | mhdmicw/clkfbout_clk_wiz_0  |            50.0 |
-| gclk                | clk_100mhz                  |            10.0 |
-+---------------------+-----------------------------+-----------------+
++------------------------+-----------------------------+-----------------+
+| Clock                  | Domain                      | Constraint (ns) |
++------------------------+-----------------------------+-----------------+
+| clk_out_audio_clk_wiz  | macw/clk_out_audio_clk_wiz  |            10.2 |
+| clk_pixel_clk_wiz_0    | mhdmicw/clk_pixel_clk_wiz_0 |            13.5 |
+| clk_tmds_clk_wiz_0     | mhdmicw/clk_tmds_clk_wiz_0  |             2.7 |
+| clkfbout_audio_clk_wiz | macw/clkfbout_audio_clk_wiz |            50.0 |
+| clkfbout_clk_wiz_0     | mhdmicw/clkfbout_clk_wiz_0  |            50.0 |
+| gclk                   | clk_100mhz                  |            10.0 |
++------------------------+-----------------------------+-----------------+
 
 
 3. Detailed Reports
@@ -147,22 +149,25 @@ Table of Contents
 +----------------------+-----------+
 | Name                 | Power (W) |
 +----------------------+-----------+
-| top_level            |     0.369 |
-|   com_sprite_b       |     0.009 |
-|     angle_lookup     |     0.001 |
-|   com_sprite_m       |     0.092 |
-|     angle_lookp      |     0.003 |
-|       cos_lookup     |     0.002 |
-|       sin_lookup     |     0.001 |
+| top_level            |     0.483 |
+|   com_sprite_b       |     0.003 |
+|     imageBROM        |     0.002 |
+|   com_sprite_m       |     0.073 |
+|     angle_lookp      |     0.001 |
 |     depth_calc       |     0.028 |
-|     imageBRO         |     0.010 |
-|     langle_lookp     |     0.004 |
-|       cos_lookup     |     0.002 |
-|       sin_lookup     |     0.002 |
+|     imageBRO         |     0.001 |
+|     m1x              |     0.006 |
+|     m1y              |     0.006 |
+|     m2x              |     0.005 |
+|     m2y              |     0.005 |
 |     paletteBRO       |     0.003 |
-|   gameplay_module    |     0.019 |
+|   gameplay_module    |     0.017 |
 |     bram_ball_yminus |     0.009 |
+|   macw               |     0.132 |
 |   mhdmicw            |     0.105 |
+|   my_playback        |     0.006 |
+|     bram_ball_bounce |     0.002 |
+|     bram_ball_hole   |     0.002 |
 +----------------------+-----------+
 
 

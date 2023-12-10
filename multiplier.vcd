@@ -1,0 +1,153 @@
+$date
+	Sun Dec 10 14:50:56 2023
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module multiplier_tb $end
+$var wire 80 ! y_out [79:0] $end
+$var parameter 32 " WIDTH $end
+$var reg 40 # a_in [39:0] $end
+$var reg 40 $ b_in [39:0] $end
+$var reg 1 % clk $end
+$scope module DUT $end
+$var wire 40 & a [39:0] $end
+$var wire 40 ' b [39:0] $end
+$var wire 1 % clk $end
+$var wire 80 ( pdt [79:0] $end
+$var parameter 32 ) LEVEL $end
+$var parameter 32 * WIDTH $end
+$var reg 40 + a_int [39:0] $end
+$var reg 40 , b_int [39:0] $end
+$var integer 32 - i [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b101000 *
+b110 )
+b101000 "
+$end
+#0
+$dumpvars
+bx -
+bx ,
+bx +
+bx (
+bx '
+bx &
+0%
+bx $
+bx #
+bx !
+$end
+#5000
+b10 ,
+b1 +
+b110 -
+1%
+b10 $
+b10 '
+b1 #
+b1 &
+#10000
+0%
+#15000
+b100 ,
+b11 +
+b110 -
+1%
+b100 $
+b100 '
+b11 #
+b11 &
+#20000
+0%
+#25000
+b110 ,
+b101 +
+b110 -
+1%
+b110 $
+b110 '
+b101 #
+b101 &
+#30000
+0%
+#35000
+b1000 ,
+b111 +
+b110 -
+1%
+b1000 $
+b1000 '
+b111 #
+b111 &
+#40000
+0%
+#45000
+b1010 ,
+b1001 +
+b110 -
+1%
+b1010 $
+b1010 '
+b1001 #
+b1001 &
+#50000
+0%
+#55000
+b1100 ,
+b1011 +
+b110 -
+1%
+b1100 $
+b1100 '
+b1011 #
+b1011 &
+#60000
+0%
+#65000
+b10 !
+b10 (
+b110 -
+1%
+#70000
+0%
+#75000
+b1100 !
+b1100 (
+b110 -
+1%
+#80000
+0%
+#85000
+b11110 !
+b11110 (
+b110 -
+1%
+#90000
+0%
+#95000
+b111000 !
+b111000 (
+b110 -
+1%
+#100000
+0%
+#105000
+b1011010 !
+b1011010 (
+b110 -
+1%
+#110000
+0%
+#115000
+b10000100 !
+b10000100 (
+b110 -
+1%

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Sat Dec  9 22:07:48 2023
+| Date         : Sun Dec 10 21:01:02 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing -file obj/post_synth_timing.rpt
 | Design       : top_level
@@ -12,139 +12,73 @@ Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanc
 
 Timing Report
 
-Slack (VIOLATED) :        -19.592ns  (required time - arrival time)
-  Source:                 com_sprite_m/depth_calc/dividend_reg[39][7]/C
+Slack (VIOLATED) :        -4.496ns  (required time - arrival time)
+  Source:                 gameplay_module/state_reg[1]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            com_sprite_m/imageBRO/BRAM_reg_0/ADDRARDADDR[13]
-                            (rising edge-triggered cell RAMB36E1 clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Path Group:             clk_pixel_clk_wiz_0
+  Destination:            my_playback/counter_reg[0]/R
+                            (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
+  Path Group:             clk_out_audio_clk_wiz
   Path Type:              Setup (Max at Slow Process Corner)
-  Requirement:            13.468ns  (clk_pixel_clk_wiz_0 rise@13.468ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        32.181ns  (logic 20.415ns (63.439%)  route 11.766ns (36.561%))
-  Logic Levels:           27  (CARRY4=16 DSP48E1=3 LUT1=1 LUT2=4 LUT3=1 LUT4=1 LUT6=1)
-  Clock Path Skew:        -0.145ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    -2.063ns = ( 11.405 - 13.468 ) 
-    Source Clock Delay      (SCD):    -1.388ns
-    Clock Pessimism Removal (CPR):    0.530ns
-  Clock Uncertainty:      0.168ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+  Requirement:            0.024ns  (clk_out_audio_clk_wiz rise@3326.623ns - clk_pixel_clk_wiz_0 rise@3326.599ns)
+  Data Path Delay:        3.019ns  (logic 0.875ns (28.983%)  route 2.144ns (71.017%))
+  Logic Levels:           2  (LUT5=1 LUT6=1)
+  Clock Path Skew:        -0.361ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.660ns = ( 3329.283 - 3326.623 ) 
+    Source Clock Delay      (SCD):    3.136ns = ( 3329.735 - 3326.599 ) 
+    Clock Pessimism Removal (CPR):    0.115ns
+  Clock Uncertainty:      0.707ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
-    Discrete Jitter          (DJ):    0.329ns
-    Phase Error              (PE):    0.000ns
+    Discrete Jitter          (DJ):    0.532ns
+    Phase Error              (PE):    0.439ns
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk_pixel_clk_wiz_0 rise edge)
-                                                      0.000     0.000 r  
-    N15                                               0.000     0.000 r  clk_100mhz (IN)
-                         net (fo=0)                   0.000     0.000    mhdmicw/clk_100mhz
-    N15                  IBUF (Prop_ibuf_I_O)         1.440     1.440 r  mhdmicw/clkin1_ibufg/O
-                         net (fo=1, unplaced)         0.584     2.024    mhdmicw/clk_ref_clk_wiz_0
+                                                   3326.599  3326.599 r  
+    N15                                               0.000  3326.599 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000  3326.599    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.440  3328.040 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, unplaced)         0.800  3328.839    clk_100mhz_IBUF
+                         BUFG (Prop_bufg_I_O)         0.096  3328.935 r  mbf/O
+                         net (fo=2, unplaced)         0.584  3329.519    mhdmicw/clk_ref
                          MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
-                                                     -5.108    -3.083 r  mhdmicw/mmcm_adv_inst/CLKOUT0
-                         net (fo=1, unplaced)         0.800    -2.284    mhdmicw/clk_pixel_clk_wiz_0
-                         BUFG (Prop_bufg_I_O)         0.096    -2.188 r  mhdmicw/clkout1_buf/O
-                         net (fo=2578, unplaced)      0.800    -1.388    com_sprite_m/depth_calc/clk_pixel
-                         FDRE                                         r  com_sprite_m/depth_calc/dividend_reg[39][7]/C
+                                                     -1.480  3328.040 r  mhdmicw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, unplaced)         0.800  3328.839    mhdmicw/clk_pixel_clk_wiz_0
+                         BUFG (Prop_bufg_I_O)         0.096  3328.935 r  mhdmicw/clkout1_buf/O
+                         net (fo=4048, unplaced)      0.800  3329.735    gameplay_module/clk_pixel
+                         FDRE                                         r  gameplay_module/state_reg[1]/C
   -------------------------------------------------------------------    -------------------
-                         FDRE (Prop_fdre_C_Q)         0.456    -0.932 r  com_sprite_m/depth_calc/dividend_reg[39][7]/Q
-                         net (fo=1, unplaced)         0.666    -0.266    com_sprite_m/multiplier[7]
-                         CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.827     0.561 r  com_sprite_m/sidel_x1__0_i_3/CO[3]
-                         net (fo=1, unplaced)         0.009     0.570    com_sprite_m/sidel_x1__0_i_3_n_0
-                         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     0.684 r  com_sprite_m/sidel_x1__0_i_2/CO[3]
-                         net (fo=1, unplaced)         0.000     0.684    com_sprite_m/sidel_x1__0_i_2_n_0
-                         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.348     1.032 r  com_sprite_m/sidel_x1__0_i_1/O[1]
-                         net (fo=4, unplaced)         0.800     1.832    com_sprite_m/sider_x2[16]
-                         DSP48E1 (Prop_dsp48e1_B[16]_PCOUT[47])
-                                                      4.030     5.862 r  com_sprite_m/sider_y1__0/PCOUT[47]
-                         net (fo=1, unplaced)         0.055     5.917    com_sprite_m/sider_y1__0_n_106
-                         DSP48E1 (Prop_dsp48e1_PCIN[47]_P[17])
-                                                      1.518     7.435 r  com_sprite_m/sider_y1__1/P[17]
-                         net (fo=2, unplaced)         0.800     8.234    com_sprite_m/sider_y1__1_n_88
-                         LUT2 (Prop_lut2_I0_O)        0.124     8.358 r  com_sprite_m/pos_y_321__2_i_76/O
-                         net (fo=1, unplaced)         0.000     8.358    com_sprite_m/pos_y_321__2_i_76_n_0
-                         CARRY4 (Prop_carry4_S[1]_O[3])
-                                                      0.640     8.998 r  com_sprite_m/pos_y_321__2_i_65/O[3]
-                         net (fo=1, unplaced)         0.618     9.616    com_sprite_m/pos_y_321__2_i_65_n_4
-                         LUT2 (Prop_lut2_I1_O)        0.307     9.923 r  com_sprite_m/pos_y_321__2_i_36/O
-                         net (fo=1, unplaced)         0.000     9.923    com_sprite_m/pos_y_321__2_i_36_n_0
-                         CARRY4 (Prop_carry4_S[0]_O[3])
-                                                      0.606    10.529 r  com_sprite_m/pos_y_321__2_i_25/O[3]
-                         net (fo=1, unplaced)         0.618    11.147    com_sprite_m/sider_y0[39]
-                         LUT2 (Prop_lut2_I0_O)        0.307    11.454 r  com_sprite_m/pos_y_321__2_i_1/O
-                         net (fo=1, unplaced)         0.800    12.254    com_sprite_m/sider_y[39]
-                         DSP48E1 (Prop_dsp48e1_A[23]_P[1])
-                                                      3.841    16.095 f  com_sprite_m/pos_y_321__2/P[1]
-                         net (fo=7, unplaced)         0.800    16.895    com_sprite_m/imageBRO/BRAM_reg_0_i_220_0[1]
-                         LUT1 (Prop_lut1_I0_O)        0.124    17.019 r  com_sprite_m/imageBRO/BRAM_reg_0_i_408/O
-                         net (fo=1, unplaced)         0.000    17.019    com_sprite_m/imageBRO/BRAM_reg_0_i_408_n_0
-                         CARRY4 (Prop_carry4_S[1]_CO[3])
-                                                      0.550    17.569 r  com_sprite_m/imageBRO/BRAM_reg_0_i_280/CO[3]
-                         net (fo=1, unplaced)         0.009    17.578    com_sprite_m/imageBRO/BRAM_reg_0_i_280_n_0
-                         CARRY4 (Prop_carry4_CI_O[3])
-                                                      0.329    17.907 r  com_sprite_m/imageBRO/BRAM_reg_0_i_527/O[3]
-                         net (fo=2, unplaced)         0.629    18.536    com_sprite_m/imageBRO/BRAM_reg_0_i_527_n_4
-                         LUT3 (Prop_lut3_I1_O)        0.300    18.836 r  com_sprite_m/imageBRO/BRAM_reg_0_i_413/O
-                         net (fo=2, unplaced)         0.643    19.479    com_sprite_m/imageBRO/BRAM_reg_0_i_413_n_0
-                         LUT4 (Prop_lut4_I3_O)        0.332    19.811 r  com_sprite_m/imageBRO/BRAM_reg_0_i_417/O
-                         net (fo=1, unplaced)         0.000    19.811    com_sprite_m/imageBRO/BRAM_reg_0_i_417_n_0
-                         CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.532    20.343 r  com_sprite_m/imageBRO/BRAM_reg_0_i_285/CO[3]
-                         net (fo=1, unplaced)         0.000    20.343    com_sprite_m/imageBRO/BRAM_reg_0_i_285_n_0
-                         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.348    20.691 r  com_sprite_m/imageBRO/BRAM_reg_0_i_275/O[1]
-                         net (fo=2, unplaced)         0.622    21.313    com_sprite_m/imageBRO/pos_y_3200_in[13]
-                         LUT2 (Prop_lut2_I0_O)        0.306    21.619 r  com_sprite_m/imageBRO/BRAM_reg_0_i_278/O
-                         net (fo=1, unplaced)         0.000    21.619    com_sprite_m/imageBRO/BRAM_reg_0_i_278_n_0
-                         CARRY4 (Prop_carry4_S[1]_CO[3])
-                                                      0.550    22.169 r  com_sprite_m/imageBRO/BRAM_reg_0_i_166/CO[3]
-                         net (fo=1, unplaced)         0.000    22.169    com_sprite_m/imageBRO/BRAM_reg_0_i_166_n_0
-                         CARRY4 (Prop_carry4_CI_O[3])
-                                                      0.329    22.498 r  com_sprite_m/imageBRO/BRAM_reg_0_i_101/O[3]
-                         net (fo=2, unplaced)         0.819    23.317    com_sprite_m/imageBRO/pos_y_32[19]
-                         CARRY4 (Prop_carry4_S[0]_O[2])
-                                                      0.854    24.171 r  com_sprite_m/imageBRO/BRAM_reg_0_i_99/O[2]
-                         net (fo=1, unplaced)         0.813    24.984    com_sprite_m/imageBRO/pos_y[21]
-                         CARRY4 (Prop_carry4_S[3]_O[3])
-                                                      0.550    25.534 r  com_sprite_m/imageBRO/BRAM_reg_0_i_40/O[3]
-                         net (fo=3, unplaced)         0.826    26.360    com_sprite_m/imageBRO/image_addr3[9]
-                         CARRY4 (Prop_carry4_S[0]_O[2])
-                                                      0.854    27.214 r  com_sprite_m/imageBRO/BRAM_reg_0_i_39/O[2]
-                         net (fo=1, unplaced)         0.813    28.027    com_sprite_m/imageBRO/image_addr1[8]
-                         CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.703    28.730 r  com_sprite_m/imageBRO/BRAM_reg_0_i_22/CO[3]
-                         net (fo=1, unplaced)         0.009    28.739    com_sprite_m/imageBRO/BRAM_reg_0_i_22_n_0
-                         CARRY4 (Prop_carry4_CI_O[3])
-                                                      0.329    29.068 r  com_sprite_m/imageBRO/BRAM_reg_0_i_21/O[3]
-                         net (fo=1, unplaced)         0.618    29.686    com_sprite_m/imageBRO/image_addr0[12]
-                         LUT6 (Prop_lut6_I0_O)        0.307    29.993 r  com_sprite_m/imageBRO/BRAM_reg_0_i_2__0/O
-                         net (fo=1, unplaced)         0.800    30.793    com_sprite_m/imageBRO/image_addr[12]
-                         RAMB36E1                                     r  com_sprite_m/imageBRO/BRAM_reg_0/ADDRARDADDR[13]
+                         FDRE (Prop_fdre_C_Q)         0.456  3330.191 r  gameplay_module/state_reg[1]/Q
+                         net (fo=21, unplaced)        0.802  3330.993    gameplay_module/state_out[1]
+                         LUT5 (Prop_lut5_I2_O)        0.295  3331.288 f  gameplay_module/counter[15]_i_4/O
+                         net (fo=3, unplaced)         0.467  3331.755    gameplay_module/playing_back_hole_reg
+                         LUT6 (Prop_lut6_I0_O)        0.124  3331.879 r  gameplay_module/counter[15]_i_1/O
+                         net (fo=96, unplaced)        0.875  3332.754    my_playback/p_0_in
+                         FDRE                                         r  my_playback/counter_reg[0]/R
   -------------------------------------------------------------------    -------------------
 
-                         (clock clk_pixel_clk_wiz_0 rise edge)
-                                                     13.468    13.468 r  
-    N15                                               0.000    13.468 r  clk_100mhz (IN)
-                         net (fo=0)                   0.000    13.468    mhdmicw/clk_100mhz
-    N15                  IBUF (Prop_ibuf_I_O)         1.370    14.838 r  mhdmicw/clkin1_ibufg/O
-                         net (fo=1, unplaced)         0.439    15.277    mhdmicw/clk_ref_clk_wiz_0
+                         (clock clk_out_audio_clk_wiz rise edge)
+                                                   3326.623  3326.623 r  
+    N15                                               0.000  3326.623 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000  3326.623    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.370  3327.993 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, unplaced)         0.760  3328.753    clk_100mhz_IBUF
+                         BUFG (Prop_bufg_I_O)         0.091  3328.844 r  mbf/O
+                         net (fo=2, unplaced)         0.439  3329.283    macw/clk_in
                          MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
-                                                     -5.378     9.899 r  mhdmicw/mmcm_adv_inst/CLKOUT0
-                         net (fo=1, unplaced)         0.760    10.659    mhdmicw/clk_pixel_clk_wiz_0
-                         BUFG (Prop_bufg_I_O)         0.091    10.750 r  mhdmicw/clkout1_buf/O
-                         net (fo=2578, unplaced)      0.655    11.405    com_sprite_m/imageBRO/clk_pixel
-                         RAMB36E1                                     r  com_sprite_m/imageBRO/BRAM_reg_0/CLKARDCLK
-                         clock pessimism              0.530    11.935    
-                         clock uncertainty           -0.168    11.767    
-                         RAMB36E1 (Setup_ramb36e1_CLKARDCLK_ADDRARDADDR[13])
-                                                     -0.566    11.201    com_sprite_m/imageBRO/BRAM_reg_0
+                                                     -1.290  3327.993 r  macw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, unplaced)         0.760  3328.753    macw/clk_out_audio_clk_wiz
+                         BUFG (Prop_bufg_I_O)         0.091  3328.844 r  macw/clkout1_buf/O
+                         net (fo=170, unplaced)       0.439  3329.283    my_playback/clk_m
+                         FDRE                                         r  my_playback/counter_reg[0]/C
+                         clock pessimism              0.115  3329.398    
+                         clock uncertainty           -0.707  3328.691    
+                         FDRE (Setup_fdre_C_R)       -0.433  3328.258    my_playback/counter_reg[0]
   -------------------------------------------------------------------
-                         required time                         11.201    
-                         arrival time                         -30.793    
+                         required time                       3328.258    
+                         arrival time                       -3332.754    
   -------------------------------------------------------------------
-                         slack                                -19.592    
+                         slack                                 -4.496    
 
 
 

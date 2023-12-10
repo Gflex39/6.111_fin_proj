@@ -2,7 +2,7 @@
 `default_nettype none
 
 module top_level(
-  input wire clk_100mhz, //
+  input wire clk_100mhz, 
   input wire ble_uart_tx,
   input wire ble_uart_rts,
   input wire [15:0] sw, //all 16 input slide switches
@@ -15,7 +15,8 @@ module top_level(
   output logic [6:0] ss0_c, //cathode controls for the segments of upper four digits
   output logic [6:0] ss1_c,//cathod controls for the segments of lower four digits
   output logic ble_uart_cts,
-  output logic ble_uart_rx
+  output logic ble_uart_rx,
+  output logic spkl, spkr //speaker outputs
   );
 
 
@@ -40,25 +41,9 @@ module top_level(
   logic [6:0] ss_c;
   logic new_input;
 
-  logic clk_slow;
-  logic [2:0] counter_clk;
+  logic clk_100mhz_copy;
+  BUFG mbf (.I(clk_100mhz), .O(clk_100mhz_copy));
 
-  always_ff @(posedge clk_pixel) begin
-    if(sys_rst) begin
-      clk_slow <= 0;
-      counter_clk <= 0;
-    end
-    else begin
-      if(counter_clk==3) begin
-        clk_slow <= ~clk_slow;
-        counter_clk <= 0;
-      end
-      else begin
-        // clk_slow <= 0;
-        counter_clk <= counter_clk + 1;
-      end
-    end
-  end
 
   // seven_segment_controller mssc(.clk_in(clk_pixel),
   //                                 .rst_in(sys_rst),
@@ -88,7 +73,7 @@ module top_level(
 
   //clock manager...creates 74.25 Hz and 5 times 74.25 MHz for pixel and TMDS
   hdmi_clk_wiz_720p mhdmicw (.clk_pixel(clk_pixel),.clk_tmds(clk_5x),
-          .reset(0), .locked(locked), .clk_ref(clk_100mhz));
+          .reset(0), .locked(locked), .clk_ref(clk_100mhz_copy));
 
   //signals related to driving the video pipeline
   logic [10:0] hcount;
@@ -177,15 +162,15 @@ module top_level(
     .debug_out(db));
 
   logic [7:0] red, green, blue;
-  logic [7:0] map1_red_pipe [41:0];
-  logic [7:0] map1_blue_pipe [41:0];
-  logic [7:0] map1_green_pipe [41:0];
+  logic [7:0] map1_red_pipe [47:0];
+  logic [7:0] map1_blue_pipe [47:0];
+  logic [7:0] map1_green_pipe [47:0];
 
   always_ff @(posedge clk_pixel)begin
     map1_blue_pipe[0] <= im_blue;
     map1_red_pipe[0] <= im_red;
     map1_green_pipe[0] <= im_green;
-    for (int i=1; i<42; i = i+1)begin
+    for (int i=1; i<48; i = i+1)begin
       map1_blue_pipe[i] <= map1_blue_pipe[i-1];
       map1_red_pipe[i] <= map1_red_pipe[i-1];
       map1_green_pipe[i] <= map1_green_pipe[i-1];
@@ -196,9 +181,9 @@ module top_level(
   // assign green = (top)?img_green:im_green;
   // assign blue = (top)?img_blue:im_blue;
 
-  assign red = (top)?img_red:map1_red_pipe[41];
-  assign green = (top)?img_green:map1_green_pipe[41];
-  assign blue = (top)?img_blue:map1_blue_pipe[41];
+  assign red = (top)?img_red:map1_red_pipe[47];
+  assign green = (top)?img_green:map1_green_pipe[47];
+  assign blue = (top)?img_blue:map1_blue_pipe[47];
 
   // assign red = map1_red_pipe[1];
   // assign green = map1_green_pipe[1];
@@ -209,24 +194,24 @@ module top_level(
   // assign blue = img_blue;
 
   
-  logic horsync_pipe [45:0];
+  logic horsync_pipe [51:0];
   always_ff @(posedge clk_pixel)begin
     horsync_pipe[0] <= hor_sync;
-    for (int i=1; i<46; i = i+1)begin
+    for (int i=1; i<52; i = i+1)begin
       horsync_pipe[i] <= horsync_pipe[i-1];
     end
   end
-  logic vertsync_pipe [45:0];
+  logic vertsync_pipe [51:0];
   always_ff @(posedge clk_pixel)begin
     vertsync_pipe[0] <= vert_sync;
-    for (int i=1; i<46; i = i+1)begin
+    for (int i=1; i<52; i = i+1)begin
       vertsync_pipe[i] <= vertsync_pipe[i-1];
     end
   end
-  logic adraw_pipe [45:0];
+  logic adraw_pipe [51:0];
   always_ff @(posedge clk_pixel)begin
     adraw_pipe[0] <= active_draw;
-    for (int i=1; i<46; i = i+1)begin
+    for (int i=1; i<52; i = i+1)begin
       adraw_pipe[i] <= adraw_pipe[i-1];
     end
   end
@@ -242,7 +227,7 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(red),
     .control_in(2'b0),
-    .ve_in(adraw_pipe[45]),
+    .ve_in(adraw_pipe[51]),
     .tmds_out(tmds_10b[2]));
 
   tmds_encoder tmds_green(
@@ -250,15 +235,15 @@ module top_level(
     .rst_in(sys_rst),
     .data_in(green),
     .control_in(2'b0),
-    .ve_in(adraw_pipe[45]),
+    .ve_in(adraw_pipe[51]),
     .tmds_out(tmds_10b[1]));
 
   tmds_encoder tmds_blue(
     .clk_in(clk_pixel),
     .rst_in(sys_rst),
     .data_in(blue),
-    .control_in({vertsync_pipe[45],horsync_pipe[45]}),
-    .ve_in(adraw_pipe[45]),
+    .control_in({vertsync_pipe[51],horsync_pipe[51]}),
+    .ve_in(adraw_pipe[51]),
     .tmds_out(tmds_10b[0]));
 
   //four tmds_serializers (blue, green, red, and clock)
@@ -309,12 +294,63 @@ module top_level(
     .debug_out(debug_var)
   );
 
+  logic clk_m;
+  audio_clk_wiz macw (.clk_in(clk_100mhz_copy), .clk_out(clk_m)); //98.3MHz
+  logic mic_clk;
+  logic old_mic_clk;
+  logic [8:0] m_clock_counter;
+  localparam PDM_COUNT_PERIOD = 32;
+  localparam NUM_PDM_SAMPLES = 16;
+
+  always_ff @(posedge clk_m) begin
+    mic_clk <= m_clock_counter < PDM_COUNT_PERIOD/2;
+    m_clock_counter <= (m_clock_counter==PDM_COUNT_PERIOD-1)?0:m_clock_counter+1;
+    old_mic_clk <= mic_clk;
+  end
+
+  logic signed [7:0] audio_out;
+  logic [8:0] pdm_counter;
+  logic audio_sample_valid; //12khz
+  logic pdm_signal_valid; //single-cycle signal at 3.072 MHz indicating pdm steps
+  assign pdm_signal_valid = mic_clk && ~old_mic_clk;
+  always_ff @(posedge clk_m) begin
+    if(pdm_signal_valid) begin
+      pdm_counter         <= (pdm_counter==NUM_PDM_SAMPLES)?0:pdm_counter + 1;
+      audio_sample_valid  <= (pdm_counter==NUM_PDM_SAMPLES);
+    end
+    else begin
+      audio_sample_valid <= 0;
+    end
+  end
+
+  logic [31:0] counter;
+  logic prev_start_playback_hole;
+  always_ff @(posedge clk_m) begin
+    prev_start_playback_hole <= (state_out==6);
+  end
+  playback my_playback (
+    .clk_in(clk_m),
+    .rst_in(sys_rst),
+    .start_playback_bounce(state_out==5),
+    .start_playback_hole(state_out==6 && ~prev_start_playback_hole),
+    .signal_12khz(audio_sample_valid),
+    .audio_out(audio_out),
+    .debug_out(counter)
+  );
+  logic audio_out_pdm;
+  pdm my_pdm(
+    .clk_in(clk_m),
+    .rst_in(sys_rst),
+    .level_in(audio_out>>>3),
+    .tick_in(pdm_signal_valid),
+    .pdm_out(audio_out_pdm)
+  );
+  assign spkl = ((audio_out==0)?0:audio_out_pdm);
+  assign spkr = ((audio_out==0)?0:audio_out_pdm);
+
 
 endmodule // top_level
 
-
-
-`timescale 1ns / 1ps
-`default_nettype none // prevents system from inferring an undeclared logic (good practice)
+`default_nettype wire // prevents system from inferring an undeclared logic (good practice)
  
 

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Sat Dec  9 22:10:11 2023
+| Date         : Sun Dec 10 21:03:28 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing_summary -file obj/post_route_timing_summary.rpt
 | Design       : top_level
@@ -48,12 +48,12 @@ check_timing report
 
 Table of Contents
 -----------------
-1. checking no_clock (48)
+1. checking no_clock (62)
 2. checking constant_clock (0)
 3. checking pulse_width_clock (0)
-4. checking unconstrained_internal_endpoints (16)
+4. checking unconstrained_internal_endpoints (23)
 5. checking no_input_delay (9)
-6. checking no_output_delay (25)
+6. checking no_output_delay (27)
 7. checking multiple_clock (0)
 8. checking generated_clocks (0)
 9. checking loops (0)
@@ -61,8 +61,12 @@ Table of Contents
 11. checking partial_output_delay (0)
 12. checking latch_loops (0)
 
-1. checking no_clock (48)
+1. checking no_clock (62)
 -------------------------
+ There are 7 register/latch pins with no clock driven by root clock pin: com_sprite_b/imageBROM/BRAM_reg_1/DOADO[0] (HIGH)
+
+ There are 7 register/latch pins with no clock driven by root clock pin: com_sprite_b/imageBROM/BRAM_reg_1/DOADO[1] (HIGH)
+
  There are 16 register/latch pins with no clock driven by root clock pin: gameplay_module/wall_direction_reg[0]/Q (HIGH)
 
  There are 16 register/latch pins with no clock driven by root clock pin: gameplay_module/wall_direction_reg[2]/Q (HIGH)
@@ -80,9 +84,9 @@ Table of Contents
  There are 0 register/latch pins which need pulse_width check
 
 
-4. checking unconstrained_internal_endpoints (16)
+4. checking unconstrained_internal_endpoints (23)
 -------------------------------------------------
- There are 16 pins that are not constrained for maximum delay. (HIGH)
+ There are 23 pins that are not constrained for maximum delay. (HIGH)
 
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 
@@ -94,9 +98,9 @@ Table of Contents
  There are 0 input ports with no input delay but user has a false path constraint.
 
 
-6. checking no_output_delay (25)
+6. checking no_output_delay (27)
 --------------------------------
- There are 25 ports with no output delay specified. (HIGH)
+ There are 27 ports with no output delay specified. (HIGH)
 
  There are 0 ports with no output delay but user has a false path constraint
 
@@ -141,7 +145,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-    -17.984     -610.128                    188                 4917        0.023        0.000                      0                 4917        0.538        0.000                       0                  2587  
+     -4.524     -484.761                    146                13923        0.040        0.000                      0                13923        0.538        0.000                       0                  4426  
 
 
 Timing constraints are not met.
@@ -152,12 +156,14 @@ Timing constraints are not met.
 | -------------
 ------------------------------------------------------------------------------------------------
 
-Clock                  Waveform(ns)         Period(ns)      Frequency(MHz)
------                  ------------         ----------      --------------
-gclk                   {0.000 4.000}        10.000          100.000         
-  clk_pixel_clk_wiz_0  {0.000 6.734}        13.468          74.250          
-  clk_tmds_clk_wiz_0   {0.000 1.347}        2.694           371.250         
-  clkfbout_clk_wiz_0   {0.000 25.000}       50.000          20.000          
+Clock                     Waveform(ns)         Period(ns)      Frequency(MHz)
+-----                     ------------         ----------      --------------
+gclk                      {0.000 4.000}        10.000          100.000         
+  clk_out_audio_clk_wiz   {0.000 5.087}        10.173          98.298          
+  clk_pixel_clk_wiz_0     {0.000 6.734}        13.468          74.250          
+  clk_tmds_clk_wiz_0      {0.000 1.347}        2.694           371.250         
+  clkfbout_audio_clk_wiz  {0.000 25.000}       50.000          20.000          
+  clkfbout_clk_wiz_0      {0.000 25.000}       50.000          20.000          
 
 
 ------------------------------------------------------------------------------------------------
@@ -165,12 +171,14 @@ gclk                   {0.000 4.000}        10.000          100.000
 | -----------------
 ------------------------------------------------------------------------------------------------
 
-Clock                      WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
------                      -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-gclk                                                                                                                                                                     2.000        0.000                       0                     1  
-  clk_pixel_clk_wiz_0      -17.984     -610.128                    188                 4917        0.023        0.000                      0                 4917        5.484        0.000                       0                  2575  
-  clk_tmds_clk_wiz_0                                                                                                                                                     0.538        0.000                       0                     8  
-  clkfbout_clk_wiz_0                                                                                                                                                    47.845        0.000                       0                     3  
+Clock                         WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+-----                         -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+gclk                                                                                                                                                                        2.000        0.000                       0                     3  
+  clk_out_audio_clk_wiz         1.585        0.000                      0                  910        0.209        0.000                      0                  910        4.587        0.000                       0                   174  
+  clk_pixel_clk_wiz_0          -1.969      -16.616                     38                13012        0.040        0.000                      0                13012        5.484        0.000                       0                  4235  
+  clk_tmds_clk_wiz_0                                                                                                                                                        0.538        0.000                       0                     8  
+  clkfbout_audio_clk_wiz                                                                                                                                                   47.845        0.000                       0                     3  
+  clkfbout_clk_wiz_0                                                                                                                                                       47.845        0.000                       0                     3  
 
 
 ------------------------------------------------------------------------------------------------
@@ -178,8 +186,9 @@ gclk                                                                            
 | -----------------
 ------------------------------------------------------------------------------------------------
 
-From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
-----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+From Clock             To Clock                   WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------             --------                   -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+clk_pixel_clk_wiz_0    clk_out_audio_clk_wiz       -4.524     -468.145                    108                  108        0.117        0.000                      0                  108  
 
 
 ------------------------------------------------------------------------------------------------
@@ -215,10 +224,173 @@ Period(ns):         10.000
 Sources:            { clk_100mhz }
 
 Check Type        Corner  Lib Pin            Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location         Pin
-Min Period        n/a     MMCME2_ADV/CLKIN1  n/a            1.249         10.000      8.751      MMCME2_ADV_X0Y0  mhdmicw/mmcm_adv_inst/CLKIN1
-Max Period        n/a     MMCME2_ADV/CLKIN1  n/a            100.000       10.000      90.000     MMCME2_ADV_X0Y0  mhdmicw/mmcm_adv_inst/CLKIN1
-Low Pulse Width   Slow    MMCME2_ADV/CLKIN1  n/a            2.000         6.000       4.000      MMCME2_ADV_X0Y0  mhdmicw/mmcm_adv_inst/CLKIN1
-High Pulse Width  Slow    MMCME2_ADV/CLKIN1  n/a            2.000         4.000       2.000      MMCME2_ADV_X0Y0  mhdmicw/mmcm_adv_inst/CLKIN1
+Min Period        n/a     BUFG/I             n/a            2.155         10.000      7.845      BUFGCTRL_X0Y3    mbf/I
+Max Period        n/a     MMCME2_ADV/CLKIN1  n/a            100.000       10.000      90.000     MMCME2_ADV_X0Y0  macw/mmcm_adv_inst/CLKIN1
+Low Pulse Width   Slow    MMCME2_ADV/CLKIN1  n/a            2.000         6.000       4.000      MMCME2_ADV_X0Y0  macw/mmcm_adv_inst/CLKIN1
+High Pulse Width  Slow    MMCME2_ADV/CLKIN1  n/a            2.000         4.000       2.000      MMCME2_ADV_X0Y0  macw/mmcm_adv_inst/CLKIN1
+
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  clk_out_audio_clk_wiz
+  To Clock:  clk_out_audio_clk_wiz
+
+Setup :            0  Failing Endpoints,  Worst Slack        1.585ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.209ns,  Total Violation        0.000ns
+PW    :            0  Failing Endpoints,  Worst Slack        4.587ns,  Total Violation        0.000ns
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             1.585ns  (required time - arrival time)
+  Source:                 my_playback/counter_reg[15]_rep/C
+                            (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
+  Destination:            my_playback/bram_ball_bounce/BRAM_reg_0_1/ADDRARDADDR[15]
+                            (rising edge-triggered cell RAMB36E1 clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
+  Path Group:             clk_out_audio_clk_wiz
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            10.173ns  (clk_out_audio_clk_wiz rise@10.173ns - clk_out_audio_clk_wiz rise@0.000ns)
+  Data Path Delay:        7.721ns  (logic 0.419ns (5.427%)  route 7.302ns (94.573%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.070ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.817ns = ( 14.990 - 10.173 ) 
+    Source Clock Delay      (SCD):    5.066ns
+    Clock Pessimism Removal (CPR):    0.179ns
+  Clock Uncertainty:      0.107ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.203ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_out_audio_clk_wiz rise edge)
+                                                      0.000     0.000 r  
+    N15                                               0.000     0.000 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000     0.000    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.440     1.440 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           1.972     3.412    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.096     3.508 r  mbf/O
+                         net (fo=2, routed)           1.574     5.082    macw/clk_in
+    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -3.337     1.745 r  macw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           1.666     3.412    macw/clk_out_audio_clk_wiz
+    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.096     3.508 r  macw/clkout1_buf/O
+                         net (fo=172, routed)         1.558     5.066    my_playback/clk_m
+    SLICE_X13Y52         FDRE                                         r  my_playback/counter_reg[15]_rep/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X13Y52         FDRE (Prop_fdre_C_Q)         0.419     5.485 r  my_playback/counter_reg[15]_rep/Q
+                         net (fo=18, routed)          7.302    12.787    my_playback/bram_ball_bounce/ADDRARDADDR[15]
+    RAMB36_X1Y0          RAMB36E1                                     r  my_playback/bram_ball_bounce/BRAM_reg_0_1/ADDRARDADDR[15]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_out_audio_clk_wiz rise edge)
+                                                     10.173    10.173 r  
+    N15                                               0.000    10.173 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000    10.173    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.370    11.543 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           1.868    13.411    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.091    13.502 r  mbf/O
+                         net (fo=2, routed)           1.455    14.958    macw/clk_in
+    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -3.133    11.824 r  macw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           1.587    13.411    macw/clk_out_audio_clk_wiz
+    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091    13.502 r  macw/clkout1_buf/O
+                         net (fo=172, routed)         1.488    14.990    my_playback/bram_ball_bounce/clk_m
+    RAMB36_X1Y0          RAMB36E1                                     r  my_playback/bram_ball_bounce/BRAM_reg_0_1/CLKARDCLK
+                         clock pessimism              0.179    15.169    
+                         clock uncertainty           -0.107    15.061    
+    RAMB36_X1Y0          RAMB36E1 (Setup_ramb36e1_CLKARDCLK_ADDRARDADDR[15])
+                                                     -0.690    14.371    my_playback/bram_ball_bounce/BRAM_reg_0_1
+  -------------------------------------------------------------------
+                         required time                         14.371    
+                         arrival time                         -12.787    
+  -------------------------------------------------------------------
+                         slack                                  1.585    
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             0.209ns  (arrival time - required time)
+  Source:                 m_clock_counter_reg[7]/C
+                            (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
+  Destination:            mic_clk_reg/D
+                            (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
+  Path Group:             clk_out_audio_clk_wiz
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk_out_audio_clk_wiz rise@0.000ns - clk_out_audio_clk_wiz rise@0.000ns)
+  Data Path Delay:        0.313ns  (logic 0.186ns (59.490%)  route 0.127ns (40.510%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        0.013ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    1.971ns
+    Source Clock Delay      (SCD):    1.456ns
+    Clock Pessimism Removal (CPR):    0.502ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_out_audio_clk_wiz rise edge)
+                                                      0.000     0.000 r  
+    N15                                               0.000     0.000 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000     0.000    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         0.209     0.209 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           0.634     0.843    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.026     0.869 r  mbf/O
+                         net (fo=2, routed)           0.549     1.417    macw/clk_in
+    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -1.063     0.354 r  macw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           0.489     0.843    macw/clk_out_audio_clk_wiz
+    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.026     0.869 r  macw/clkout1_buf/O
+                         net (fo=172, routed)         0.588     1.456    clk_m
+    SLICE_X4Y62          FDRE                                         r  m_clock_counter_reg[7]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X4Y62          FDRE (Prop_fdre_C_Q)         0.141     1.597 f  m_clock_counter_reg[7]/Q
+                         net (fo=4, routed)           0.127     1.724    m_clock_counter[7]
+    SLICE_X5Y62          LUT5 (Prop_lut5_I4_O)        0.045     1.769 r  mic_clk_i_1/O
+                         net (fo=1, routed)           0.000     1.769    mic_clk_i_1_n_0
+    SLICE_X5Y62          FDRE                                         r  mic_clk_reg/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_out_audio_clk_wiz rise edge)
+                                                      0.000     0.000 r  
+    N15                                               0.000     0.000 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000     0.000    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         0.396     0.396 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           0.689     1.085    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.029     1.114 r  mbf/O
+                         net (fo=2, routed)           0.816     1.929    macw/clk_in
+    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -1.378     0.551 r  macw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           0.534     1.085    macw/clk_out_audio_clk_wiz
+    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.029     1.114 r  macw/clkout1_buf/O
+                         net (fo=172, routed)         0.858     1.971    clk_m
+    SLICE_X5Y62          FDRE                                         r  mic_clk_reg/C
+                         clock pessimism             -0.502     1.469    
+    SLICE_X5Y62          FDRE (Hold_fdre_C_D)         0.091     1.560    mic_clk_reg
+  -------------------------------------------------------------------
+                         required time                         -1.560    
+                         arrival time                           1.769    
+  -------------------------------------------------------------------
+                         slack                                  0.209    
+
+
+
+
+
+Pulse Width Checks
+--------------------------------------------------------------------------------------
+Clock Name:         clk_out_audio_clk_wiz
+Waveform(ns):       { 0.000 5.087 }
+Period(ns):         10.173
+Sources:            { macw/mmcm_adv_inst/CLKOUT0 }
+
+Check Type        Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location         Pin
+Min Period        n/a     RAMB36E1/CLKARDCLK  n/a            2.892         10.173      7.281      RAMB36_X2Y12     my_playback/bram_ball_bounce/BRAM_reg_0_0/CLKARDCLK
+Max Period        n/a     MMCME2_ADV/CLKOUT0  n/a            213.360       10.173      203.187    MMCME2_ADV_X0Y0  macw/mmcm_adv_inst/CLKOUT0
+Low Pulse Width   Slow    FDRE/C              n/a            0.500         5.087       4.587      SLICE_X6Y66      audio_sample_valid_reg/C
+High Pulse Width  Slow    FDRE/C              n/a            0.500         5.087       4.587      SLICE_X6Y66      audio_sample_valid_reg/C
 
 
 
@@ -226,28 +398,28 @@ High Pulse Width  Slow    MMCME2_ADV/CLKIN1  n/a            2.000         4.000 
 From Clock:  clk_pixel_clk_wiz_0
   To Clock:  clk_pixel_clk_wiz_0
 
-Setup :          188  Failing Endpoints,  Worst Slack      -17.984ns,  Total Violation     -610.128ns
-Hold  :            0  Failing Endpoints,  Worst Slack        0.023ns,  Total Violation        0.000ns
+Setup :           38  Failing Endpoints,  Worst Slack       -1.969ns,  Total Violation      -16.616ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.040ns,  Total Violation        0.000ns
 PW    :            0  Failing Endpoints,  Worst Slack        5.484ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (VIOLATED) :        -17.984ns  (required time - arrival time)
-  Source:                 com_sprite_m/depth_calc/dividend_reg[39][10]/C
+Slack (VIOLATED) :        -1.969ns  (required time - arrival time)
+  Source:                 com_sprite_m/m2y/pdt_int_reg[4][1]_srl3_srlopt/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Destination:            com_sprite_m/imageBRO/BRAM_reg_0/ADDRARDADDR[14]
                             (rising edge-triggered cell RAMB36E1 clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_clk_wiz_0
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            13.468ns  (clk_pixel_clk_wiz_0 rise@13.468ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        30.638ns  (logic 21.083ns (68.814%)  route 9.555ns (31.186%))
-  Logic Levels:           29  (CARRY4=17 DSP48E1=4 LUT2=6 LUT3=1 LUT6=1)
-  Clock Path Skew:        -0.080ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    -1.535ns = ( 11.933 - 13.468 ) 
-    Source Clock Delay      (SCD):    -0.973ns
-    Clock Pessimism Removal (CPR):    0.482ns
+  Data Path Delay:        14.799ns  (logic 7.961ns (53.793%)  route 6.838ns (46.207%))
+  Logic Levels:           20  (CARRY4=14 LUT2=3 LUT3=1 LUT4=1 LUT6=1)
+  Clock Path Skew:        0.096ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.967ns = ( 18.435 - 13.468 ) 
+    Source Clock Delay      (SCD):    5.056ns
+    Clock Pessimism Removal (CPR):    0.186ns
   Clock Uncertainty:      0.168ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Discrete Jitter          (DJ):    0.329ns
@@ -258,121 +430,100 @@ Slack (VIOLATED) :        -17.984ns  (required time - arrival time)
                          (clock clk_pixel_clk_wiz_0 rise edge)
                                                       0.000     0.000 r  
     N15                                               0.000     0.000 r  clk_100mhz (IN)
-                         net (fo=0)                   0.000     0.000    mhdmicw/clk_100mhz
-    N15                  IBUF (Prop_ibuf_I_O)         1.440     1.440 r  mhdmicw/clkin1_ibufg/O
-                         net (fo=1, routed)           1.233     2.673    mhdmicw/clk_ref_clk_wiz_0
-    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
-                                                     -6.965    -4.291 r  mhdmicw/mmcm_adv_inst/CLKOUT0
-                         net (fo=1, routed)           1.666    -2.625    mhdmicw/clk_pixel_clk_wiz_0
-    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096    -2.529 r  mhdmicw/clkout1_buf/O
-                         net (fo=2590, routed)        1.556    -0.973    com_sprite_m/depth_calc/clk_pixel
-    SLICE_X13Y29         FDRE                                         r  com_sprite_m/depth_calc/dividend_reg[39][10]/C
+                         net (fo=0)                   0.000     0.000    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.440     1.440 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           1.972     3.412    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.096     3.508 r  mbf/O
+                         net (fo=2, routed)           1.575     5.083    mhdmicw/clk_ref
+    MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -3.333     1.750 r  mhdmicw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           1.661     3.412    mhdmicw/clk_pixel_clk_wiz_0
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     3.508 r  mhdmicw/clkout1_buf/O
+                         net (fo=4234, routed)        1.548     5.056    com_sprite_m/m2y/clk_pixel
+    SLICE_X53Y81         FDRE                                         r  com_sprite_m/m2y/pdt_int_reg[4][1]_srl3_srlopt/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X13Y29         FDRE (Prop_fdre_C_Q)         0.456    -0.517 r  com_sprite_m/depth_calc/dividend_reg[39][10]/Q
-                         net (fo=2, routed)           0.654     0.138    com_sprite_m/multiplier[10]
-    SLICE_X12Y29         CARRY4 (Prop_carry4_DI[3]_CO[3])
-                                                      0.396     0.534 r  com_sprite_m/sidel_x1__0_i_3/CO[3]
-                         net (fo=1, routed)           0.000     0.534    com_sprite_m/sidel_x1__0_i_3_n_0
-    SLICE_X12Y30         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.117     0.651 r  com_sprite_m/sidel_x1__0_i_2/CO[3]
-                         net (fo=1, routed)           0.000     0.651    com_sprite_m/sidel_x1__0_i_2_n_0
-    SLICE_X12Y31         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.323     0.974 r  com_sprite_m/sidel_x1__0_i_1/O[1]
-                         net (fo=4, routed)           0.944     1.917    com_sprite_m/sider_x2[16]
-    DSP48_X0Y15          DSP48E1 (Prop_dsp48e1_B[16]_PCOUT[47])
-                                                      4.033     5.950 r  com_sprite_m/sidel_y1__0/PCOUT[47]
-                         net (fo=1, routed)           0.002     5.952    com_sprite_m/sidel_y1__0_n_106
-    DSP48_X0Y16          DSP48E1 (Prop_dsp48e1_PCIN[47]_P[17])
-                                                      1.518     7.470 r  com_sprite_m/sidel_y1__1/P[17]
-                         net (fo=2, routed)           0.618     8.088    com_sprite_m/sidel_y1__1_n_88
-    SLICE_X11Y45         LUT2 (Prop_lut2_I0_O)        0.124     8.212 r  com_sprite_m/pos_y_321_i_35/O
-                         net (fo=1, routed)           0.000     8.212    com_sprite_m/pos_y_321_i_35_n_0
-    SLICE_X11Y45         CARRY4 (Prop_carry4_S[1]_O[2])
-                                                      0.580     8.792 r  com_sprite_m/pos_y_321_i_29/O[2]
-                         net (fo=1, routed)           0.440     9.233    com_sprite_m/pos_y_321_i_29_n_5
-    SLICE_X11Y43         LUT2 (Prop_lut2_I1_O)        0.302     9.535 r  com_sprite_m/pos_y_321_i_18/O
-                         net (fo=1, routed)           0.000     9.535    com_sprite_m/pos_y_321_i_18_n_0
-    SLICE_X11Y43         CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.401     9.936 r  com_sprite_m/pos_y_321_i_11/CO[3]
-                         net (fo=1, routed)           0.000     9.936    com_sprite_m/pos_y_321_i_11_n_0
-    SLICE_X11Y44         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.334    10.270 r  com_sprite_m/pos_y_321_i_10/O[1]
-                         net (fo=1, routed)           0.459    10.729    com_sprite_m/sidel_y0[37]
-    SLICE_X10Y47         LUT2 (Prop_lut2_I0_O)        0.303    11.032 r  com_sprite_m/pos_y_321_i_3/O
-                         net (fo=2, routed)           1.156    12.188    com_sprite_m/sidel_y[37]
-    DSP48_X0Y29          DSP48E1 (Prop_dsp48e1_A[21]_PCOUT[47])
-                                                      4.036    16.224 r  com_sprite_m/pos_y_321__0/PCOUT[47]
-                         net (fo=1, routed)           0.056    16.280    com_sprite_m/pos_y_321__0_n_106
-    DSP48_X0Y30          DSP48E1 (Prop_dsp48e1_PCIN[47]_P[0])
-                                                      1.518    17.798 r  com_sprite_m/pos_y_321__1/P[0]
-                         net (fo=9, routed)           1.041    18.839    com_sprite_m/imageBRO/BRAM_reg_0_i_613_0[0]
-    SLICE_X11Y65         LUT2 (Prop_lut2_I1_O)        0.124    18.963 r  com_sprite_m/imageBRO/onboard_pipe_reg[2]_srl3_i_77/O
-                         net (fo=1, routed)           0.000    18.963    com_sprite_m/imageBRO/onboard_pipe_reg[2]_srl3_i_77_n_0
-    SLICE_X11Y65         CARRY4 (Prop_carry4_S[1]_O[2])
-                                                      0.580    19.543 r  com_sprite_m/imageBRO/onboard_pipe_reg[2]_srl3_i_66/O[2]
-                         net (fo=3, routed)           0.323    19.865    com_sprite_m/imageBRO/onboard_pipe_reg[2]_srl3_i_66_n_5
-    SLICE_X9Y65          LUT3 (Prop_lut3_I1_O)        0.302    20.167 r  com_sprite_m/imageBRO/BRAM_reg_0_i_433/O
-                         net (fo=1, routed)           0.352    20.519    com_sprite_m/imageBRO/BRAM_reg_0_i_433_n_0
-    SLICE_X10Y64         CARRY4 (Prop_carry4_DI[3]_CO[3])
-                                                      0.396    20.915 r  com_sprite_m/imageBRO/BRAM_reg_0_i_312/CO[3]
-                         net (fo=1, routed)           0.000    20.915    com_sprite_m/imageBRO/BRAM_reg_0_i_312_n_0
-    SLICE_X10Y65         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.323    21.238 r  com_sprite_m/imageBRO/onboard_pipe_reg[2]_srl3_i_32/O[1]
-                         net (fo=1, routed)           0.805    22.043    com_sprite_m/imageBRO/pos_y_320[21]
-    SLICE_X9Y56          LUT2 (Prop_lut2_I1_O)        0.306    22.349 r  com_sprite_m/imageBRO/onboard_pipe_reg[2]_srl3_i_13/O
-                         net (fo=1, routed)           0.000    22.349    com_sprite_m/imageBRO/onboard_pipe_reg[2]_srl3_i_13_n_0
-    SLICE_X9Y56          CARRY4 (Prop_carry4_S[1]_O[2])
-                                                      0.580    22.929 r  com_sprite_m/imageBRO/onboard_pipe_reg[2]_srl3_i_4/O[2]
-                         net (fo=4, routed)           0.360    23.289    com_sprite_m/imageBRO/onboard_pipe_reg[2]_srl3_i_9_0[1]
-    SLICE_X8Y55          CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.678    23.967 r  com_sprite_m/imageBRO/BRAM_reg_0_i_99/CO[3]
-                         net (fo=1, routed)           0.000    23.967    com_sprite_m/imageBRO/BRAM_reg_0_i_99_n_0
-    SLICE_X8Y56          CARRY4 (Prop_carry4_CI_O[0])
-                                                      0.219    24.186 r  com_sprite_m/imageBRO/BRAM_reg_0_i_111/O[0]
-                         net (fo=1, routed)           0.390    24.576    com_sprite_m/imageBRO/pos_y[23]
-    SLICE_X7Y56          CARRY4 (Prop_carry4_S[1]_O[2])
-                                                      0.875    25.451 r  com_sprite_m/imageBRO/BRAM_reg_0_i_48/O[2]
-                         net (fo=3, routed)           0.469    25.920    com_sprite_m/imageBRO/image_addr3[12]
-    SLICE_X7Y53          LUT2 (Prop_lut2_I1_O)        0.302    26.222 r  com_sprite_m/imageBRO/BRAM_reg_0_i_96/O
-                         net (fo=1, routed)           0.000    26.222    com_sprite_m/imageBRO/BRAM_reg_0_i_96_n_0
-    SLICE_X7Y53          CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.401    26.623 r  com_sprite_m/imageBRO/BRAM_reg_0_i_39/CO[3]
-                         net (fo=1, routed)           0.000    26.623    com_sprite_m/imageBRO/BRAM_reg_0_i_39_n_0
-    SLICE_X7Y54          CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.334    26.957 r  com_sprite_m/imageBRO/BRAM_reg_0_i_25/O[1]
-                         net (fo=1, routed)           0.632    27.589    com_sprite_m/imageBRO/image_addr1[11]
-    SLICE_X7Y51          CARRY4 (Prop_carry4_S[2]_CO[3])
-                                                      0.701    28.290 r  com_sprite_m/imageBRO/BRAM_reg_0_i_21/CO[3]
-                         net (fo=1, routed)           0.000    28.290    com_sprite_m/imageBRO/BRAM_reg_0_i_21_n_0
-    SLICE_X7Y52          CARRY4 (Prop_carry4_CI_O[0])
-                                                      0.222    28.512 r  com_sprite_m/imageBRO/BRAM_reg_0_i_15/O[0]
-                         net (fo=1, routed)           0.315    28.827    com_sprite_m/imageBRO/image_addr0[13]
-    SLICE_X4Y53          LUT6 (Prop_lut6_I0_O)        0.299    29.126 r  com_sprite_m/imageBRO/BRAM_reg_0_i_1__0/O
-                         net (fo=1, routed)           0.539    29.665    com_sprite_m/imageBRO/image_addr[13]
-    RAMB36_X0Y10         RAMB36E1                                     r  com_sprite_m/imageBRO/BRAM_reg_0/ADDRARDADDR[14]
+    SLICE_X53Y81         FDRE (Prop_fdre_C_Q)         0.456     5.512 r  com_sprite_m/m2y/pdt_int_reg[4][1]_srl3_srlopt/Q
+                         net (fo=7, routed)           0.694     6.206    com_sprite_m/m2y/pdt_int_reg[5]_23[1]
+    SLICE_X53Y81         LUT2 (Prop_lut2_I0_O)        0.124     6.330 r  com_sprite_m/m2y/BRAM_reg_0_i_544/O
+                         net (fo=1, routed)           0.000     6.330    com_sprite_m/m2y/BRAM_reg_0_i_544_n_0
+    SLICE_X53Y81         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401     6.731 r  com_sprite_m/m2y/BRAM_reg_0_i_404/CO[3]
+                         net (fo=1, routed)           0.000     6.731    com_sprite_m/m2y/BRAM_reg_0_i_404_n_0
+    SLICE_X53Y82         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     6.845 r  com_sprite_m/m2y/BRAM_reg_0_i_609/CO[3]
+                         net (fo=1, routed)           0.000     6.845    com_sprite_m/m2y/BRAM_reg_0_i_609_n_0
+    SLICE_X53Y83         CARRY4 (Prop_carry4_CI_O[3])
+                                                      0.313     7.158 r  com_sprite_m/m2y/BRAM_reg_0_i_614/O[3]
+                         net (fo=2, routed)           0.465     7.623    com_sprite_m/m2y/BRAM_reg_0_i_614_n_4
+    SLICE_X51Y81         LUT3 (Prop_lut3_I1_O)        0.306     7.929 r  com_sprite_m/m2y/BRAM_reg_0_i_539/O
+                         net (fo=2, routed)           0.818     8.747    com_sprite_m/m2y/BRAM_reg_0_i_539_n_0
+    SLICE_X52Y84         LUT4 (Prop_lut4_I3_O)        0.124     8.871 r  com_sprite_m/m2y/BRAM_reg_0_i_543/O
+                         net (fo=1, routed)           0.000     8.871    com_sprite_m/m2y/BRAM_reg_0_i_543_n_0
+    SLICE_X52Y84         CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.513     9.384 r  com_sprite_m/m2y/BRAM_reg_0_i_400/CO[3]
+                         net (fo=1, routed)           0.000     9.384    com_sprite_m/m2y/BRAM_reg_0_i_400_n_0
+    SLICE_X52Y85         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.323     9.707 r  com_sprite_m/m2y/BRAM_reg_0_i_260/O[1]
+                         net (fo=1, routed)           0.686    10.393    com_sprite_m/m1y/pos_y_320[17]
+    SLICE_X51Y86         LUT2 (Prop_lut2_I1_O)        0.306    10.699 r  com_sprite_m/m1y/BRAM_reg_0_i_135/O
+                         net (fo=1, routed)           0.000    10.699    com_sprite_m/m1y/BRAM_reg_0_i_135_n_0
+    SLICE_X51Y86         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550    11.249 r  com_sprite_m/m1y/BRAM_reg_0_i_67/CO[3]
+                         net (fo=1, routed)           0.000    11.249    com_sprite_m/m1y/BRAM_reg_0_i_67_n_0
+    SLICE_X51Y87         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334    11.583 r  com_sprite_m/m1y/BRAM_reg_0_i_28/O[1]
+                         net (fo=3, routed)           0.790    12.373    com_sprite_m/m1y/pos_y_32[21]
+    SLICE_X51Y96         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.701    13.074 r  com_sprite_m/m1y/BRAM_reg_0_i_116/CO[3]
+                         net (fo=1, routed)           0.000    13.074    com_sprite_m/m1y/BRAM_reg_0_i_116_n_0
+    SLICE_X51Y97         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222    13.296 r  com_sprite_m/m1y/BRAM_reg_0_i_126/O[0]
+                         net (fo=1, routed)           0.445    13.741    com_sprite_m/m1y/pos_y[23]
+    SLICE_X49Y98         CARRY4 (Prop_carry4_S[1]_O[2])
+                                                      0.879    14.620 r  com_sprite_m/m1y/BRAM_reg_0_i_57/O[2]
+                         net (fo=3, routed)           0.777    15.397    com_sprite_m/m1y/image_addr3[12]
+    SLICE_X49Y106        LUT2 (Prop_lut2_I1_O)        0.302    15.699 r  com_sprite_m/m1y/BRAM_reg_0_i_113/O
+                         net (fo=1, routed)           0.000    15.699    com_sprite_m/m1y/BRAM_reg_0_i_113_n_0
+    SLICE_X49Y106        CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401    16.100 r  com_sprite_m/m1y/BRAM_reg_0_i_48/CO[3]
+                         net (fo=1, routed)           0.000    16.100    com_sprite_m/m1y/BRAM_reg_0_i_48_n_0
+    SLICE_X49Y107        CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222    16.322 r  com_sprite_m/m1y/BRAM_reg_0_i_25/O[0]
+                         net (fo=1, routed)           0.585    16.907    com_sprite_m/m1y/image_addr1[10]
+    SLICE_X48Y107        CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.849    17.756 r  com_sprite_m/m1y/BRAM_reg_0_i_21/CO[3]
+                         net (fo=1, routed)           0.000    17.756    com_sprite_m/m1y/BRAM_reg_0_i_21_n_0
+    SLICE_X48Y108        CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222    17.978 r  com_sprite_m/m1y/BRAM_reg_0_i_15/O[0]
+                         net (fo=1, routed)           0.347    18.324    com_sprite_m/m1y/image_addr0[13]
+    SLICE_X49Y108        LUT6 (Prop_lut6_I0_O)        0.299    18.623 r  com_sprite_m/m1y/BRAM_reg_0_i_1/O
+                         net (fo=1, routed)           1.232    19.855    com_sprite_m/imageBRO/ADDRARDADDR[13]
+    RAMB36_X1Y25         RAMB36E1                                     r  com_sprite_m/imageBRO/BRAM_reg_0/ADDRARDADDR[14]
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_clk_wiz_0 rise edge)
                                                      13.468    13.468 r  
     N15                                               0.000    13.468 r  clk_100mhz (IN)
-                         net (fo=0)                   0.000    13.468    mhdmicw/clk_100mhz
-    N15                  IBUF (Prop_ibuf_I_O)         1.370    14.838 r  mhdmicw/clkin1_ibufg/O
-                         net (fo=1, routed)           1.162    16.000    mhdmicw/clk_ref_clk_wiz_0
-    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
-                                                     -7.221     8.779 r  mhdmicw/mmcm_adv_inst/CLKOUT0
-                         net (fo=1, routed)           1.587    10.366    mhdmicw/clk_pixel_clk_wiz_0
-    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091    10.457 r  mhdmicw/clkout1_buf/O
-                         net (fo=2590, routed)        1.476    11.933    com_sprite_m/imageBRO/clk_pixel
-    RAMB36_X0Y10         RAMB36E1                                     r  com_sprite_m/imageBRO/BRAM_reg_0/CLKARDCLK
-                         clock pessimism              0.482    12.415    
-                         clock uncertainty           -0.168    12.247    
-    RAMB36_X0Y10         RAMB36E1 (Setup_ramb36e1_CLKARDCLK_ADDRARDADDR[14])
-                                                     -0.566    11.681    com_sprite_m/imageBRO/BRAM_reg_0
+                         net (fo=0)                   0.000    13.468    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.370    14.838 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           1.868    16.706    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.091    16.797 r  mbf/O
+                         net (fo=2, routed)           1.457    18.255    mhdmicw/clk_ref
+    MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -3.129    15.125 r  mhdmicw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           1.581    16.706    mhdmicw/clk_pixel_clk_wiz_0
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091    16.797 r  mhdmicw/clkout1_buf/O
+                         net (fo=4234, routed)        1.637    18.435    com_sprite_m/imageBRO/clk_pixel
+    RAMB36_X1Y25         RAMB36E1                                     r  com_sprite_m/imageBRO/BRAM_reg_0/CLKARDCLK
+                         clock pessimism              0.186    18.620    
+                         clock uncertainty           -0.168    18.452    
+    RAMB36_X1Y25         RAMB36E1 (Setup_ramb36e1_CLKARDCLK_ADDRARDADDR[14])
+                                                     -0.566    17.886    com_sprite_m/imageBRO/BRAM_reg_0
   -------------------------------------------------------------------
-                         required time                         11.681    
-                         arrival time                         -29.665    
+                         required time                         17.886    
+                         arrival time                         -19.855    
   -------------------------------------------------------------------
-                         slack                                -17.984    
+                         slack                                 -1.969    
 
 
 
@@ -380,61 +531,65 @@ Slack (VIOLATED) :        -17.984ns  (required time - arrival time)
 
 Min Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.023ns  (arrival time - required time)
-  Source:                 com_sprite_m/tnearl_y_reg[0][6]__0/C
+Slack (MET) :             0.040ns  (arrival time - required time)
+  Source:                 map1_green_pipe_reg[0][1]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            com_sprite_m/tnearl_y_reg[32][6]_srl32/D
+  Destination:            map1_green_pipe_reg[32][1]_srl32/D
                             (rising edge-triggered cell SRLC32E clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_clk_wiz_0
   Path Type:              Hold (Min at Fast Process Corner)
   Requirement:            0.000ns  (clk_pixel_clk_wiz_0 rise@0.000ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        0.401ns  (logic 0.164ns (40.885%)  route 0.237ns (59.115%))
+  Data Path Delay:        0.260ns  (logic 0.141ns (54.313%)  route 0.119ns (45.687%))
   Logic Levels:           0  
-  Clock Path Skew:        0.263ns (DCD - SCD - CPR)
-    Destination Clock Delay (DCD):    -0.876ns
-    Source Clock Delay      (SCD):    -0.636ns
-    Clock Pessimism Removal (CPR):    -0.503ns
+  Clock Path Skew:        0.037ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    1.971ns
+    Source Clock Delay      (SCD):    1.455ns
+    Clock Pessimism Removal (CPR):    0.479ns
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk_pixel_clk_wiz_0 rise edge)
                                                       0.000     0.000 r  
     N15                                               0.000     0.000 r  clk_100mhz (IN)
-                         net (fo=0)                   0.000     0.000    mhdmicw/clk_100mhz
-    N15                  IBUF (Prop_ibuf_I_O)         0.209     0.209 r  mhdmicw/clkin1_ibufg/O
-                         net (fo=1, routed)           0.440     0.649    mhdmicw/clk_ref_clk_wiz_0
-    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
-                                                     -2.362    -1.714 r  mhdmicw/mmcm_adv_inst/CLKOUT0
-                         net (fo=1, routed)           0.489    -1.225    mhdmicw/clk_pixel_clk_wiz_0
-    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.026    -1.199 r  mhdmicw/clkout1_buf/O
-                         net (fo=2590, routed)        0.563    -0.636    com_sprite_m/clk_pixel
-    SLICE_X38Y45         FDRE                                         r  com_sprite_m/tnearl_y_reg[0][6]__0/C
+                         net (fo=0)                   0.000     0.000    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         0.209     0.209 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           0.634     0.843    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.026     0.869 r  mbf/O
+                         net (fo=2, routed)           0.549     1.417    mhdmicw/clk_ref
+    MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -1.061     0.357 r  mhdmicw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           0.486     0.843    mhdmicw/clk_pixel_clk_wiz_0
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.026     0.869 r  mhdmicw/clkout1_buf/O
+                         net (fo=4234, routed)        0.587     1.455    clk_pixel
+    SLICE_X4Y17          FDRE                                         r  map1_green_pipe_reg[0][1]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X38Y45         FDRE (Prop_fdre_C_Q)         0.164    -0.472 r  com_sprite_m/tnearl_y_reg[0][6]__0/Q
-                         net (fo=1, routed)           0.237    -0.235    com_sprite_m/tnearl_y_reg[0][6]__0_n_0
-    SLICE_X34Y43         SRLC32E                                      r  com_sprite_m/tnearl_y_reg[32][6]_srl32/D
+    SLICE_X4Y17          FDRE (Prop_fdre_C_Q)         0.141     1.596 r  map1_green_pipe_reg[0][1]/Q
+                         net (fo=1, routed)           0.119     1.715    map1_green_pipe_reg[0][1]
+    SLICE_X2Y17          SRLC32E                                      r  map1_green_pipe_reg[32][1]_srl32/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_clk_wiz_0 rise edge)
                                                       0.000     0.000 r  
     N15                                               0.000     0.000 r  clk_100mhz (IN)
-                         net (fo=0)                   0.000     0.000    mhdmicw/clk_100mhz
-    N15                  IBUF (Prop_ibuf_I_O)         0.396     0.396 r  mhdmicw/clkin1_ibufg/O
-                         net (fo=1, routed)           0.480     0.876    mhdmicw/clk_ref_clk_wiz_0
-    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
-                                                     -3.145    -2.269 r  mhdmicw/mmcm_adv_inst/CLKOUT0
-                         net (fo=1, routed)           0.534    -1.735    mhdmicw/clk_pixel_clk_wiz_0
-    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.029    -1.706 r  mhdmicw/clkout1_buf/O
-                         net (fo=2590, routed)        0.831    -0.876    com_sprite_m/clk_pixel
-    SLICE_X34Y43         SRLC32E                                      r  com_sprite_m/tnearl_y_reg[32][6]_srl32/CLK
-                         clock pessimism              0.503    -0.373    
-    SLICE_X34Y43         SRLC32E (Hold_srlc32e_CLK_D)
-                                                      0.115    -0.258    com_sprite_m/tnearl_y_reg[32][6]_srl32
+                         net (fo=0)                   0.000     0.000    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         0.396     0.396 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           0.689     1.085    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.029     1.114 r  mbf/O
+                         net (fo=2, routed)           0.817     1.930    mhdmicw/clk_ref
+    MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -1.375     0.555 r  mhdmicw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           0.530     1.085    mhdmicw/clk_pixel_clk_wiz_0
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.029     1.114 r  mhdmicw/clkout1_buf/O
+                         net (fo=4234, routed)        0.858     1.971    clk_pixel
+    SLICE_X2Y17          SRLC32E                                      r  map1_green_pipe_reg[32][1]_srl32/CLK
+                         clock pessimism             -0.479     1.492    
+    SLICE_X2Y17          SRLC32E (Hold_srlc32e_CLK_D)
+                                                      0.183     1.675    map1_green_pipe_reg[32][1]_srl32
   -------------------------------------------------------------------
-                         required time                          0.258    
-                         arrival time                          -0.235    
+                         required time                         -1.675    
+                         arrival time                           1.715    
   -------------------------------------------------------------------
-                         slack                                  0.023    
+                         slack                                  0.040    
 
 
 
@@ -448,10 +603,10 @@ Period(ns):         13.468
 Sources:            { mhdmicw/mmcm_adv_inst/CLKOUT0 }
 
 Check Type        Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location         Pin
-Min Period        n/a     RAMB36E1/CLKARDCLK  n/a            2.892         13.468      10.576     RAMB36_X2Y2      gameplay_module/bram_ball/BRAM_reg_0_0/CLKARDCLK
-Max Period        n/a     MMCME2_ADV/CLKOUT0  n/a            213.360       13.468      199.892    MMCME2_ADV_X0Y0  mhdmicw/mmcm_adv_inst/CLKOUT0
-Low Pulse Width   Slow    RAMS32/CLK          n/a            1.250         6.734       5.484      SLICE_X6Y22      com_sprite_m/paletteBRO/BRAM_reg_0_3_0_0/SP/CLK
-High Pulse Width  Slow    RAMS32/CLK          n/a            1.250         6.734       5.484      SLICE_X6Y22      com_sprite_m/paletteBRO/BRAM_reg_0_3_0_0/SP/CLK
+Min Period        n/a     RAMB36E1/CLKARDCLK  n/a            2.892         13.468      10.576     RAMB36_X0Y2      gameplay_module/bram_ball/BRAM_reg_0_0/CLKARDCLK
+Max Period        n/a     MMCME2_ADV/CLKOUT0  n/a            213.360       13.468      199.892    MMCME2_ADV_X1Y0  mhdmicw/mmcm_adv_inst/CLKOUT0
+Low Pulse Width   Slow    RAMS32/CLK          n/a            1.250         6.734       5.484      SLICE_X38Y9      com_sprite_b/angle_lookup/cos_lookup/BRAM_reg_0_15_0_0/SP/CLK
+High Pulse Width  Slow    RAMS32/CLK          n/a            1.250         6.734       5.484      SLICE_X38Y9      com_sprite_b/angle_lookup/cos_lookup/BRAM_reg_0_15_0_0/SP/CLK
 
 
 
@@ -474,7 +629,30 @@ Sources:            { mhdmicw/mmcm_adv_inst/CLKOUT1 }
 
 Check Type  Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location         Pin
 Min Period  n/a     BUFG/I              n/a            2.155         2.694       0.538      BUFGCTRL_X0Y1    mhdmicw/clkout2_buf/I
-Max Period  n/a     MMCME2_ADV/CLKOUT1  n/a            213.360       2.694       210.666    MMCME2_ADV_X0Y0  mhdmicw/mmcm_adv_inst/CLKOUT1
+Max Period  n/a     MMCME2_ADV/CLKOUT1  n/a            213.360       2.694       210.666    MMCME2_ADV_X1Y0  mhdmicw/mmcm_adv_inst/CLKOUT1
+
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  clkfbout_audio_clk_wiz
+  To Clock:  clkfbout_audio_clk_wiz
+
+Setup :           NA  Failing Endpoints,  Worst Slack           NA  ,  Total Violation           NA
+Hold  :           NA  Failing Endpoints,  Worst Slack           NA  ,  Total Violation           NA
+PW    :            0  Failing Endpoints,  Worst Slack       47.845ns,  Total Violation        0.000ns
+---------------------------------------------------------------------------------------------------
+
+
+Pulse Width Checks
+--------------------------------------------------------------------------------------
+Clock Name:         clkfbout_audio_clk_wiz
+Waveform(ns):       { 0.000 25.000 }
+Period(ns):         50.000
+Sources:            { macw/mmcm_adv_inst/CLKFBOUT }
+
+Check Type  Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location         Pin
+Min Period  n/a     BUFG/I              n/a            2.155         50.000      47.845     BUFGCTRL_X0Y4    macw/clkf_buf/I
+Max Period  n/a     MMCME2_ADV/CLKFBIN  n/a            100.000       50.000      50.000     MMCME2_ADV_X0Y0  macw/mmcm_adv_inst/CLKFBIN
 
 
 
@@ -496,8 +674,163 @@ Period(ns):         50.000
 Sources:            { mhdmicw/mmcm_adv_inst/CLKFBOUT }
 
 Check Type  Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location         Pin
-Min Period  n/a     BUFG/I              n/a            2.155         50.000      47.845     BUFGCTRL_X0Y2    mhdmicw/clkf_buf/I
-Max Period  n/a     MMCME2_ADV/CLKFBIN  n/a            100.000       50.000      50.000     MMCME2_ADV_X0Y0  mhdmicw/mmcm_adv_inst/CLKFBIN
+Min Period  n/a     BUFG/I              n/a            2.155         50.000      47.845     BUFGCTRL_X0Y5    mhdmicw/clkf_buf/I
+Max Period  n/a     MMCME2_ADV/CLKFBIN  n/a            100.000       50.000      50.000     MMCME2_ADV_X1Y0  mhdmicw/mmcm_adv_inst/CLKFBIN
+
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  clk_pixel_clk_wiz_0
+  To Clock:  clk_out_audio_clk_wiz
+
+Setup :          108  Failing Endpoints,  Worst Slack       -4.524ns,  Total Violation     -468.145ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.117ns,  Total Violation        0.000ns
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (VIOLATED) :        -4.524ns  (required time - arrival time)
+  Source:                 gameplay_module/state_reg[1]/C
+                            (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
+  Destination:            my_playback/counter_reg[9]_rep/R
+                            (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
+  Path Group:             clk_out_audio_clk_wiz
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            0.024ns  (clk_out_audio_clk_wiz rise@3326.623ns - clk_pixel_clk_wiz_0 rise@3326.599ns)
+  Data Path Delay:        3.209ns  (logic 0.642ns (20.005%)  route 2.567ns (79.995%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.108ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.780ns = ( 3331.403 - 3326.623 ) 
+    Source Clock Delay      (SCD):    5.066ns = ( 3331.665 - 3326.599 ) 
+    Clock Pessimism Removal (CPR):    0.179ns
+  Clock Uncertainty:      0.707ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.532ns
+    Phase Error              (PE):    0.439ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_pixel_clk_wiz_0 rise edge)
+                                                   3326.599  3326.599 r  
+    N15                                               0.000  3326.599 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000  3326.599    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.440  3328.040 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           1.972  3330.011    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.096  3330.107 r  mbf/O
+                         net (fo=2, routed)           1.575  3331.682    mhdmicw/clk_ref
+    MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -3.333  3328.350 r  mhdmicw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           1.661  3330.011    mhdmicw/clk_pixel_clk_wiz_0
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096  3330.107 r  mhdmicw/clkout1_buf/O
+                         net (fo=4234, routed)        1.558  3331.665    gameplay_module/clk_pixel
+    SLICE_X14Y50         FDRE                                         r  gameplay_module/state_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X14Y50         FDRE (Prop_fdre_C_Q)         0.518  3332.183 r  gameplay_module/state_reg[1]/Q
+                         net (fo=22, routed)          1.194  3333.377    gameplay_module/state_out[1]
+    SLICE_X12Y50         LUT6 (Prop_lut6_I4_O)        0.124  3333.501 r  gameplay_module/counter[15]_i_1_comp_replica/O
+                         net (fo=93, routed)          1.374  3334.874    my_playback/p_0_in_repN_alias
+    SLICE_X12Y45         FDRE                                         r  my_playback/counter_reg[9]_rep/R
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_out_audio_clk_wiz rise edge)
+                                                   3326.623  3326.623 r  
+    N15                                               0.000  3326.623 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000  3326.623    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.370  3327.993 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           1.868  3329.861    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.091  3329.952 r  mbf/O
+                         net (fo=2, routed)           1.455  3331.408    macw/clk_in
+    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -3.133  3328.274 r  macw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           1.587  3329.861    macw/clk_out_audio_clk_wiz
+    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091  3329.952 r  macw/clkout1_buf/O
+                         net (fo=172, routed)         1.450  3331.403    my_playback/clk_m
+    SLICE_X12Y45         FDRE                                         r  my_playback/counter_reg[9]_rep/C
+                         clock pessimism              0.179  3331.582    
+                         clock uncertainty           -0.707  3330.874    
+    SLICE_X12Y45         FDRE (Setup_fdre_C_R)       -0.524  3330.350    my_playback/counter_reg[9]_rep
+  -------------------------------------------------------------------
+                         required time                       3330.350    
+                         arrival time                       -3334.874    
+  -------------------------------------------------------------------
+                         slack                                 -4.524    
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             0.117ns  (arrival time - required time)
+  Source:                 gameplay_module/state_reg[0]/C
+                            (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
+  Destination:            my_playback/playing_back_hole_reg/D
+                            (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
+  Path Group:             clk_out_audio_clk_wiz
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk_out_audio_clk_wiz rise@0.000ns - clk_pixel_clk_wiz_0 rise@0.000ns)
+  Data Path Delay:        1.186ns  (logic 0.254ns (21.414%)  route 0.932ns (78.586%))
+  Logic Levels:           2  (LUT5=1 LUT6=1)
+  Clock Path Skew:        0.270ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    1.948ns
+    Source Clock Delay      (SCD):    1.433ns
+    Clock Pessimism Removal (CPR):    0.245ns
+  Clock Uncertainty:      0.707ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Discrete Jitter          (DJ):    0.532ns
+    Phase Error              (PE):    0.439ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk_pixel_clk_wiz_0 rise edge)
+                                                      0.000     0.000 r  
+    N15                                               0.000     0.000 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000     0.000    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         0.209     0.209 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           0.634     0.843    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.026     0.869 r  mbf/O
+                         net (fo=2, routed)           0.549     1.417    mhdmicw/clk_ref
+    MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -1.061     0.357 r  mhdmicw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           0.486     0.843    mhdmicw/clk_pixel_clk_wiz_0
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.026     0.869 r  mhdmicw/clkout1_buf/O
+                         net (fo=4234, routed)        0.565     1.433    gameplay_module/clk_pixel
+    SLICE_X14Y50         FDRE                                         r  gameplay_module/state_reg[0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X14Y50         FDRE (Prop_fdre_C_Q)         0.164     1.597 f  gameplay_module/state_reg[0]/Q
+                         net (fo=21, routed)          0.474     2.071    gameplay_module/state_out[0]
+    SLICE_X15Y50         LUT5 (Prop_lut5_I4_O)        0.045     2.116 f  gameplay_module/counter[15]_i_4/O
+                         net (fo=2, routed)           0.458     2.574    my_playback/playing_back_hole_reg_1
+    SLICE_X15Y50         LUT6 (Prop_lut6_I0_O)        0.045     2.619 r  my_playback/playing_back_hole_i_1/O
+                         net (fo=1, routed)           0.000     2.619    my_playback/playing_back_hole_i_1_n_0
+    SLICE_X15Y50         FDRE                                         r  my_playback/playing_back_hole_reg/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk_out_audio_clk_wiz rise edge)
+                                                      0.000     0.000 r  
+    N15                                               0.000     0.000 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000     0.000    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         0.396     0.396 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           0.689     1.085    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.029     1.114 r  mbf/O
+                         net (fo=2, routed)           0.816     1.929    macw/clk_in
+    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -1.378     0.551 r  macw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           0.534     1.085    macw/clk_out_audio_clk_wiz
+    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.029     1.114 r  macw/clkout1_buf/O
+                         net (fo=172, routed)         0.834     1.948    my_playback/clk_m
+    SLICE_X15Y50         FDRE                                         r  my_playback/playing_back_hole_reg/C
+                         clock pessimism             -0.245     1.703    
+                         clock uncertainty            0.707     2.410    
+    SLICE_X15Y50         FDRE (Hold_fdre_C_D)         0.092     2.502    my_playback/playing_back_hole_reg
+  -------------------------------------------------------------------
+                         required time                         -2.502    
+                         arrival time                           2.619    
+  -------------------------------------------------------------------
+                         slack                                  0.117    
+
+
 
 
 
