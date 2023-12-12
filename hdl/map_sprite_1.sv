@@ -223,7 +223,7 @@ module map_sprite_1 #(
   //   .douta(finalcolors)      // RAM output data, width determined from RAM_WIDTH
   // );
 
-  logic allow=(imageBROMout<4||((imageBROMout==4 || imageBROMout==5) && (7-hcount_pipe[1][2:0]>=vcount_pipe[1][2:0]))||((imageBROMout==6 || imageBROMout==7) && (hcount_pipe[1][2:0]+1<vcount_pipe[1][2:0]))||((imageBROMout==8 || imageBROMout==9) && (6-hcount_pipe[1][2:0]<vcount_pipe[1][2:0]))||((imageBROMout==10 || imageBROMout==11) && (hcount_pipe[1][2:0]+1>vcount_pipe[1][2:0])));
+  logic allow=(imageBROMout<4||((imageBROMout==4 || imageBROMout==5) && (8-hcount_pipe[1][2:0]>vcount_pipe[1][2:0]))||((imageBROMout==6 || imageBROMout==7) && (hcount_pipe[1][2:0]+1<=vcount_pipe[1][2:0]))||((imageBROMout==8 || imageBROMout==9) && (8-hcount_pipe[1][2:0]<=vcount_pipe[1][2:0]))||((imageBROMout==10 || imageBROMout==11) && (hcount_pipe[1][2:0]+1>vcount_pipe[1][2:0])));
   // logic allow=1;
   logic [23:0] wall=24'h8B4F39;
   // Modify the module below to use your BRAMs!

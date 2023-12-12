@@ -1,11 +1,18 @@
 
 
 
-with open("/Users/seblohier/6.111/6.111_fin_proj/mapgen/art.txt") as s:
-    f = open("/Users/seblohier/6.111/6.111_fin_proj/mapgen/map3.mem","a")
+with open("/Users/seblohier/6.111/6.111_fin_proj/mapgen/fullsauce.txt") as s:
+    f = open("/Users/seblohier/6.111/6.111_fin_proj/data/map4.mem","a")
     for i in s:
         for j in i:
-            f.write(j+"\n")
+            if j=="-":
+                f.write("A\n")
+            elif j=="=":
+                f.write("B\n")
+            elif j!="\n":
+                f.write(j+"\n")
+            else:
+                print(j)
             
 
     # for i in range(90):

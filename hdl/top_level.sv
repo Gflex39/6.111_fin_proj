@@ -18,7 +18,7 @@ module top_level(
   output logic ble_uart_rx,
   output logic spkl, spkr //speaker outputs
   );
-
+  parameter WIDTH = 160;
 
 
 
@@ -30,9 +30,9 @@ module top_level(
   //Clocking Variables:
   logic clk_pixel, clk_5x; //clock lines
   logic locked; //locked signal (we'll leave unused but still hook it up)
-  logic top;
-  assign top = sw[0];
 
+  logic top;
+  assign top=sw[0];
   logic [31:0] debug_var;
   logic sys_rst;
   assign sys_rst = btn[0];
@@ -55,7 +55,7 @@ module top_level(
   logic [7:0] score;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-                                  .val_in(db),//{ball_speed_16, 8'b0, score}),
+                                  .val_in(state_out),//{ball_speed_16, 8'b0, score}),
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
@@ -165,6 +165,7 @@ module top_level(
     .rst_in(sys_rst),
     .ballx(ballx_16),
     .bally(bally_16),
+    .grass_color(grass_color),
     .angle(angle),
     .change({sw[4],sw[3],sw[2],sw[1]}),
     .hcount_in(hcount),   //TODO: needs to use pipelined signal (PS1)
@@ -173,6 +174,10 @@ module top_level(
     .green_out(img_green),
     .blue_out(img_blue),
     .debug_out(db));
+
+
+
+
 
   logic [7:0] red, green, blue;
   logic [7:0] map1_red_pipe [47:0];
