@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Mon Dec 11 17:50:15 2023
+| Date         : Tue Dec 12 22:29:08 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing -file obj/post_route_timing.rpt
 | Design       : top_level
@@ -12,19 +12,19 @@ Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanc
 
 Timing Report
 
-Slack (VIOLATED) :        -5.270ns  (required time - arrival time)
+Slack (VIOLATED) :        -5.154ns  (required time - arrival time)
   Source:                 gameplay_module/state_reg[0]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            my_playback/counter_reg[0]/R
+  Destination:            my_playback/counter_reg[10]/R
                             (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
   Path Group:             clk_out_audio_clk_wiz
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            0.024ns  (clk_out_audio_clk_wiz rise@3326.623ns - clk_pixel_clk_wiz_0 rise@3326.599ns)
-  Data Path Delay:        3.854ns  (logic 0.766ns (19.874%)  route 3.088ns (80.126%))
+  Data Path Delay:        3.918ns  (logic 0.704ns (17.968%)  route 3.214ns (82.032%))
   Logic Levels:           2  (LUT5=1 LUT6=1)
-  Clock Path Skew:        -0.304ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    4.835ns = ( 3331.458 - 3326.623 ) 
-    Source Clock Delay      (SCD):    5.317ns = ( 3331.916 - 3326.599 ) 
+  Clock Path Skew:        -0.124ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.760ns = ( 3331.383 - 3326.623 ) 
+    Source Clock Delay      (SCD):    5.062ns = ( 3331.661 - 3326.599 ) 
     Clock Pessimism Removal (CPR):    0.179ns
   Clock Uncertainty:      0.707ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
@@ -45,16 +45,16 @@ Slack (VIOLATED) :        -5.270ns  (required time - arrival time)
                                                      -3.333  3328.350 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.661  3330.011    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096  3330.107 r  mhdmicw/clkout1_buf/O
-                         net (fo=5409, routed)        1.809  3331.916    gameplay_module/clk_pixel
-    SLICE_X6Y100         FDRE                                         r  gameplay_module/state_reg[0]/C
+                         net (fo=5359, routed)        1.554  3331.661    gameplay_module/clk_pixel
+    SLICE_X43Y19         FDRE                                         r  gameplay_module/state_reg[0]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X6Y100         FDRE (Prop_fdre_C_Q)         0.518  3332.434 f  gameplay_module/state_reg[0]/Q
-                         net (fo=49, routed)          1.274  3333.708    gameplay_module/state_out[0]
-    SLICE_X5Y100         LUT5 (Prop_lut5_I4_O)        0.124  3333.832 f  gameplay_module/counter[15]_i_4/O
-                         net (fo=3, routed)           0.665  3334.497    gameplay_module/playing_back_hole_reg
-    SLICE_X5Y92          LUT6 (Prop_lut6_I0_O)        0.124  3334.621 r  gameplay_module/counter[15]_i_1/O
-                         net (fo=97, routed)          1.150  3335.771    my_playback/p_0_in
-    SLICE_X7Y92          FDRE                                         r  my_playback/counter_reg[0]/R
+    SLICE_X43Y19         FDRE (Prop_fdre_C_Q)         0.456  3332.117 f  gameplay_module/state_reg[0]/Q
+                         net (fo=46, routed)          1.231  3333.349    gameplay_module/state_out[0]
+    SLICE_X40Y21         LUT5 (Prop_lut5_I4_O)        0.124  3333.473 f  gameplay_module/counter[15]_i_4/O
+                         net (fo=3, routed)           0.746  3334.219    gameplay_module/playing_back_hole_reg
+    SLICE_X41Y21         LUT6 (Prop_lut6_I0_O)        0.124  3334.343 r  gameplay_module/counter[15]_i_1/O
+                         net (fo=113, routed)         1.237  3335.580    my_playback/p_0_in
+    SLICE_X41Y25         FDRE                                         r  my_playback/counter_reg[10]/R
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_out_audio_clk_wiz rise edge)
@@ -69,16 +69,16 @@ Slack (VIOLATED) :        -5.270ns  (required time - arrival time)
                                                      -3.133  3328.274 r  macw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.587  3329.861    macw/clk_out_audio_clk_wiz
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091  3329.952 r  macw/clkout1_buf/O
-                         net (fo=172, routed)         1.506  3331.458    my_playback/clk_m
-    SLICE_X7Y92          FDRE                                         r  my_playback/counter_reg[0]/C
-                         clock pessimism              0.179  3331.637    
-                         clock uncertainty           -0.707  3330.929    
-    SLICE_X7Y92          FDRE (Setup_fdre_C_R)       -0.429  3330.500    my_playback/counter_reg[0]
+                         net (fo=188, routed)         1.430  3331.383    my_playback/clk_m
+    SLICE_X41Y25         FDRE                                         r  my_playback/counter_reg[10]/C
+                         clock pessimism              0.179  3331.562    
+                         clock uncertainty           -0.707  3330.854    
+    SLICE_X41Y25         FDRE (Setup_fdre_C_R)       -0.429  3330.425    my_playback/counter_reg[10]
   -------------------------------------------------------------------
-                         required time                       3330.501    
-                         arrival time                       -3335.771    
+                         required time                       3330.426    
+                         arrival time                       -3335.580    
   -------------------------------------------------------------------
-                         slack                                 -5.270    
+                         slack                                 -5.154    
 
 
 

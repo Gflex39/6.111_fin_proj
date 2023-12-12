@@ -378,8 +378,8 @@ module gameplay
                 end
 
                 IN_HOLE: begin
-
-
+                    ball_position_x <= {ball_position_x[15:8], 8'b1000_0000};
+                    ball_position_y <= {ball_position_y[15:8], 8'b1000_0000};
                 end
 
             endcase

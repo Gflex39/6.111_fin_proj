@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date             : Mon Dec 11 17:50:16 2023
+| Date             : Tue Dec 12 22:29:09 2023
 | Host             : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command          : report_power -file obj/post_route_power.rpt
 | Design           : top_level
@@ -30,7 +30,7 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.566        |
+| Total On-Chip Power (W)  | 0.567        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
 | Dynamic (W)              | 0.490        |
@@ -52,22 +52,22 @@ Table of Contents
 +--------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
 +--------------------------+-----------+----------+-----------+-----------------+
-| Clocks                   |     0.024 |        8 |       --- |             --- |
-| Slice Logic              |     0.026 |    14328 |       --- |             --- |
-|   LUT as Logic           |     0.021 |     5115 |     32600 |           15.69 |
-|   CARRY4                 |     0.003 |      962 |      8150 |           11.80 |
-|   LUT as Shift Register  |     0.001 |      585 |      9600 |            6.09 |
-|   Register               |    <0.001 |     2581 |     65200 |            3.96 |
-|   LUT as Distributed RAM |    <0.001 |     2276 |      9600 |           23.71 |
-|   F7/F8 Muxes            |    <0.001 |     1362 |     32600 |            4.18 |
-|   Others                 |     0.000 |      114 |       --- |             --- |
-| Signals                  |     0.033 |     9607 |       --- |             --- |
-| Block RAM                |     0.014 |       74 |        75 |           98.67 |
+| Clocks                   |     0.025 |        8 |       --- |             --- |
+| Slice Logic              |     0.027 |    14199 |       --- |             --- |
+|   LUT as Logic           |     0.021 |     5007 |     32600 |           15.36 |
+|   CARRY4                 |     0.003 |      902 |      8150 |           11.07 |
+|   LUT as Shift Register  |     0.001 |      473 |      9600 |            4.93 |
+|   LUT as Distributed RAM |    <0.001 |     2532 |      9600 |           26.38 |
+|   Register               |    <0.001 |     2413 |     65200 |            3.70 |
+|   F7/F8 Muxes            |    <0.001 |     1568 |     32600 |            4.81 |
+|   Others                 |     0.000 |      116 |       --- |             --- |
+| Signals                  |     0.033 |     9005 |       --- |             --- |
+| Block RAM                |     0.018 |       74 |        75 |           98.67 |
 | MMCM                     |     0.237 |        2 |         5 |           40.00 |
-| DSPs                     |     0.012 |       45 |       120 |           37.50 |
-| I/O                      |     0.143 |       44 |       210 |           20.95 |
+| DSPs                     |     0.011 |       35 |       120 |           29.17 |
+| I/O                      |     0.141 |       42 |       210 |           20.00 |
 | Static Power             |     0.076 |          |           |                 |
-| Total                    |     0.566 |          |           |                 |
+| Total                    |     0.567 |          |           |                 |
 +--------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -77,16 +77,16 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.123 |       0.111 |      0.012 |       NA    | Unspecified | NA         |
-| Vccaux    |       1.800 |     0.145 |       0.132 |      0.013 |       NA    | Unspecified | NA         |
-| Vcco33    |       3.300 |     0.044 |       0.043 |      0.001 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.126 |       0.114 |      0.012 |       NA    | Unspecified | NA         |
+| Vccaux    |       1.800 |     0.144 |       0.132 |      0.013 |       NA    | Unspecified | NA         |
+| Vcco33    |       3.300 |     0.043 |       0.042 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco15    |       1.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco135   |       1.350 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco12    |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vccaux_io |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
-| Vccbram   |       1.000 |     0.003 |       0.001 |      0.002 |       NA    | Unspecified | NA         |
+| Vccbram   |       1.000 |     0.004 |       0.002 |      0.002 |       NA    | Unspecified | NA         |
 | Vccadc    |       1.800 |     0.020 |       0.000 |      0.020 |       NA    | Unspecified | NA         |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 
@@ -152,16 +152,21 @@ Table of Contents
 | top_level            |     0.490 |
 |   com_sprite_b       |     0.003 |
 |     imageBROM        |     0.002 |
-|   com_sprite_m       |     0.074 |
+|   com_sprite_m       |     0.075 |
 |     angle_lookp      |     0.001 |
-|     depth_calc       |     0.029 |
+|     depth_calc       |     0.027 |
 |     imageBRO         |     0.007 |
-|     m1x              |     0.006 |
-|     m1y              |     0.005 |
+|     lfsr_ram_2       |     0.002 |
+|     m1x              |     0.008 |
+|     m1y              |     0.006 |
 |     m2x              |     0.005 |
 |     m2y              |     0.005 |
-|   gameplay_module    |     0.019 |
+|   gameplay_module    |     0.022 |
+|     bram_ball        |     0.001 |
+|     bram_ball_xminus |     0.002 |
+|     bram_ball_xplus  |     0.002 |
 |     bram_ball_yminus |     0.009 |
+|     bram_ball_yplus  |     0.002 |
 |   lfsr_ram           |     0.002 |
 |   macw               |     0.132 |
 |   mhdmicw            |     0.105 |

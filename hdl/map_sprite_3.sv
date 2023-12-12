@@ -19,7 +19,9 @@ module map_sprite_3 #(
   input wire [15:0] bally,
   input wire [15:0] angle, 
   input wire [3:0] change,
-  input wire grass_color,
+  input wire lfsr_wea,
+  input wire [15:0] lfsr_addra,
+  input wire lfsr_out,
   output logic [7:0] red_out,
   output logic [7:0] green_out,
   output logic [7:0] blue_out,
@@ -147,14 +149,14 @@ module map_sprite_3 #(
     end else begin
     if(change[0])begin 
       
-      if(far_count==100000 && far_mag < 16'b1111_1111)begin
+      if(far_count==400000 && far_mag < 16'b1111_1111)begin
         far_mag<=far_mag+1;
         far_count<=0;
       end else far_count<=far_count+1;
       
     end
     else if(change[1])begin
-        if(far_count==100000 && far_mag > near_mag)begin
+        if(far_count==400000 && far_mag > near_mag)begin
         far_mag<=far_mag-1;
         far_count<=0;
       end else far_count<=far_count+1;
@@ -166,30 +168,30 @@ module map_sprite_3 #(
 
   logic[31:0] near_count;
 
-  always_ff @(posedge pixel_clk_in ) begin 
-    if(rst_in)begin
-      near_mag <= 16'b0000_0000;
+  // always_ff @(posedge pixel_clk_in ) begin 
+  //   if(rst_in)begin
+  //     near_mag <= 16'b0000_0000;
       
 
-    end else begin
-    if(change[2])begin 
+  //   end else begin
+  //   if(change[2])begin 
       
-      if(near_count==100000 && near_mag < far_mag)begin
-        near_mag<=near_mag+1;
-        near_count<=0;
-      end else near_count<=near_count+1;
+  //     if(near_count==400000 && near_mag < far_mag)begin
+  //       near_mag<=near_mag+1;
+  //       near_count<=0;
+  //     end else near_count<=near_count+1;
       
-    end
-    else if(change[3])begin
-        if(near_count==100000 && near_mag > 16'b0000_0000)begin
-        near_mag<=near_mag-1;
-        near_count<=0;
-      end else near_count<=near_count+1;
-    end
-    else near_count<=0;
-    end
+  //   end
+  //   else if(change[3])begin
+  //       if(near_count==400000 && near_mag > 16'b0000_0000)begin
+  //       near_mag<=near_mag-1;
+  //       near_count<=0;
+  //     end else near_count<=near_count+1;
+  //   end
+  //   else near_count<=0;
+  //   end
  
-  end
+  // end
 
 
 
@@ -201,7 +203,7 @@ module map_sprite_3 #(
 
 
 
-  assign debug_out={ballx,bally};//{camera_pos_x,camera_pos_y};
+  assign debug_out=grass_color;//{ballx,bally};//{camera_pos_x,camera_pos_y};
   logic [23:0] farl_x;
   logic [23:0] farl_y;
   logic [23:0] farr_x;
@@ -451,6 +453,9 @@ module map_sprite_3 #(
   logic [7:0] mapx_pipe[1:0];
   logic [7:0] mapy_pipe[1:0];
 
+  logic [15:0] image_addr_lfsr;
+  assign image_addr_lfsr = onboard?((map_coord_y>>9)*80+(map_coord_x>>9)):0;
+
   always_ff @(posedge pixel_clk_in)begin
     mapx_pipe[0]<=map_coord_x[7:0];
     mapy_pipe[0]<=map_coord_y[7:0];
@@ -481,6 +486,22 @@ module map_sprite_3 #(
     .rsta(rst_in),       // Output reset (does not affect memory contents)
     .regcea(1),   // Output register enable
     .douta(imageBROMout)      // RAM output data, width determined from RAM_WIDTH
+  );
+
+  logic grass_color;
+  xilinx_single_port_ram_read_first #(
+      .RAM_WIDTH(1),                       // Specify RAM data width
+      .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+      .RAM_PERFORMANCE("HIGH_PERFORMANCE") // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+  ) lfsr_ram_2 (
+      .addra(lfsr_wea?lfsr_addra:image_addr_lfsr),     // Address bus, width determined from RAM_DEPTH
+      .dina(lfsr_out),       // RAM input data, width determined from RAM_WIDTH
+      .clka(pixel_clk_in),       // Clock
+      .wea(lfsr_wea),         // Write enable
+      .ena(1'b1),         // RAM Enable, for additional power savings, disable port when not in use
+      .rsta(rst_in),       // Output reset (does not affect memory contents)
+      .regcea(1'b1),   // Output register enable
+      .douta(grass_color)      // RAM output data, width determined from RAM_WIDTH
   );
 
   logic allow=(imageBROMout<4||((imageBROMout==4 || imageBROMout==5) && ((9'b100000000)-{1'b0,mapx_pipe[1]}>{1'b0,mapy_pipe[1]}))||((imageBROMout==6 || imageBROMout==7) && (mapx_pipe[1]<mapy_pipe[1]))||((imageBROMout==8 || imageBROMout==9) && ((9'b100000000)-{1'b0,mapx_pipe[1]}<{1'b0,mapy_pipe[1]}))||((imageBROMout==10 || imageBROMout==11) && (mapx_pipe[1]>mapy_pipe[1])));

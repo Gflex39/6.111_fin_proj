@@ -55,7 +55,7 @@ module top_level(
   logic [7:0] score;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-                                  .val_in(state_out),//{ball_speed_16, 8'b0, score}),
+                                  .val_in({ball_speed_16, 8'b0, score}),
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
@@ -165,7 +165,9 @@ module top_level(
     .rst_in(sys_rst),
     .ballx(ballx_16),
     .bally(bally_16),
-    .grass_color(grass_color),
+    .lfsr_wea(lfsr_wea),
+    .lfsr_addra(lfsr_addra),
+    .lfsr_out(lfsr_out),
     .angle(angle),
     .change({sw[4],sw[3],sw[2],sw[1]}),
     .hcount_in(hcount),   //TODO: needs to use pipelined signal (PS1)
