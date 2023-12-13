@@ -33,6 +33,18 @@ module map_sprite_3 #(
   logic [10:0] hcount_pipe [3:0];
   logic skypipe [3:0];
 
+  logic [15:0] ballxpipe [51:0];
+  logic [15:0] ballypipe [51:0];
+
+  always_ff @(posedge pixel_clk_in ) begin 
+    ballxpipe[0] <= ballx;
+    ballypipe[0] <= bally;
+    for (int i=1; i<52; i = i+1)begin
+      ballxpipe[i] <= ballxpipe[i-1];
+      ballypipe[i] <= ballypipe[i-1];
+    end
+  end
+
   logic onboard_pipe [3:0];
   logic [3:0] imageBROMout;
   logic [23:0] finalcolors;
@@ -447,22 +459,66 @@ module map_sprite_3 #(
   logic [$clog2(160*90)-1:0] image_addr;
   logic [15:0] map_coord_x;
   logic [15:0] map_coord_y;
+  logic [15:0] complete_ballxdiff;
+  logic [15:0] complete_ballydiff;
+  logic [15:0] ballxdiff;
+  logic [15:0] ballydiff;
+  logic [15:0] ballxsquare;
+  logic [15:0] ballysquare;
+  logic [15:0] balldistance;
+  logic [15:0] holexdist;
+  logic [15:0] holeydist;
+  logic [15:0] holedist;
+  logic [15:0] holexdistsquare;
+  logic [15:0] holeydistsquare;
+  logic holeblack;
+  logic balloutline;
+  logic ballwhite;
+  logic isball;
   assign map_coord_x = onboard?pos_x[27:12]+(1<<7):0;
   assign map_coord_y = onboard?pos_y[27:12]+(1<<7):0;
+  assign isball = (map_coord_x<=ballxpipe[49]+16'b0000000010000000) & (map_coord_x>=ballxpipe[49]-16'b0000000010000000) & (map_coord_y<=ballypipe[49]+16'b0000000010000000) & (map_coord_y>=ballypipe[49]-16'b0000000010000000);
+  assign complete_ballxdiff = isball==0?16'b0:((ballxpipe[49]>map_coord_x)?(ballxpipe[49]-map_coord_x):(map_coord_x-ballxpipe[49]));
+  assign complete_ballydiff = isball==0?16'b0:((ballypipe[49]>map_coord_y)?(ballypipe[49]-map_coord_y):(map_coord_y-ballypipe[49]));
+  assign holexdist = map_coord_x[7:0]>128?map_coord_x[7:0]-128:128-map_coord_x[7:0];
+  assign holeydist = map_coord_y[7:0]>128?map_coord_y[7:0]-128:128-map_coord_y[7:0];
+  assign holexdistsquare = (holexdist*holexdist)>>8;
+  assign holeydistsquare = (holeydist*holeydist)>>8;
+  assign holedist = holexdistsquare+holeydistsquare;
+  assign holeblack = 16'b0000000001000000>=(holedist);
+  assign ballxdiff = {8'b0,complete_ballxdiff[7:0]};
+  assign ballydiff = {8'b0,complete_ballydiff[7:0]};
+  assign ballxsquare = (ballxdiff*ballxdiff)>>8;
+  assign ballysquare = (ballydiff*ballydiff)>>8;
+  assign balldistance = ballxsquare+ballysquare;
+  assign ballwhite = 16'b0000000000110000>(balldistance); 
+  assign balloutline = 16'b0000000001000000>=(balldistance); 
   assign image_addr = onboard?((map_coord_y>>8)*160+(map_coord_x>>8)):0;
   logic [7:0] mapx_pipe[1:0];
   logic [7:0] mapy_pipe[1:0];
+  logic isballpipe [1:0];
+  logic ballwhitepipe [1:0];
+  logic balloutlinepipe [1:0];
+  logic holeblackpipe [1:0];
+
 
   logic [15:0] image_addr_lfsr;
   assign image_addr_lfsr = onboard?((map_coord_y>>9)*80+(map_coord_x>>9)):0;
 
   always_ff @(posedge pixel_clk_in)begin
+    holeblackpipe[0] <= holeblack;
+    holeblackpipe[1] <= holeblackpipe[0];
     mapx_pipe[0]<=map_coord_x[7:0];
     mapy_pipe[0]<=map_coord_y[7:0];
     mapx_pipe[1]<=mapx_pipe[0];
     mapy_pipe[1]<=mapy_pipe[0];
-
-
+    isballpipe[0] <= isball;
+    isballpipe[1] <= isballpipe[0];
+    balloutlinepipe[0] <= balloutline;
+    balloutlinepipe[1] <= balloutlinepipe[0];
+    ballwhitepipe[0] <= ballwhite;
+    ballwhitepipe[1] <= ballwhitepipe[0];
+    skypipe[0] <= sky;
     skypipe[0] <= sky;
     onboard_pipe[0] <= onboard;
     for (int i=1; i<4; i = i+1)begin
@@ -545,9 +601,11 @@ module map_sprite_3 #(
   //   .regcea(1),   // Output register enable
   //   .douta(finalcolors)      // RAM output data, width determined from RAM_WIDTH
   // );
-  assign red_out = skypipe[1]?8'b10000111:((onboard_pipe[1]==0)?8'b00000001:(allow)?finalcolors[23:16]:wall[23:16]);
-  assign green_out = skypipe[1]?8'b11001110:((onboard_pipe[1]==0)?8'b00110010:(allow)?finalcolors[15:8]:wall[15:8]);
-  assign blue_out = skypipe[1]?8'b11111010:((onboard_pipe[1]==0)?8'b00100000:(allow)?finalcolors[7:0]:wall[7:0]);
+  logic holecenter;
+  assign holecenter = (finalcolors == 0);
+  assign red_out = skypipe[1]?8'b10000111:((onboard_pipe[1]==0)?8'b00000001:(isballpipe[1] & ballwhitepipe[1])?8'b11111111:(isballpipe[1] & balloutlinepipe[1])?8'b00000000:(allow)?((holecenter)?holeblackpipe[1]?8'b00000000:8'b01111100:finalcolors[23:16]):wall[23:16]);
+  assign green_out = skypipe[1]?8'b11001110:((onboard_pipe[1]==0)?8'b00110010:(isballpipe[1] & ballwhitepipe[1])?8'b11111111:(isballpipe[1] & balloutlinepipe[1])?8'b00000000:(allow)?((holecenter)?holeblackpipe[1]?8'b00000000:8'b11111100:finalcolors[15:8]):wall[15:8]);
+  assign blue_out = skypipe[1]?8'b11111010:((onboard_pipe[1]==0)?8'b00100000:(isballpipe[1] & ballwhitepipe[1])?8'b11111111:(isballpipe[1] & balloutlinepipe[1])?8'b00000000:(allow)?finalcolors[7:0]:wall[7:0]);
 
 
 endmodule

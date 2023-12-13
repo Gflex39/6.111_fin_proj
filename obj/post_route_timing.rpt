@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Tue Dec 12 22:29:08 2023
+| Date         : Wed Dec 13 19:38:52 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing -file obj/post_route_timing.rpt
 | Design       : top_level
@@ -12,73 +12,150 @@ Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanc
 
 Timing Report
 
-Slack (VIOLATED) :        -5.154ns  (required time - arrival time)
-  Source:                 gameplay_module/state_reg[0]/C
+Slack (VIOLATED) :        -8.655ns  (required time - arrival time)
+  Source:                 com_sprite_m/m1y/pdt_int_reg[4][8]_srl3_srlopt/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            my_playback/counter_reg[10]/R
-                            (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
-  Path Group:             clk_out_audio_clk_wiz
+  Destination:            com_sprite_m/balloutlinepipe_reg[0]/D
+                            (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
+  Path Group:             clk_pixel_clk_wiz_0
   Path Type:              Setup (Max at Slow Process Corner)
-  Requirement:            0.024ns  (clk_out_audio_clk_wiz rise@3326.623ns - clk_pixel_clk_wiz_0 rise@3326.599ns)
-  Data Path Delay:        3.918ns  (logic 0.704ns (17.968%)  route 3.214ns (82.032%))
-  Logic Levels:           2  (LUT5=1 LUT6=1)
-  Clock Path Skew:        -0.124ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    4.760ns = ( 3331.383 - 3326.623 ) 
-    Source Clock Delay      (SCD):    5.062ns = ( 3331.661 - 3326.599 ) 
-    Clock Pessimism Removal (CPR):    0.179ns
-  Clock Uncertainty:      0.707ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+  Requirement:            13.468ns  (clk_pixel_clk_wiz_0 rise@13.468ns - clk_pixel_clk_wiz_0 rise@0.000ns)
+  Data Path Delay:        21.941ns  (logic 9.235ns (42.091%)  route 12.706ns (57.909%))
+  Logic Levels:           32  (CARRY4=17 LUT2=3 LUT3=1 LUT4=3 LUT5=3 LUT6=5)
+  Clock Path Skew:        -0.045ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.768ns = ( 18.236 - 13.468 ) 
+    Source Clock Delay      (SCD):    5.071ns
+    Clock Pessimism Removal (CPR):    0.259ns
+  Clock Uncertainty:      0.168ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
-    Discrete Jitter          (DJ):    0.532ns
-    Phase Error              (PE):    0.439ns
+    Discrete Jitter          (DJ):    0.329ns
+    Phase Error              (PE):    0.000ns
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
                          (clock clk_pixel_clk_wiz_0 rise edge)
-                                                   3326.599  3326.599 r  
-    N15                                               0.000  3326.599 r  clk_100mhz (IN)
-                         net (fo=0)                   0.000  3326.599    clk_100mhz
-    N15                  IBUF (Prop_ibuf_I_O)         1.440  3328.040 r  clk_100mhz_IBUF_inst/O
-                         net (fo=1, routed)           1.972  3330.011    clk_100mhz_IBUF
-    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.096  3330.107 r  mbf/O
-                         net (fo=2, routed)           1.575  3331.682    mhdmicw/clk_ref
+                                                      0.000     0.000 r  
+    N15                                               0.000     0.000 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000     0.000    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.440     1.440 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           1.972     3.412    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.096     3.508 r  mbf/O
+                         net (fo=2, routed)           1.575     5.083    mhdmicw/clk_ref
     MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
-                                                     -3.333  3328.350 r  mhdmicw/mmcm_adv_inst/CLKOUT0
-                         net (fo=1, routed)           1.661  3330.011    mhdmicw/clk_pixel_clk_wiz_0
-    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096  3330.107 r  mhdmicw/clkout1_buf/O
-                         net (fo=5359, routed)        1.554  3331.661    gameplay_module/clk_pixel
-    SLICE_X43Y19         FDRE                                         r  gameplay_module/state_reg[0]/C
+                                                     -3.333     1.750 r  mhdmicw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           1.661     3.412    mhdmicw/clk_pixel_clk_wiz_0
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     3.508 r  mhdmicw/clkout1_buf/O
+                         net (fo=5338, routed)        1.563     5.071    com_sprite_m/m1y/clk_pixel
+    SLICE_X41Y11         FDRE                                         r  com_sprite_m/m1y/pdt_int_reg[4][8]_srl3_srlopt/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X43Y19         FDRE (Prop_fdre_C_Q)         0.456  3332.117 f  gameplay_module/state_reg[0]/Q
-                         net (fo=46, routed)          1.231  3333.349    gameplay_module/state_out[0]
-    SLICE_X40Y21         LUT5 (Prop_lut5_I4_O)        0.124  3333.473 f  gameplay_module/counter[15]_i_4/O
-                         net (fo=3, routed)           0.746  3334.219    gameplay_module/playing_back_hole_reg
-    SLICE_X41Y21         LUT6 (Prop_lut6_I0_O)        0.124  3334.343 r  gameplay_module/counter[15]_i_1/O
-                         net (fo=113, routed)         1.237  3335.580    my_playback/p_0_in
-    SLICE_X41Y25         FDRE                                         r  my_playback/counter_reg[10]/R
+    SLICE_X41Y11         FDRE (Prop_fdre_C_Q)         0.456     5.527 r  com_sprite_m/m1y/pdt_int_reg[4][8]_srl3_srlopt/Q
+                         net (fo=9, routed)           0.718     6.245    com_sprite_m/m1y/pdt_int_reg_n_0_[5][8]
+    SLICE_X41Y11         LUT2 (Prop_lut2_I1_O)        0.124     6.369 r  com_sprite_m/m1y/p_0_out_i_121/O
+                         net (fo=1, routed)           0.000     6.369    com_sprite_m/m1y/p_0_out_i_121_n_0
+    SLICE_X41Y11         CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     6.901 r  com_sprite_m/m1y/p_0_out_i_77/CO[3]
+                         net (fo=1, routed)           0.000     6.901    com_sprite_m/m1y/p_0_out_i_77_n_0
+    SLICE_X41Y12         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     7.015 r  com_sprite_m/m1y/p_0_out_i_53/CO[3]
+                         net (fo=1, routed)           0.000     7.015    com_sprite_m/m1y/p_0_out_i_53_n_0
+    SLICE_X41Y13         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     7.129 r  com_sprite_m/m1y/p_0_out_i_52/CO[3]
+                         net (fo=1, routed)           0.000     7.129    com_sprite_m/m1y/p_0_out_i_52_n_0
+    SLICE_X41Y14         CARRY4 (Prop_carry4_CI_O[3])
+                                                      0.313     7.442 r  com_sprite_m/m1y/onboard_pipe_reg[0]_i_250/O[3]
+                         net (fo=3, routed)           0.668     8.111    com_sprite_m/m1y/onboard_pipe_reg[0]_i_250_n_4
+    SLICE_X40Y19         LUT3 (Prop_lut3_I1_O)        0.306     8.417 r  com_sprite_m/m1y/onboard_pipe[0]_i_150/O
+                         net (fo=1, routed)           0.682     9.099    com_sprite_m/m1y/onboard_pipe[0]_i_150_n_0
+    SLICE_X41Y24         CARRY4 (Prop_carry4_DI[0]_CO[3])
+                                                      0.526     9.625 r  com_sprite_m/m1y/onboard_pipe_reg[0]_i_65/CO[3]
+                         net (fo=1, routed)           0.009     9.634    com_sprite_m/m1y/onboard_pipe_reg[0]_i_65_n_0
+    SLICE_X41Y25         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334     9.968 r  com_sprite_m/m1y/onboard_pipe_reg[0]_i_54/O[1]
+                         net (fo=2, routed)           1.200    11.167    com_sprite_m/m1y/pos_y_3200_in[29]
+    SLICE_X44Y17         LUT2 (Prop_lut2_I0_O)        0.303    11.470 r  com_sprite_m/m1y/onboard_pipe[0]_i_57/O
+                         net (fo=1, routed)           0.000    11.470    com_sprite_m/m1y/onboard_pipe[0]_i_57_n_0
+    SLICE_X44Y17         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550    12.020 r  com_sprite_m/m1y/onboard_pipe_reg[0]_i_21/CO[3]
+                         net (fo=1, routed)           0.000    12.020    com_sprite_m/m1y/onboard_pipe_reg[0]_i_21_n_0
+    SLICE_X44Y18         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114    12.134 r  com_sprite_m/m1y/onboard_pipe_reg[0]_i_29/CO[3]
+                         net (fo=1, routed)           0.000    12.134    com_sprite_m/m1y/onboard_pipe_reg[0]_i_29_n_0
+    SLICE_X44Y19         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222    12.356 f  com_sprite_m/m1y/onboard_pipe_reg[0]_i_22/O[0]
+                         net (fo=1, routed)           1.014    13.370    com_sprite_m/m1y/pos_y_32[36]
+    SLICE_X40Y26         LUT4 (Prop_lut4_I0_O)        0.299    13.669 f  com_sprite_m/m1y/onboard_pipe[0]_i_28/O
+                         net (fo=6, routed)           0.316    13.986    com_sprite_m/m1x/onboard_pipe_reg[0]_1
+    SLICE_X39Y26         LUT6 (Prop_lut6_I0_O)        0.124    14.110 f  com_sprite_m/m1x/onboard_pipe[0]_i_7/O
+                         net (fo=5, routed)           0.822    14.932    com_sprite_m/m1x/onboard_pipe[0]_i_7_n_0
+    SLICE_X36Y22         LUT6 (Prop_lut6_I5_O)        0.124    15.056 r  com_sprite_m/m1x/isballpipe[0]_i_50/O
+                         net (fo=126, routed)         1.322    16.378    com_sprite_m/m1x/onboard
+    SLICE_X32Y23         LUT5 (Prop_lut5_I0_O)        0.124    16.502 r  com_sprite_m/m1x/ballwhitepipe[0]_i_228/O
+                         net (fo=1, routed)           0.000    16.502    com_sprite_m/m1x/ballwhitepipe[0]_i_228_n_0
+    SLICE_X32Y23         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401    16.903 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_166/CO[3]
+                         net (fo=7, routed)           0.925    17.827    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_166_n_0
+    SLICE_X32Y24         LUT4 (Prop_lut4_I2_O)        0.150    17.977 r  com_sprite_m/m1x/ballwhitepipe[0]_i_137/O
+                         net (fo=1, routed)           0.000    17.977    com_sprite_m/m1x/p_3_out[0]
+    SLICE_X32Y24         CARRY4 (Prop_carry4_DI[0]_O[1])
+                                                      0.364    18.341 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_69/O[1]
+                         net (fo=24, routed)          0.813    19.155    com_sprite_m/m1x/p_2_out[1]
+    SLICE_X33Y26         LUT5 (Prop_lut5_I4_O)        0.303    19.458 f  com_sprite_m/m1x/ballwhitepipe[0]_i_188/O
+                         net (fo=3, routed)           0.672    20.129    com_sprite_m/m1x/ballwhitepipe[0]_i_188_n_0
+    SLICE_X35Y26         LUT6 (Prop_lut6_I2_O)        0.124    20.253 r  com_sprite_m/m1x/ballwhitepipe[0]_i_120_comp/O
+                         net (fo=2, routed)           0.609    20.863    com_sprite_m/m1x/ballwhitepipe[0]_i_120_n_0
+    SLICE_X32Y27         LUT6 (Prop_lut6_I0_O)        0.124    20.987 r  com_sprite_m/m1x/ballwhitepipe[0]_i_124/O
+                         net (fo=1, routed)           0.000    20.987    com_sprite_m/m1x/ballwhitepipe[0]_i_124_n_0
+    SLICE_X32Y27         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401    21.388 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_61/CO[3]
+                         net (fo=1, routed)           0.000    21.388    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_61_n_0
+    SLICE_X32Y28         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222    21.610 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_45/O[0]
+                         net (fo=3, routed)           0.577    22.187    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_45_n_7
+    SLICE_X31Y30         LUT5 (Prop_lut5_I3_O)        0.299    22.486 f  com_sprite_m/m1x/ballwhitepipe[0]_i_44/O
+                         net (fo=2, routed)           0.463    22.950    com_sprite_m/m1x/ballwhitepipe[0]_i_44_n_0
+    SLICE_X32Y33         LUT6 (Prop_lut6_I2_O)        0.124    23.074 r  com_sprite_m/m1x/ballwhitepipe[0]_i_20/O
+                         net (fo=2, routed)           0.538    23.612    com_sprite_m/m1x/ballwhitepipe[0]_i_20_n_0
+    SLICE_X32Y31         CARRY4 (Prop_carry4_DI[0]_CO[3])
+                                                      0.526    24.138 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_6/CO[3]
+                         net (fo=1, routed)           0.000    24.138    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_6_n_0
+    SLICE_X32Y32         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222    24.360 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_5/O[0]
+                         net (fo=2, routed)           0.748    25.108    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_5_n_7
+    SLICE_X38Y33         LUT2 (Prop_lut2_I0_O)        0.299    25.407 r  com_sprite_m/m1x/ballwhitepipe[0]_i_7/O
+                         net (fo=1, routed)           0.000    25.407    com_sprite_m/m1x/ballwhitepipe[0]_i_7_n_0
+    SLICE_X38Y33         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.376    25.783 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_2/CO[3]
+                         net (fo=1, routed)           0.000    25.783    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_2_n_0
+    SLICE_X38Y34         CARRY4 (Prop_carry4_CI_CO[0])
+                                                      0.254    26.037 f  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_3/CO[0]
+                         net (fo=2, routed)           0.608    26.645    com_sprite_m/m1x/balldistance[8]
+    SLICE_X39Y33         LUT4 (Prop_lut4_I0_O)        0.367    27.012 r  com_sprite_m/m1x/balloutlinepipe[0]_i_1/O
+                         net (fo=1, routed)           0.000    27.012    com_sprite_m/balloutline
+    SLICE_X39Y33         FDRE                                         r  com_sprite_m/balloutlinepipe_reg[0]/D
   -------------------------------------------------------------------    -------------------
 
-                         (clock clk_out_audio_clk_wiz rise edge)
-                                                   3326.623  3326.623 r  
-    N15                                               0.000  3326.623 r  clk_100mhz (IN)
-                         net (fo=0)                   0.000  3326.623    clk_100mhz
-    N15                  IBUF (Prop_ibuf_I_O)         1.370  3327.993 r  clk_100mhz_IBUF_inst/O
-                         net (fo=1, routed)           1.868  3329.861    clk_100mhz_IBUF
-    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.091  3329.952 r  mbf/O
-                         net (fo=2, routed)           1.455  3331.408    macw/clk_in
-    MMCME2_ADV_X0Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
-                                                     -3.133  3328.274 r  macw/mmcm_adv_inst/CLKOUT0
-                         net (fo=1, routed)           1.587  3329.861    macw/clk_out_audio_clk_wiz
-    BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091  3329.952 r  macw/clkout1_buf/O
-                         net (fo=188, routed)         1.430  3331.383    my_playback/clk_m
-    SLICE_X41Y25         FDRE                                         r  my_playback/counter_reg[10]/C
-                         clock pessimism              0.179  3331.562    
-                         clock uncertainty           -0.707  3330.854    
-    SLICE_X41Y25         FDRE (Setup_fdre_C_R)       -0.429  3330.425    my_playback/counter_reg[10]
+                         (clock clk_pixel_clk_wiz_0 rise edge)
+                                                     13.468    13.468 r  
+    N15                                               0.000    13.468 r  clk_100mhz (IN)
+                         net (fo=0)                   0.000    13.468    clk_100mhz
+    N15                  IBUF (Prop_ibuf_I_O)         1.370    14.838 r  clk_100mhz_IBUF_inst/O
+                         net (fo=1, routed)           1.868    16.706    clk_100mhz_IBUF
+    BUFGCTRL_X0Y3        BUFG (Prop_bufg_I_O)         0.091    16.797 r  mbf/O
+                         net (fo=2, routed)           1.457    18.255    mhdmicw/clk_ref
+    MMCME2_ADV_X1Y0      MMCME2_ADV (Prop_mmcme2_adv_CLKIN1_CLKOUT0)
+                                                     -3.129    15.125 r  mhdmicw/mmcm_adv_inst/CLKOUT0
+                         net (fo=1, routed)           1.581    16.706    mhdmicw/clk_pixel_clk_wiz_0
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091    16.797 r  mhdmicw/clkout1_buf/O
+                         net (fo=5338, routed)        1.438    18.236    com_sprite_m/clk_pixel
+    SLICE_X39Y33         FDRE                                         r  com_sprite_m/balloutlinepipe_reg[0]/C
+                         clock pessimism              0.259    18.494    
+                         clock uncertainty           -0.168    18.326    
+    SLICE_X39Y33         FDRE (Setup_fdre_C_D)        0.031    18.357    com_sprite_m/balloutlinepipe_reg[0]
   -------------------------------------------------------------------
-                         required time                       3330.426    
-                         arrival time                       -3335.580    
+                         required time                         18.357    
+                         arrival time                         -27.012    
   -------------------------------------------------------------------
-                         slack                                 -5.154    
+                         slack                                 -8.655    
 
 
 
