@@ -22,6 +22,7 @@ module map_sprite_3 #(
   input wire lfsr_wea,
   input wire [15:0] lfsr_addra,
   input wire lfsr_out,
+  input wire height_rst,
   output logic [7:0] red_out,
   output logic [7:0] green_out,
   output logic [7:0] blue_out,
@@ -154,7 +155,7 @@ module map_sprite_3 #(
   logic[31:0] far_count;
 
   always_ff @(posedge pixel_clk_in ) begin 
-    if(rst_in)begin
+    if(height_rst)begin
       far_mag <= 16'b0001_0001;
       far_count<=0;
 
@@ -547,7 +548,7 @@ module map_sprite_3 #(
   logic grass_color;
   xilinx_single_port_ram_read_first #(
       .RAM_WIDTH(1),                       // Specify RAM data width
-      .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+      .RAM_DEPTH(7200),                     // Specify RAM depth (number of entries)
       .RAM_PERFORMANCE("HIGH_PERFORMANCE") // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
   ) lfsr_ram_2 (
       .addra(lfsr_wea?lfsr_addra:image_addr_lfsr),     // Address bus, width determined from RAM_DEPTH

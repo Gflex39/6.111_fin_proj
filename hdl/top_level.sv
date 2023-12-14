@@ -55,7 +55,7 @@ module top_level(
   logic [7:0] score;
   seven_segment_controller mssc(.clk_in(clk_pixel),
                                   .rst_in(sys_rst),
-                                  .val_in({ball_speed_16, 8'b0, score}),
+                                  .val_in(score),
                                   .cat_out(ss_c),
                                   .an_out({ss0_an, ss1_an}));
 
@@ -121,7 +121,7 @@ module top_level(
 
   xilinx_single_port_ram_read_first #(
       .RAM_WIDTH(1),                       // Specify RAM data width
-      .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+      .RAM_DEPTH(3680),                     // Specify RAM depth (number of entries)
       .RAM_PERFORMANCE("HIGH_PERFORMANCE") // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
   ) lfsr_ram (
       .addra(lfsr_wea?lfsr_addra:image_addr),     // Address bus, width determined from RAM_DEPTH
@@ -172,6 +172,7 @@ module top_level(
     .change({sw[4],sw[3],sw[2],sw[1]}),
     .hcount_in(hcount),   //TODO: needs to use pipelined signal (PS1)
     .vcount_in(vcount),   //TODO: needs to use pipelined signal (PS1)
+    .height_rst(btn[2]),
     .red_out(img_red),
     .green_out(img_green),
     .blue_out(img_blue),
@@ -301,7 +302,7 @@ module top_level(
     .camera_pan_left(sw[15]),
     .camera_pan_right(sw[14]),
     .new_frame(new_frame),
-    .user_input(data),
+    .user_input({7'b0,data,1'b0}),
     .user_rdy(new_input),
 
     .ball_position_x(ballx_16),

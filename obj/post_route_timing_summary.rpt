@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Wed Dec 13 19:38:52 2023
+| Date         : Thu Dec 14 21:42:02 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing_summary -file obj/post_route_timing_summary.rpt
 | Design       : top_level
@@ -52,7 +52,7 @@ Table of Contents
 2. checking constant_clock (0)
 3. checking pulse_width_clock (0)
 4. checking unconstrained_internal_endpoints (50)
-5. checking no_input_delay (7)
+5. checking no_input_delay (9)
 6. checking no_output_delay (27)
 7. checking multiple_clock (0)
 8. checking generated_clocks (0)
@@ -67,9 +67,9 @@ Table of Contents
 
  There are 17 register/latch pins with no clock driven by root clock pin: com_sprite_b/imageBROM/BRAM_reg_1/DOADO[1] (HIGH)
 
- There are 17 register/latch pins with no clock driven by root clock pin: com_sprite_m/imageBRO/output_register.douta_reg_reg[2]/Q (HIGH)
+ There are 17 register/latch pins with no clock driven by root clock pin: com_sprite_m/imageBRO/BRAM_reg_1/DOADO[0] (HIGH)
 
- There are 17 register/latch pins with no clock driven by root clock pin: com_sprite_m/imageBRO/output_register.douta_reg_reg[3]/Q (HIGH)
+ There are 17 register/latch pins with no clock driven by root clock pin: com_sprite_m/imageBRO/BRAM_reg_1/DOADO[1] (HIGH)
 
  There are 16 register/latch pins with no clock driven by root clock pin: gameplay_module/wall_direction_reg[0]/Q (HIGH)
 
@@ -95,9 +95,9 @@ Table of Contents
  There are 0 pins that are not constrained for maximum delay due to constant clock.
 
 
-5. checking no_input_delay (7)
+5. checking no_input_delay (9)
 ------------------------------
- There are 7 input ports with no input delay specified. (HIGH)
+ There are 9 input ports with no input delay specified. (HIGH)
 
  There are 0 input ports with no input delay but user has a false path constraint.
 
@@ -149,7 +149,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-     -8.655    -7650.249                   6507                25426        0.040        0.000                      0                25426        0.538        0.000                       0                  5546  
+     -8.749     -335.779                    245                 5327        0.045        0.000                      0                 5327        0.538        0.000                       0                  2833  
 
 
 Timing constraints are not met.
@@ -178,8 +178,8 @@ gclk                      {0.000 4.000}        10.000          100.000
 Clock                         WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----                         -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
 gclk                                                                                                                                                                        2.000        0.000                       0                     3  
-  clk_out_audio_clk_wiz         0.218        0.000                      0                  958        0.106        0.000                      0                  958        4.587        0.000                       0                   190  
-  clk_pixel_clk_wiz_0          -8.655    -7004.865                   6383                24467        0.040        0.000                      0                24467        5.484        0.000                       0                  5339  
+  clk_out_audio_clk_wiz         0.264        0.000                      0                  458        0.129        0.000                      0                  458        4.587        0.000                       0                    82  
+  clk_pixel_clk_wiz_0          -8.749     -211.997                    217                 4868        0.045        0.000                      0                 4868        5.754        0.000                       0                  2734  
   clk_tmds_clk_wiz_0                                                                                                                                                        0.538        0.000                       0                     8  
   clkfbout_audio_clk_wiz                                                                                                                                                   47.845        0.000                       0                     3  
   clkfbout_clk_wiz_0                                                                                                                                                       47.845        0.000                       0                     3  
@@ -192,7 +192,7 @@ gclk                                                                            
 
 From Clock             To Clock                   WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
 ----------             --------                   -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
-clk_pixel_clk_wiz_0    clk_out_audio_clk_wiz       -5.458     -645.385                    124                  124        0.089        0.000                      0                  124  
+clk_pixel_clk_wiz_0    clk_out_audio_clk_wiz       -4.690     -123.782                     28                   28        0.115        0.000                      0                   28  
 
 
 ------------------------------------------------------------------------------------------------
@@ -239,27 +239,27 @@ High Pulse Width  Slow    MMCME2_ADV/CLKIN1  n/a            2.000         4.000 
 From Clock:  clk_out_audio_clk_wiz
   To Clock:  clk_out_audio_clk_wiz
 
-Setup :            0  Failing Endpoints,  Worst Slack        0.218ns,  Total Violation        0.000ns
-Hold  :            0  Failing Endpoints,  Worst Slack        0.106ns,  Total Violation        0.000ns
+Setup :            0  Failing Endpoints,  Worst Slack        0.264ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.129ns,  Total Violation        0.000ns
 PW    :            0  Failing Endpoints,  Worst Slack        4.587ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.218ns  (required time - arrival time)
-  Source:                 my_playback/counter_reg[12]_rep/C
+Slack (MET) :             0.264ns  (required time - arrival time)
+  Source:                 my_playback/counter_reg[4]/C
                             (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
-  Destination:            my_playback/bram_ball_hole/BRAM_reg_1_6/ADDRARDADDR[12]
+  Destination:            my_playback/bram_ball_bounce/BRAM_reg_0/ADDRARDADDR[5]
                             (rising edge-triggered cell RAMB36E1 clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
   Path Group:             clk_out_audio_clk_wiz
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            10.173ns  (clk_out_audio_clk_wiz rise@10.173ns - clk_out_audio_clk_wiz rise@0.000ns)
-  Data Path Delay:        9.369ns  (logic 0.456ns (4.867%)  route 8.913ns (95.133%))
+  Data Path Delay:        9.319ns  (logic 0.518ns (5.559%)  route 8.801ns (94.441%))
   Logic Levels:           0  
-  Clock Path Skew:        0.088ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    4.982ns = ( 15.155 - 10.173 ) 
-    Source Clock Delay      (SCD):    5.072ns
+  Clock Path Skew:        0.083ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.981ns = ( 15.154 - 10.173 ) 
+    Source Clock Delay      (SCD):    5.076ns
     Clock Pessimism Removal (CPR):    0.179ns
   Clock Uncertainty:      0.107ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
@@ -280,12 +280,12 @@ Slack (MET) :             0.218ns  (required time - arrival time)
                                                      -3.337     1.745 r  macw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.666     3.412    macw/clk_out_audio_clk_wiz
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.096     3.508 r  macw/clkout1_buf/O
-                         net (fo=188, routed)         1.564     5.072    my_playback/clk_m
-    SLICE_X32Y7          FDRE                                         r  my_playback/counter_reg[12]_rep/C
+                         net (fo=80, routed)          1.568     5.076    my_playback/clk_m
+    SLICE_X46Y2          FDRE                                         r  my_playback/counter_reg[4]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X32Y7          FDRE (Prop_fdre_C_Q)         0.456     5.528 r  my_playback/counter_reg[12]_rep/Q
-                         net (fo=8, routed)           8.913    14.442    my_playback/bram_ball_hole/addra[11]
-    RAMB36_X0Y29         RAMB36E1                                     r  my_playback/bram_ball_hole/BRAM_reg_1_6/ADDRARDADDR[12]
+    SLICE_X46Y2          FDRE (Prop_fdre_C_Q)         0.518     5.594 r  my_playback/counter_reg[4]/Q
+                         net (fo=22, routed)          8.801    14.395    my_playback/bram_ball_bounce/Q[4]
+    RAMB36_X0Y20         RAMB36E1                                     r  my_playback/bram_ball_bounce/BRAM_reg_0/ADDRARDADDR[5]
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_out_audio_clk_wiz rise edge)
@@ -300,17 +300,17 @@ Slack (MET) :             0.218ns  (required time - arrival time)
                                                      -3.133    11.824 r  macw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.587    13.411    macw/clk_out_audio_clk_wiz
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091    13.502 r  macw/clkout1_buf/O
-                         net (fo=188, routed)         1.652    15.155    my_playback/bram_ball_hole/clk_m
-    RAMB36_X0Y29         RAMB36E1                                     r  my_playback/bram_ball_hole/BRAM_reg_1_6/CLKARDCLK
-                         clock pessimism              0.179    15.333    
-                         clock uncertainty           -0.107    15.226    
-    RAMB36_X0Y29         RAMB36E1 (Setup_ramb36e1_CLKARDCLK_ADDRARDADDR[12])
-                                                     -0.566    14.660    my_playback/bram_ball_hole/BRAM_reg_1_6
+                         net (fo=80, routed)          1.651    15.154    my_playback/bram_ball_bounce/clk_m
+    RAMB36_X0Y20         RAMB36E1                                     r  my_playback/bram_ball_bounce/BRAM_reg_0/CLKARDCLK
+                         clock pessimism              0.179    15.332    
+                         clock uncertainty           -0.107    15.225    
+    RAMB36_X0Y20         RAMB36E1 (Setup_ramb36e1_CLKARDCLK_ADDRARDADDR[5])
+                                                     -0.566    14.659    my_playback/bram_ball_bounce/BRAM_reg_0
   -------------------------------------------------------------------
-                         required time                         14.660    
-                         arrival time                         -14.442    
+                         required time                         14.659    
+                         arrival time                         -14.395    
   -------------------------------------------------------------------
-                         slack                                  0.218    
+                         slack                                  0.264    
 
 
 
@@ -318,19 +318,19 @@ Slack (MET) :             0.218ns  (required time - arrival time)
 
 Min Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.106ns  (arrival time - required time)
-  Source:                 my_playback/counter_reg[1]_rep__7/C
+Slack (MET) :             0.129ns  (arrival time - required time)
+  Source:                 mic_clk_reg/C
                             (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
-  Destination:            my_playback/bram_ball_hole/BRAM_reg_1_3/ADDRARDADDR[1]
-                            (rising edge-triggered cell RAMB36E1 clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
+  Destination:            old_mic_clk_reg/D
+                            (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
   Path Group:             clk_out_audio_clk_wiz
   Path Type:              Hold (Min at Fast Process Corner)
   Requirement:            0.000ns  (clk_out_audio_clk_wiz rise@0.000ns - clk_out_audio_clk_wiz rise@0.000ns)
-  Data Path Delay:        0.599ns  (logic 0.141ns (23.544%)  route 0.458ns (76.456%))
+  Data Path Delay:        0.454ns  (logic 0.141ns (31.038%)  route 0.313ns (68.962%))
   Logic Levels:           0  
-  Clock Path Skew:        0.309ns (DCD - SCD - CPR)
-    Destination Clock Delay (DCD):    1.991ns
-    Source Clock Delay      (SCD):    1.431ns
+  Clock Path Skew:        0.265ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    1.947ns
+    Source Clock Delay      (SCD):    1.432ns
     Clock Pessimism Removal (CPR):    0.250ns
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
@@ -347,12 +347,12 @@ Slack (MET) :             0.106ns  (arrival time - required time)
                                                      -1.063     0.354 r  macw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           0.489     0.843    macw/clk_out_audio_clk_wiz
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.026     0.869 r  macw/clkout1_buf/O
-                         net (fo=188, routed)         0.563     1.431    my_playback/clk_m
-    SLICE_X32Y6          FDRE                                         r  my_playback/counter_reg[1]_rep__7/C
+                         net (fo=80, routed)          0.564     1.432    clk_m
+    SLICE_X33Y1          FDRE                                         r  mic_clk_reg/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X32Y6          FDRE (Prop_fdre_C_Q)         0.141     1.572 r  my_playback/counter_reg[1]_rep__7/Q
-                         net (fo=2, routed)           0.458     2.030    my_playback/bram_ball_hole/BRAM_reg_1_3_0[0]
-    RAMB36_X1Y1          RAMB36E1                                     r  my_playback/bram_ball_hole/BRAM_reg_1_3/ADDRARDADDR[1]
+    SLICE_X33Y1          FDRE (Prop_fdre_C_Q)         0.141     1.573 r  mic_clk_reg/Q
+                         net (fo=4, routed)           0.313     1.887    mic_clk
+    SLICE_X42Y0          FDRE                                         r  old_mic_clk_reg/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_out_audio_clk_wiz rise edge)
@@ -367,16 +367,15 @@ Slack (MET) :             0.106ns  (arrival time - required time)
                                                      -1.378     0.551 r  macw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           0.534     1.085    macw/clk_out_audio_clk_wiz
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.029     1.114 r  macw/clkout1_buf/O
-                         net (fo=188, routed)         0.877     1.991    my_playback/bram_ball_hole/clk_m
-    RAMB36_X1Y1          RAMB36E1                                     r  my_playback/bram_ball_hole/BRAM_reg_1_3/CLKARDCLK
-                         clock pessimism             -0.250     1.741    
-    RAMB36_X1Y1          RAMB36E1 (Hold_ramb36e1_CLKARDCLK_ADDRARDADDR[1])
-                                                      0.183     1.924    my_playback/bram_ball_hole/BRAM_reg_1_3
+                         net (fo=80, routed)          0.834     1.947    clk_m
+    SLICE_X42Y0          FDRE                                         r  old_mic_clk_reg/C
+                         clock pessimism             -0.250     1.697    
+    SLICE_X42Y0          FDRE (Hold_fdre_C_D)         0.060     1.757    old_mic_clk_reg
   -------------------------------------------------------------------
-                         required time                         -1.924    
-                         arrival time                           2.030    
+                         required time                         -1.757    
+                         arrival time                           1.887    
   -------------------------------------------------------------------
-                         slack                                  0.106    
+                         slack                                  0.129    
 
 
 
@@ -390,10 +389,10 @@ Period(ns):         10.173
 Sources:            { macw/mmcm_adv_inst/CLKOUT0 }
 
 Check Type        Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location         Pin
-Min Period        n/a     RAMB36E1/CLKARDCLK  n/a            2.892         10.173      7.281      RAMB36_X0Y4      my_playback/bram_ball_bounce/BRAM_reg_0_0/CLKARDCLK
+Min Period        n/a     RAMB36E1/CLKARDCLK  n/a            2.892         10.173      7.281      RAMB36_X0Y21     my_playback/bram_ball_hole/BRAM_reg_0_0/CLKARDCLK
 Max Period        n/a     MMCME2_ADV/CLKOUT0  n/a            213.360       10.173      203.187    MMCME2_ADV_X0Y0  macw/mmcm_adv_inst/CLKOUT0
-Low Pulse Width   Slow    FDRE/C              n/a            0.500         5.087       4.587      SLICE_X34Y0      audio_sample_valid_reg/C
-High Pulse Width  Slow    FDRE/C              n/a            0.500         5.087       4.587      SLICE_X34Y0      audio_sample_valid_reg/C
+Low Pulse Width   Slow    FDRE/C              n/a            0.500         5.087       4.587      SLICE_X42Y0      audio_sample_valid_reg/C
+High Pulse Width  Slow    FDRE/C              n/a            0.500         5.087       4.587      SLICE_X42Y0      audio_sample_valid_reg/C
 
 
 
@@ -401,28 +400,28 @@ High Pulse Width  Slow    FDRE/C              n/a            0.500         5.087
 From Clock:  clk_pixel_clk_wiz_0
   To Clock:  clk_pixel_clk_wiz_0
 
-Setup :         6383  Failing Endpoints,  Worst Slack       -8.655ns,  Total Violation    -7004.865ns
-Hold  :            0  Failing Endpoints,  Worst Slack        0.040ns,  Total Violation        0.000ns
-PW    :            0  Failing Endpoints,  Worst Slack        5.484ns,  Total Violation        0.000ns
+Setup :          217  Failing Endpoints,  Worst Slack       -8.749ns,  Total Violation     -211.997ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.045ns,  Total Violation        0.000ns
+PW    :            0  Failing Endpoints,  Worst Slack        5.754ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (VIOLATED) :        -8.655ns  (required time - arrival time)
-  Source:                 com_sprite_m/m1y/pdt_int_reg[4][8]_srl3_srlopt/C
+Slack (VIOLATED) :        -8.749ns  (required time - arrival time)
+  Source:                 com_sprite_m/m1x/pdt_int_reg[4][3]_srl3_srlopt/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Destination:            com_sprite_m/balloutlinepipe_reg[0]/D
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_clk_wiz_0
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            13.468ns  (clk_pixel_clk_wiz_0 rise@13.468ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        21.941ns  (logic 9.235ns (42.091%)  route 12.706ns (57.909%))
-  Logic Levels:           32  (CARRY4=17 LUT2=3 LUT3=1 LUT4=3 LUT5=3 LUT6=5)
-  Clock Path Skew:        -0.045ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    4.768ns = ( 18.236 - 13.468 ) 
-    Source Clock Delay      (SCD):    5.071ns
-    Clock Pessimism Removal (CPR):    0.259ns
+  Data Path Delay:        21.950ns  (logic 10.539ns (48.013%)  route 11.411ns (51.987%))
+  Logic Levels:           31  (CARRY4=19 LUT1=1 LUT2=2 LUT3=1 LUT4=1 LUT5=2 LUT6=5)
+  Clock Path Skew:        -0.130ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.766ns = ( 18.234 - 13.468 ) 
+    Source Clock Delay      (SCD):    5.074ns
+    Clock Pessimism Removal (CPR):    0.179ns
   Clock Uncertainty:      0.168ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
     Discrete Jitter          (DJ):    0.329ns
@@ -442,93 +441,93 @@ Slack (VIOLATED) :        -8.655ns  (required time - arrival time)
                                                      -3.333     1.750 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.661     3.412    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096     3.508 r  mhdmicw/clkout1_buf/O
-                         net (fo=5338, routed)        1.563     5.071    com_sprite_m/m1y/clk_pixel
-    SLICE_X41Y11         FDRE                                         r  com_sprite_m/m1y/pdt_int_reg[4][8]_srl3_srlopt/C
+                         net (fo=2745, routed)        1.566     5.074    com_sprite_m/m1x/clk_pixel
+    SLICE_X41Y46         FDRE                                         r  com_sprite_m/m1x/pdt_int_reg[4][3]_srl3_srlopt/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X41Y11         FDRE (Prop_fdre_C_Q)         0.456     5.527 r  com_sprite_m/m1y/pdt_int_reg[4][8]_srl3_srlopt/Q
-                         net (fo=9, routed)           0.718     6.245    com_sprite_m/m1y/pdt_int_reg_n_0_[5][8]
-    SLICE_X41Y11         LUT2 (Prop_lut2_I1_O)        0.124     6.369 r  com_sprite_m/m1y/p_0_out_i_121/O
-                         net (fo=1, routed)           0.000     6.369    com_sprite_m/m1y/p_0_out_i_121_n_0
-    SLICE_X41Y11         CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.532     6.901 r  com_sprite_m/m1y/p_0_out_i_77/CO[3]
-                         net (fo=1, routed)           0.000     6.901    com_sprite_m/m1y/p_0_out_i_77_n_0
-    SLICE_X41Y12         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     7.015 r  com_sprite_m/m1y/p_0_out_i_53/CO[3]
-                         net (fo=1, routed)           0.000     7.015    com_sprite_m/m1y/p_0_out_i_53_n_0
-    SLICE_X41Y13         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114     7.129 r  com_sprite_m/m1y/p_0_out_i_52/CO[3]
-                         net (fo=1, routed)           0.000     7.129    com_sprite_m/m1y/p_0_out_i_52_n_0
-    SLICE_X41Y14         CARRY4 (Prop_carry4_CI_O[3])
-                                                      0.313     7.442 r  com_sprite_m/m1y/onboard_pipe_reg[0]_i_250/O[3]
-                         net (fo=3, routed)           0.668     8.111    com_sprite_m/m1y/onboard_pipe_reg[0]_i_250_n_4
-    SLICE_X40Y19         LUT3 (Prop_lut3_I1_O)        0.306     8.417 r  com_sprite_m/m1y/onboard_pipe[0]_i_150/O
-                         net (fo=1, routed)           0.682     9.099    com_sprite_m/m1y/onboard_pipe[0]_i_150_n_0
-    SLICE_X41Y24         CARRY4 (Prop_carry4_DI[0]_CO[3])
-                                                      0.526     9.625 r  com_sprite_m/m1y/onboard_pipe_reg[0]_i_65/CO[3]
-                         net (fo=1, routed)           0.009     9.634    com_sprite_m/m1y/onboard_pipe_reg[0]_i_65_n_0
-    SLICE_X41Y25         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.334     9.968 r  com_sprite_m/m1y/onboard_pipe_reg[0]_i_54/O[1]
-                         net (fo=2, routed)           1.200    11.167    com_sprite_m/m1y/pos_y_3200_in[29]
-    SLICE_X44Y17         LUT2 (Prop_lut2_I0_O)        0.303    11.470 r  com_sprite_m/m1y/onboard_pipe[0]_i_57/O
-                         net (fo=1, routed)           0.000    11.470    com_sprite_m/m1y/onboard_pipe[0]_i_57_n_0
-    SLICE_X44Y17         CARRY4 (Prop_carry4_S[1]_CO[3])
-                                                      0.550    12.020 r  com_sprite_m/m1y/onboard_pipe_reg[0]_i_21/CO[3]
-                         net (fo=1, routed)           0.000    12.020    com_sprite_m/m1y/onboard_pipe_reg[0]_i_21_n_0
-    SLICE_X44Y18         CARRY4 (Prop_carry4_CI_CO[3])
-                                                      0.114    12.134 r  com_sprite_m/m1y/onboard_pipe_reg[0]_i_29/CO[3]
-                         net (fo=1, routed)           0.000    12.134    com_sprite_m/m1y/onboard_pipe_reg[0]_i_29_n_0
-    SLICE_X44Y19         CARRY4 (Prop_carry4_CI_O[0])
-                                                      0.222    12.356 f  com_sprite_m/m1y/onboard_pipe_reg[0]_i_22/O[0]
-                         net (fo=1, routed)           1.014    13.370    com_sprite_m/m1y/pos_y_32[36]
-    SLICE_X40Y26         LUT4 (Prop_lut4_I0_O)        0.299    13.669 f  com_sprite_m/m1y/onboard_pipe[0]_i_28/O
-                         net (fo=6, routed)           0.316    13.986    com_sprite_m/m1x/onboard_pipe_reg[0]_1
-    SLICE_X39Y26         LUT6 (Prop_lut6_I0_O)        0.124    14.110 f  com_sprite_m/m1x/onboard_pipe[0]_i_7/O
-                         net (fo=5, routed)           0.822    14.932    com_sprite_m/m1x/onboard_pipe[0]_i_7_n_0
-    SLICE_X36Y22         LUT6 (Prop_lut6_I5_O)        0.124    15.056 r  com_sprite_m/m1x/isballpipe[0]_i_50/O
-                         net (fo=126, routed)         1.322    16.378    com_sprite_m/m1x/onboard
-    SLICE_X32Y23         LUT5 (Prop_lut5_I0_O)        0.124    16.502 r  com_sprite_m/m1x/ballwhitepipe[0]_i_228/O
-                         net (fo=1, routed)           0.000    16.502    com_sprite_m/m1x/ballwhitepipe[0]_i_228_n_0
-    SLICE_X32Y23         CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.401    16.903 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_166/CO[3]
-                         net (fo=7, routed)           0.925    17.827    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_166_n_0
-    SLICE_X32Y24         LUT4 (Prop_lut4_I2_O)        0.150    17.977 r  com_sprite_m/m1x/ballwhitepipe[0]_i_137/O
-                         net (fo=1, routed)           0.000    17.977    com_sprite_m/m1x/p_3_out[0]
-    SLICE_X32Y24         CARRY4 (Prop_carry4_DI[0]_O[1])
-                                                      0.364    18.341 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_69/O[1]
-                         net (fo=24, routed)          0.813    19.155    com_sprite_m/m1x/p_2_out[1]
-    SLICE_X33Y26         LUT5 (Prop_lut5_I4_O)        0.303    19.458 f  com_sprite_m/m1x/ballwhitepipe[0]_i_188/O
-                         net (fo=3, routed)           0.672    20.129    com_sprite_m/m1x/ballwhitepipe[0]_i_188_n_0
-    SLICE_X35Y26         LUT6 (Prop_lut6_I2_O)        0.124    20.253 r  com_sprite_m/m1x/ballwhitepipe[0]_i_120_comp/O
-                         net (fo=2, routed)           0.609    20.863    com_sprite_m/m1x/ballwhitepipe[0]_i_120_n_0
-    SLICE_X32Y27         LUT6 (Prop_lut6_I0_O)        0.124    20.987 r  com_sprite_m/m1x/ballwhitepipe[0]_i_124/O
-                         net (fo=1, routed)           0.000    20.987    com_sprite_m/m1x/ballwhitepipe[0]_i_124_n_0
-    SLICE_X32Y27         CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.401    21.388 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_61/CO[3]
-                         net (fo=1, routed)           0.000    21.388    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_61_n_0
-    SLICE_X32Y28         CARRY4 (Prop_carry4_CI_O[0])
-                                                      0.222    21.610 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_45/O[0]
-                         net (fo=3, routed)           0.577    22.187    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_45_n_7
-    SLICE_X31Y30         LUT5 (Prop_lut5_I3_O)        0.299    22.486 f  com_sprite_m/m1x/ballwhitepipe[0]_i_44/O
-                         net (fo=2, routed)           0.463    22.950    com_sprite_m/m1x/ballwhitepipe[0]_i_44_n_0
-    SLICE_X32Y33         LUT6 (Prop_lut6_I2_O)        0.124    23.074 r  com_sprite_m/m1x/ballwhitepipe[0]_i_20/O
-                         net (fo=2, routed)           0.538    23.612    com_sprite_m/m1x/ballwhitepipe[0]_i_20_n_0
-    SLICE_X32Y31         CARRY4 (Prop_carry4_DI[0]_CO[3])
-                                                      0.526    24.138 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_6/CO[3]
-                         net (fo=1, routed)           0.000    24.138    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_6_n_0
-    SLICE_X32Y32         CARRY4 (Prop_carry4_CI_O[0])
-                                                      0.222    24.360 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_5/O[0]
-                         net (fo=2, routed)           0.748    25.108    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_5_n_7
-    SLICE_X38Y33         LUT2 (Prop_lut2_I0_O)        0.299    25.407 r  com_sprite_m/m1x/ballwhitepipe[0]_i_7/O
-                         net (fo=1, routed)           0.000    25.407    com_sprite_m/m1x/ballwhitepipe[0]_i_7_n_0
-    SLICE_X38Y33         CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.376    25.783 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_2/CO[3]
-                         net (fo=1, routed)           0.000    25.783    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_2_n_0
-    SLICE_X38Y34         CARRY4 (Prop_carry4_CI_CO[0])
-                                                      0.254    26.037 f  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_3/CO[0]
-                         net (fo=2, routed)           0.608    26.645    com_sprite_m/m1x/balldistance[8]
-    SLICE_X39Y33         LUT4 (Prop_lut4_I0_O)        0.367    27.012 r  com_sprite_m/m1x/balloutlinepipe[0]_i_1/O
-                         net (fo=1, routed)           0.000    27.012    com_sprite_m/balloutline
-    SLICE_X39Y33         FDRE                                         r  com_sprite_m/balloutlinepipe_reg[0]/D
+    SLICE_X41Y46         FDRE (Prop_fdre_C_Q)         0.456     5.530 r  com_sprite_m/m1x/pdt_int_reg[4][3]_srl3_srlopt/Q
+                         net (fo=4, routed)           0.647     6.177    com_sprite_m/m1x/pdt_int_reg[5]_30[3]
+    SLICE_X40Y46         CARRY4 (Prop_carry4_DI[1]_CO[3])
+                                                      0.507     6.684 r  com_sprite_m/m1x/p_0_out__0_i_89/CO[3]
+                         net (fo=1, routed)           0.000     6.684    com_sprite_m/m1x/p_0_out__0_i_89_n_0
+    SLICE_X40Y47         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     6.798 r  com_sprite_m/m1x/p_0_out__0_i_70/CO[3]
+                         net (fo=1, routed)           0.000     6.798    com_sprite_m/m1x/p_0_out__0_i_70_n_0
+    SLICE_X40Y48         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     7.020 r  com_sprite_m/m1x/p_0_out__0_i_52/O[0]
+                         net (fo=3, routed)           0.593     7.614    com_sprite_m/m1x/p_0_out__0_i_52_n_7
+    SLICE_X41Y47         LUT3 (Prop_lut3_I1_O)        0.299     7.913 r  com_sprite_m/m1x/p_0_out__0_i_44/O
+                         net (fo=1, routed)           0.704     8.617    com_sprite_m/m1x/p_0_out__0_i_44_n_0
+    SLICE_X39Y41         CARRY4 (Prop_carry4_DI[1]_CO[3])
+                                                      0.507     9.124 r  com_sprite_m/m1x/p_0_out__0_i_23/CO[3]
+                         net (fo=1, routed)           0.000     9.124    com_sprite_m/m1x/p_0_out__0_i_23_n_0
+    SLICE_X39Y42         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222     9.346 r  com_sprite_m/m1x/p_0_out__0_i_17/O[0]
+                         net (fo=2, routed)           1.010    10.356    com_sprite_m/m1x/pos_x_3201_in[16]
+    SLICE_X32Y51         LUT2 (Prop_lut2_I0_O)        0.299    10.655 r  com_sprite_m/m1x/p_0_out__0_i_21/O
+                         net (fo=1, routed)           0.000    10.655    com_sprite_m/m1x/p_0_out__0_i_21_n_0
+    SLICE_X32Y51         CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532    11.187 r  com_sprite_m/m1x/p_0_out__0_i_10/CO[3]
+                         net (fo=1, routed)           0.000    11.187    com_sprite_m/m1x/p_0_out__0_i_10_n_0
+    SLICE_X32Y52         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222    11.409 f  com_sprite_m/m1x/BRAM_reg_i_45/O[0]
+                         net (fo=3, routed)           1.178    12.587    com_sprite_m/m1x/pos_x_32[20]
+    SLICE_X46Y42         LUT1 (Prop_lut1_I0_O)        0.299    12.886 r  com_sprite_m/m1x/BRAM_reg_i_46/O
+                         net (fo=1, routed)           0.000    12.886    com_sprite_m/m1x/BRAM_reg_i_46_n_0
+    SLICE_X46Y42         CARRY4 (Prop_carry4_S[1]_O[2])
+                                                      0.578    13.464 r  com_sprite_m/m1x/BRAM_reg_i_28/O[2]
+                         net (fo=1, routed)           0.467    13.931    com_sprite_m/m1x/p_0_in[9]
+    SLICE_X44Y42         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.702    14.633 r  com_sprite_m/m1x/BRAM_reg_i_20/CO[3]
+                         net (fo=1, routed)           0.000    14.633    com_sprite_m/m1x/BRAM_reg_i_20_n_0
+    SLICE_X44Y43         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334    14.967 r  com_sprite_m/m1x/BRAM_reg_i_19/O[1]
+                         net (fo=8, routed)           1.044    16.011    com_sprite_m/m1x/BRAM_reg_i_28_0[1]
+    SLICE_X35Y46         LUT5 (Prop_lut5_I0_O)        0.303    16.314 r  com_sprite_m/m1x/ballwhitepipe[0]_i_219/O
+                         net (fo=1, routed)           0.000    16.314    com_sprite_m/m1x/ballwhitepipe[0]_i_219_n_0
+    SLICE_X35Y46         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550    16.864 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_161/CO[3]
+                         net (fo=7, routed)           1.077    17.941    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_161_n_0
+    SLICE_X36Y47         LUT4 (Prop_lut4_I2_O)        0.150    18.091 r  com_sprite_m/m1x/ballwhitepipe[0]_i_133/O
+                         net (fo=1, routed)           0.000    18.091    com_sprite_m/m1x/p_3_out[0]
+    SLICE_X36Y47         CARRY4 (Prop_carry4_DI[0]_CO[3])
+                                                      0.483    18.574 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_65/CO[3]
+                         net (fo=1, routed)           0.000    18.574    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_65_n_0
+    SLICE_X36Y48         CARRY4 (Prop_carry4_CI_O[2])
+                                                      0.239    18.813 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_37/O[2]
+                         net (fo=15, routed)          0.591    19.404    com_sprite_m/m1x/p_2_out[6]
+    SLICE_X33Y52         LUT6 (Prop_lut6_I0_O)        0.302    19.706 r  com_sprite_m/m1x/ballwhitepipe[0]_i_57/O
+                         net (fo=2, routed)           0.834    20.540    com_sprite_m/m1x/ballwhitepipe[0]_i_57_n_0
+    SLICE_X34Y52         LUT6 (Prop_lut6_I0_O)        0.124    20.664 r  com_sprite_m/m1x/ballwhitepipe[0]_i_117/O
+                         net (fo=2, routed)           0.667    21.331    com_sprite_m/m1x/ballwhitepipe[0]_i_117_n_0
+    SLICE_X35Y52         LUT6 (Prop_lut6_I0_O)        0.124    21.455 r  com_sprite_m/m1x/ballwhitepipe[0]_i_121/O
+                         net (fo=1, routed)           0.000    21.455    com_sprite_m/m1x/ballwhitepipe[0]_i_121_n_0
+    SLICE_X35Y52         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.398    21.853 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_58/CO[3]
+                         net (fo=1, routed)           0.000    21.853    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_58_n_0
+    SLICE_X35Y53         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.222    22.075 f  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_42/O[0]
+                         net (fo=4, routed)           0.348    22.423    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_42_n_7
+    SLICE_X35Y54         LUT5 (Prop_lut5_I0_O)        0.299    22.722 r  com_sprite_m/m1x/ballwhitepipe[0]_i_69/O
+                         net (fo=1, routed)           0.804    23.526    com_sprite_m/m1x/ballwhitepipe[0]_i_69_n_0
+    SLICE_X38Y53         LUT6 (Prop_lut6_I1_O)        0.124    23.650 r  com_sprite_m/m1x/ballwhitepipe[0]_i_32/O
+                         net (fo=1, routed)           0.000    23.650    com_sprite_m/m1x/ballwhitepipe[0]_i_32_n_0
+    SLICE_X38Y53         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.376    24.026 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_11/CO[3]
+                         net (fo=1, routed)           0.000    24.026    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_11_n_0
+    SLICE_X38Y54         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.219    24.245 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_6/O[0]
+                         net (fo=2, routed)           0.593    24.838    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_6_n_7
+    SLICE_X39Y53         LUT2 (Prop_lut2_I0_O)        0.295    25.133 r  com_sprite_m/m1x/ballwhitepipe[0]_i_12/O
+                         net (fo=1, routed)           0.000    25.133    com_sprite_m/m1x/ballwhitepipe[0]_i_12_n_0
+    SLICE_X39Y53         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.401    25.534 r  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_4/CO[3]
+                         net (fo=1, routed)           0.000    25.534    com_sprite_m/m1x/ballwhitepipe_reg[0]_i_4_n_0
+    SLICE_X39Y54         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334    25.868 f  com_sprite_m/m1x/ballwhitepipe_reg[0]_i_3/O[1]
+                         net (fo=2, routed)           0.853    26.721    com_sprite_m/m1x/balldistance[5]
+    SLICE_X40Y55         LUT6 (Prop_lut6_I3_O)        0.303    27.024 r  com_sprite_m/m1x/balloutlinepipe[0]_i_1/O
+                         net (fo=1, routed)           0.000    27.024    com_sprite_m/balloutline
+    SLICE_X40Y55         FDRE                                         r  com_sprite_m/balloutlinepipe_reg[0]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_clk_wiz_0 rise edge)
@@ -543,16 +542,16 @@ Slack (VIOLATED) :        -8.655ns  (required time - arrival time)
                                                      -3.129    15.125 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.581    16.706    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091    16.797 r  mhdmicw/clkout1_buf/O
-                         net (fo=5338, routed)        1.438    18.236    com_sprite_m/clk_pixel
-    SLICE_X39Y33         FDRE                                         r  com_sprite_m/balloutlinepipe_reg[0]/C
-                         clock pessimism              0.259    18.494    
-                         clock uncertainty           -0.168    18.326    
-    SLICE_X39Y33         FDRE (Setup_fdre_C_D)        0.031    18.357    com_sprite_m/balloutlinepipe_reg[0]
+                         net (fo=2745, routed)        1.437    18.234    com_sprite_m/clk_pixel
+    SLICE_X40Y55         FDRE                                         r  com_sprite_m/balloutlinepipe_reg[0]/C
+                         clock pessimism              0.179    18.413    
+                         clock uncertainty           -0.168    18.244    
+    SLICE_X40Y55         FDRE (Setup_fdre_C_D)        0.031    18.275    com_sprite_m/balloutlinepipe_reg[0]
   -------------------------------------------------------------------
-                         required time                         18.357    
-                         arrival time                         -27.012    
+                         required time                         18.275    
+                         arrival time                         -27.024    
   -------------------------------------------------------------------
-                         slack                                 -8.655    
+                         slack                                 -8.749    
 
 
 
@@ -560,20 +559,20 @@ Slack (VIOLATED) :        -8.655ns  (required time - arrival time)
 
 Min Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.040ns  (arrival time - required time)
-  Source:                 com_sprite_m/m1x/pdt_int_reg[5][1]/C
+Slack (MET) :             0.045ns  (arrival time - required time)
+  Source:                 map1_green_pipe_reg[0][0]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            com_sprite_m/m1x/pdt_int_reg[4][1]_srl3_srlopt/D
-                            (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
+  Destination:            map1_green_pipe_reg[32][0]_srl32/D
+                            (rising edge-triggered cell SRLC32E clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_clk_wiz_0
   Path Type:              Hold (Min at Fast Process Corner)
   Requirement:            0.000ns  (clk_pixel_clk_wiz_0 rise@0.000ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        0.362ns  (logic 0.164ns (45.352%)  route 0.198ns (54.648%))
+  Data Path Delay:        0.241ns  (logic 0.141ns (58.447%)  route 0.100ns (41.553%))
   Logic Levels:           0  
-  Clock Path Skew:        0.263ns (DCD - SCD - CPR)
-    Destination Clock Delay (DCD):    1.940ns
-    Source Clock Delay      (SCD):    1.427ns
-    Clock Pessimism Removal (CPR):    0.250ns
+  Clock Path Skew:        0.013ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    1.965ns
+    Source Clock Delay      (SCD):    1.452ns
+    Clock Pessimism Removal (CPR):    0.500ns
 
     Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
   -------------------------------------------------------------------    -------------------
@@ -589,12 +588,12 @@ Slack (MET) :             0.040ns  (arrival time - required time)
                                                      -1.061     0.357 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           0.486     0.843    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.026     0.869 r  mhdmicw/clkout1_buf/O
-                         net (fo=5338, routed)        0.559     1.427    com_sprite_m/m1x/clk_pixel
-    SLICE_X38Y13         FDRE                                         r  com_sprite_m/m1x/pdt_int_reg[5][1]/C
+                         net (fo=2745, routed)        0.584     1.452    clk_pixel
+    SLICE_X5Y20          FDRE                                         r  map1_green_pipe_reg[0][0]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X38Y13         FDRE (Prop_fdre_C_Q)         0.164     1.591 r  com_sprite_m/m1x/pdt_int_reg[5][1]/Q
-                         net (fo=1, routed)           0.198     1.789    com_sprite_m/m1x/srlopt_n_3
-    SLICE_X34Y12         FDRE                                         r  com_sprite_m/m1x/pdt_int_reg[4][1]_srl3_srlopt/D
+    SLICE_X5Y20          FDRE (Prop_fdre_C_Q)         0.141     1.593 r  map1_green_pipe_reg[0][0]/Q
+                         net (fo=1, routed)           0.100     1.694    map1_green_pipe_reg[0][0]
+    SLICE_X6Y21          SRLC32E                                      r  map1_green_pipe_reg[32][0]_srl32/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_clk_wiz_0 rise edge)
@@ -609,15 +608,16 @@ Slack (MET) :             0.040ns  (arrival time - required time)
                                                      -1.375     0.555 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           0.530     1.085    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.029     1.114 r  mhdmicw/clkout1_buf/O
-                         net (fo=5338, routed)        0.827     1.940    com_sprite_m/m1x/clk_pixel
-    SLICE_X34Y12         FDRE                                         r  com_sprite_m/m1x/pdt_int_reg[4][1]_srl3_srlopt/C
-                         clock pessimism             -0.250     1.690    
-    SLICE_X34Y12         FDRE (Hold_fdre_C_D)         0.059     1.749    com_sprite_m/m1x/pdt_int_reg[4][1]_srl3_srlopt
+                         net (fo=2745, routed)        0.852     1.965    clk_pixel
+    SLICE_X6Y21          SRLC32E                                      r  map1_green_pipe_reg[32][0]_srl32/CLK
+                         clock pessimism             -0.500     1.465    
+    SLICE_X6Y21          SRLC32E (Hold_srlc32e_CLK_D)
+                                                      0.183     1.648    map1_green_pipe_reg[32][0]_srl32
   -------------------------------------------------------------------
-                         required time                         -1.749    
-                         arrival time                           1.789    
+                         required time                         -1.648    
+                         arrival time                           1.694    
   -------------------------------------------------------------------
-                         slack                                  0.040    
+                         slack                                  0.045    
 
 
 
@@ -631,10 +631,10 @@ Period(ns):         13.468
 Sources:            { mhdmicw/mmcm_adv_inst/CLKOUT0 }
 
 Check Type        Corner  Lib Pin             Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location         Pin
-Min Period        n/a     RAMB36E1/CLKARDCLK  n/a            2.892         13.468      10.576     RAMB36_X0Y10     gameplay_module/bram_ball/BRAM_reg_0_0/CLKARDCLK
+Min Period        n/a     RAMB36E1/CLKARDCLK  n/a            2.892         13.468      10.576     RAMB36_X1Y8      gameplay_module/bram_ball/BRAM_reg_0_0/CLKARDCLK
 Max Period        n/a     MMCME2_ADV/CLKOUT0  n/a            213.360       13.468      199.892    MMCME2_ADV_X1Y0  mhdmicw/mmcm_adv_inst/CLKOUT0
-Low Pulse Width   Slow    RAMS32/CLK          n/a            1.250         6.734       5.484      SLICE_X8Y0       com_sprite_b/angle_lookup/cos_lookup/BRAM_reg_0_15_0_0/SP/CLK
-High Pulse Width  Slow    RAMS32/CLK          n/a            1.250         6.734       5.484      SLICE_X8Y0       com_sprite_b/angle_lookup/cos_lookup/BRAM_reg_0_15_0_0/SP/CLK
+Low Pulse Width   Slow    SRLC32E/CLK         n/a            0.980         6.734       5.754      SLICE_X2Y14      adraw_pipe_reg[31]_srl32/CLK
+High Pulse Width  Slow    SRLC32E/CLK         n/a            0.980         6.734       5.754      SLICE_X2Y14      adraw_pipe_reg[31]_srl32/CLK
 
 
 
@@ -711,26 +711,26 @@ Max Period  n/a     MMCME2_ADV/CLKFBIN  n/a            100.000       50.000     
 From Clock:  clk_pixel_clk_wiz_0
   To Clock:  clk_out_audio_clk_wiz
 
-Setup :          124  Failing Endpoints,  Worst Slack       -5.458ns,  Total Violation     -645.385ns
-Hold  :            0  Failing Endpoints,  Worst Slack        0.089ns,  Total Violation        0.000ns
+Setup :           28  Failing Endpoints,  Worst Slack       -4.690ns,  Total Violation     -123.782ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.115ns,  Total Violation        0.000ns
 ---------------------------------------------------------------------------------------------------
 
 
 Max Delay Paths
 --------------------------------------------------------------------------------------
-Slack (VIOLATED) :        -5.458ns  (required time - arrival time)
-  Source:                 gameplay_module/state_reg[1]/C
+Slack (VIOLATED) :        -4.690ns  (required time - arrival time)
+  Source:                 gameplay_module/state_reg[2]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            my_playback/counter_reg[13]_rep__4/R
+  Destination:            my_playback/counter_reg[10]/R
                             (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
   Path Group:             clk_out_audio_clk_wiz
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            0.024ns  (clk_out_audio_clk_wiz rise@3326.623ns - clk_pixel_clk_wiz_0 rise@3326.599ns)
-  Data Path Delay:        4.227ns  (logic 0.704ns (16.656%)  route 3.523ns (83.344%))
-  Logic Levels:           2  (LUT5=1 LUT6=1)
-  Clock Path Skew:        -0.119ns (DCD - SCD + CPR)
-    Destination Clock Delay (DCD):    4.774ns = ( 3331.397 - 3326.623 ) 
-    Source Clock Delay      (SCD):    5.071ns = ( 3331.670 - 3326.599 ) 
+  Data Path Delay:        3.363ns  (logic 0.580ns (17.248%)  route 2.783ns (82.752%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.120ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.778ns = ( 3331.401 - 3326.623 ) 
+    Source Clock Delay      (SCD):    5.076ns = ( 3331.675 - 3326.599 ) 
     Clock Pessimism Removal (CPR):    0.179ns
   Clock Uncertainty:      0.707ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
@@ -751,16 +751,14 @@ Slack (VIOLATED) :        -5.458ns  (required time - arrival time)
                                                      -3.333  3328.350 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.661  3330.011    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096  3330.107 r  mhdmicw/clkout1_buf/O
-                         net (fo=5338, routed)        1.563  3331.670    gameplay_module/clk_pixel
-    SLICE_X36Y10         FDRE                                         r  gameplay_module/state_reg[1]/C
+                         net (fo=2745, routed)        1.568  3331.675    gameplay_module/clk_pixel
+    SLICE_X47Y1          FDRE                                         r  gameplay_module/state_reg[2]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X36Y10         FDRE (Prop_fdre_C_Q)         0.456  3332.126 r  gameplay_module/state_reg[1]/Q
-                         net (fo=62, routed)          1.369  3333.496    gameplay_module/state_out[1]
-    SLICE_X34Y7          LUT5 (Prop_lut5_I3_O)        0.124  3333.620 f  gameplay_module/counter[15]_i_4/O
-                         net (fo=3, routed)           0.709  3334.329    gameplay_module/playing_back_hole_reg
-    SLICE_X34Y7          LUT6 (Prop_lut6_I0_O)        0.124  3334.453 r  gameplay_module/counter[15]_i_1/O
-                         net (fo=113, routed)         1.444  3335.897    my_playback/p_0_in
-    SLICE_X33Y8          FDRE                                         r  my_playback/counter_reg[13]_rep__4/R
+    SLICE_X47Y1          FDRE (Prop_fdre_C_Q)         0.456  3332.131 r  gameplay_module/state_reg[2]/Q
+                         net (fo=83, routed)          1.614  3333.745    gameplay_module/state_out[2]
+    SLICE_X43Y2          LUT6 (Prop_lut6_I4_O)        0.124  3333.869 r  gameplay_module/counter[15]_i_1_comp/O
+                         net (fo=9, routed)           1.169  3335.038    my_playback/SR[0]
+    SLICE_X46Y3          FDRE                                         r  my_playback/counter_reg[10]/R
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_out_audio_clk_wiz rise edge)
@@ -775,16 +773,16 @@ Slack (VIOLATED) :        -5.458ns  (required time - arrival time)
                                                      -3.133  3328.274 r  macw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.587  3329.861    macw/clk_out_audio_clk_wiz
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.091  3329.952 r  macw/clkout1_buf/O
-                         net (fo=188, routed)         1.444  3331.397    my_playback/clk_m
-    SLICE_X33Y8          FDRE                                         r  my_playback/counter_reg[13]_rep__4/C
-                         clock pessimism              0.179  3331.575    
-                         clock uncertainty           -0.707  3330.868    
-    SLICE_X33Y8          FDRE (Setup_fdre_C_R)       -0.429  3330.439    my_playback/counter_reg[13]_rep__4
+                         net (fo=80, routed)          1.448  3331.401    my_playback/clk_m
+    SLICE_X46Y3          FDRE                                         r  my_playback/counter_reg[10]/C
+                         clock pessimism              0.179  3331.580    
+                         clock uncertainty           -0.707  3330.872    
+    SLICE_X46Y3          FDRE (Setup_fdre_C_R)       -0.524  3330.348    my_playback/counter_reg[10]
   -------------------------------------------------------------------
-                         required time                       3330.439    
-                         arrival time                       -3335.897    
+                         required time                       3330.348    
+                         arrival time                       -3335.038    
   -------------------------------------------------------------------
-                         slack                                 -5.458    
+                         slack                                 -4.690    
 
 
 
@@ -792,19 +790,19 @@ Slack (VIOLATED) :        -5.458ns  (required time - arrival time)
 
 Min Delay Paths
 --------------------------------------------------------------------------------------
-Slack (MET) :             0.089ns  (arrival time - required time)
-  Source:                 gameplay_module/state_reg[1]/C
+Slack (MET) :             0.115ns  (arrival time - required time)
+  Source:                 gameplay_module/state_reg[2]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            prev_start_playback_hole_reg/D
+  Destination:            my_playback/playing_back_hole_reg/D
                             (rising edge-triggered cell FDRE clocked by clk_out_audio_clk_wiz  {rise@0.000ns fall@5.087ns period=10.173ns})
   Path Group:             clk_out_audio_clk_wiz
   Path Type:              Hold (Min at Fast Process Corner)
   Requirement:            0.000ns  (clk_out_audio_clk_wiz rise@0.000ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        1.158ns  (logic 0.186ns (16.056%)  route 0.972ns (83.944%))
-  Logic Levels:           1  (LUT3=1)
-  Clock Path Skew:        0.271ns (DCD - SCD - CPR)
-    Destination Clock Delay (DCD):    1.945ns
-    Source Clock Delay      (SCD):    1.429ns
+  Data Path Delay:        1.184ns  (logic 0.231ns (19.505%)  route 0.953ns (80.495%))
+  Logic Levels:           2  (LUT5=1 LUT6=1)
+  Clock Path Skew:        0.270ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    1.948ns
+    Source Clock Delay      (SCD):    1.433ns
     Clock Pessimism Removal (CPR):    0.245ns
   Clock Uncertainty:      0.707ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
@@ -825,14 +823,16 @@ Slack (MET) :             0.089ns  (arrival time - required time)
                                                      -1.061     0.357 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           0.486     0.843    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.026     0.869 r  mhdmicw/clkout1_buf/O
-                         net (fo=5338, routed)        0.561     1.429    gameplay_module/clk_pixel
-    SLICE_X36Y10         FDRE                                         r  gameplay_module/state_reg[1]/C
+                         net (fo=2745, routed)        0.565     1.433    gameplay_module/clk_pixel
+    SLICE_X47Y1          FDRE                                         r  gameplay_module/state_reg[2]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X36Y10         FDRE (Prop_fdre_C_Q)         0.141     1.570 r  gameplay_module/state_reg[1]/Q
-                         net (fo=62, routed)          0.972     2.543    gameplay_module/state_out[1]
-    SLICE_X35Y1          LUT3 (Prop_lut3_I1_O)        0.045     2.588 r  gameplay_module/prev_start_playback_hole_i_1/O
-                         net (fo=1, routed)           0.000     2.588    p_0_in
-    SLICE_X35Y1          FDRE                                         r  prev_start_playback_hole_reg/D
+    SLICE_X47Y1          FDRE (Prop_fdre_C_Q)         0.141     1.574 r  gameplay_module/state_reg[2]/Q
+                         net (fo=83, routed)          0.385     1.959    gameplay_module/state_out[2]
+    SLICE_X46Y2          LUT5 (Prop_lut5_I2_O)        0.045     2.004 f  gameplay_module/counter[15]_i_4/O
+                         net (fo=2, routed)           0.569     2.573    my_playback/playing_back_hole_reg_1
+    SLICE_X45Y1          LUT6 (Prop_lut6_I0_O)        0.045     2.618 r  my_playback/playing_back_hole_i_1/O
+                         net (fo=1, routed)           0.000     2.618    my_playback/playing_back_hole_i_1_n_0
+    SLICE_X45Y1          FDRE                                         r  my_playback/playing_back_hole_reg/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_out_audio_clk_wiz rise edge)
@@ -847,16 +847,16 @@ Slack (MET) :             0.089ns  (arrival time - required time)
                                                      -1.378     0.551 r  macw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           0.534     1.085    macw/clk_out_audio_clk_wiz
     BUFGCTRL_X0Y2        BUFG (Prop_bufg_I_O)         0.029     1.114 r  macw/clkout1_buf/O
-                         net (fo=188, routed)         0.832     1.945    clk_m
-    SLICE_X35Y1          FDRE                                         r  prev_start_playback_hole_reg/C
-                         clock pessimism             -0.245     1.700    
-                         clock uncertainty            0.707     2.407    
-    SLICE_X35Y1          FDRE (Hold_fdre_C_D)         0.091     2.498    prev_start_playback_hole_reg
+                         net (fo=80, routed)          0.835     1.948    my_playback/clk_m
+    SLICE_X45Y1          FDRE                                         r  my_playback/playing_back_hole_reg/C
+                         clock pessimism             -0.245     1.703    
+                         clock uncertainty            0.707     2.410    
+    SLICE_X45Y1          FDRE (Hold_fdre_C_D)         0.092     2.502    my_playback/playing_back_hole_reg
   -------------------------------------------------------------------
-                         required time                         -2.498    
-                         arrival time                           2.588    
+                         required time                         -2.502    
+                         arrival time                           2.618    
   -------------------------------------------------------------------
-                         slack                                  0.089    
+                         slack                                  0.115    
 
 
 

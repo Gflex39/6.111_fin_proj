@@ -24,7 +24,7 @@ module gameplay
         input wire camera_pan_left,
         input wire camera_pan_right,
         input wire new_frame,
-        input wire [7:0] user_input,
+        input wire [15:0] user_input,
         input wire user_rdy,
 
         // Fixed point numbers; 8 digits before & after decimal
@@ -58,7 +58,7 @@ module gameplay
     typedef enum {SETTING_UP=0, RESTING=1, CHARGING_HIT=2, ON_HIT=3, BALL_MOVING=4, ON_WALL_COLLISION=5, IN_HOLE=6} gameplay_state;
 
     gameplay_state state;
-    assign debug_out={state};
+    // assign debug_out={state};
     assign state_out = state;
 
     logic speed_incr; 
@@ -249,14 +249,15 @@ module gameplay
                     lfsr_out <= q_out[0]; 
                 end
                 RESTING: begin
-                    if(charging_hit) state <= CHARGING_HIT;
-                    // ball_direction <= cam_angle;
+                    // if(charging_hit) state <= CHARGING_HIT;
+                    ball_direction <= cam_angle;
 
-                    // if(user_rdy) begin 
-                    //     state <= BALL_MOVING;
-                    //     ball_speed<=user_input;
-                    //     score <= score + 1;
-                    // end
+                    if(user_rdy) begin 
+                        state <= BALL_MOVING;
+                        ball_speed<=user_input;
+                        debug_out<=user_input;
+                        score <= score + 1;
+                    end
                 end
                 CHARGING_HIT: begin
                     if(charging_hit) begin

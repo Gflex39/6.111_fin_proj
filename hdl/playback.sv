@@ -67,7 +67,7 @@ module playback
 
   xilinx_single_port_ram_read_first #(
         .RAM_WIDTH(8),                       // Specify RAM data width
-        .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+        .RAM_DEPTH(9600),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(bounce.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
   ) bram_ball_bounce (
