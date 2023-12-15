@@ -59,7 +59,10 @@ module gameplay
 
     gameplay_state state;
     // assign debug_out={state};
-    assign state_out = state;
+    always_ff @( posedge clk_in ) begin
+        state_out<=state;
+    end
+    // assign state_out = state;
 
     logic speed_incr; 
     logic [31:0] speed_counter; // 0 to 390625 -> 2 secs to fully charge bar
